@@ -21,17 +21,18 @@ class AttentionModule(nn.Module):
         weights = F.softmax(self.attention_weights(inputs), dim=0)
         return (inputs * weights).sum(dim=0)
 
-# MLP model that uses concatenated fingerprint from 3 building blocks to predict one target
-class BBFP_SimpleNN(nn.Module):
-    """MLP model class that uses the concatenated fingerprint from 3 building blocks to predict probability of binding to one target, inherited from nn.Module class.
-        - Two linear layers with relu activation
-        - One linear layer with sigmoid activation
+class Simple_BuildingBlock_MLP(nn.Module):
+    """MLP model class that uses the concatenated fingerprints from 3 building blocks to predict the probability of binding to one target. This class is inherited from the nn.Module class.
+        Model architecture (3 layers):
+            - Dimension per layer: fingerprint length * number of building blocks --> 512 --> 256 --> 1
+            - The first two layers are linear layers with relu activation
+            - The last layer is a linear layer with sigmoid activation to produce the output prediction
     
     Methods:
     forward(self, x) -- returns the output of x after passing through the model
     """
     def __init__(self, fingerprint_length, num_bb=3):
-        super(BBFP_SimpleNN, self).__init__()
+        super(Simple_BuildingBlock_MLP, self).__init__()
         self.fc1 = nn.Linear(fingerprint_length * num_bb, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, 1)
@@ -42,17 +43,23 @@ class BBFP_SimpleNN(nn.Module):
         x = torch.sigmoid(self.fc3(x))
         return x
 
-# MLP model that uses concatenated fingerprint from 3 building blocks 
-class BBFP_NN_v1(nn.Module):
-    """MLP model class that uses the concatenated fingerprint from 3 building blocks to predict probability of binding to one target, inherited from nn.Module class.
-        - Three linear layers with dropout (0.5) and relu activation
-        - One linear layer with sigmoid activation
+class Simple_BuildingBlock_MLP_w_DropOut(nn.Module):
+    """MLP model class that uses the concatenated fingerprints from 3 building blocks to predict the probability of binding to one target. This class is inherited from the nn.Module class.
+        
+        This model differs from Simple_BuildingBlock_MLP in that: 
+            - It contains 4 layers instead of 3
+            - Between each layer, a dropout with 50% probability is applied
+        
+        Model architecture (4 layers):
+            - Dimension per layer: fingerprint length * number of building blocks --> 1024 --> 512 --> 256 --> 1
+            - The first two layers are linear layers with relu activation
+            - The last layer is a linear layer with sigmoid activation to produce the output prediction
     
     Methods:
     forward(self, x) -- returns the output of x after passing through the model
     """
     def __init__(self, fingerprint_length, num_bb=3):
-        super(BBFP_NN_v1, self).__init__()
+        super(Simple_BuildingBlock_MLP_w_DropOut, self).__init__()
         self.fc1 = nn.Linear(fingerprint_length * num_bb, 1024)
         self.dropout1 = nn.Dropout(0.5)
         self.fc2 = nn.Linear(1024, 512)
@@ -68,21 +75,26 @@ class BBFP_NN_v1(nn.Module):
         x = torch.sigmoid(self.fc4(x))
         return x
 
-# Permutation invariant MLP 
-class BBFP_PermInvarNN_v1(nn.Module):
-    """MLP model that uses shared layers for the second and third building block fingerprints to create permutation invariance between BB2 and BB3.
-        - Linear layer with relu activation for bb1
-        - Shared linear layer with relu activation applied to bb2 and bb3 
-        - Bitwise add outputs of bb2 and bb3 after shared layer 
-        - Concatenate fp1 after first layer with combined bb2 and bb3 outputs
-        - Linear layer with relu activation
-        - Linear layer with sigmoid activation
+class PermutationInvariant_BuildingBlock_MLP(nn.Module):
+    """MLP model class that uses the concatenated fingerprints from 3 building blocks and shared layers for BBs 2 and 3 to predict the probability of binding to one target. This class is inherited from the nn.Module class.
+        
+        This model differs from Simple_BuildingBlock_MLP in that: 
+            - It contains 1 layer for BB1 processing, 1 shared layer for BB2 and BB3 processing, and then 2 layers for concatenated BB1+BB2+BB3 features
+        
+        Model architecture (5 layers):
+            - BB1 processing layer: fingerprint length --> 512 then relu activation
+            - BB2 and BB3 processing layer: for BB2 and BB3, fingerprint length --> 512 then relu activation
+            - Add the features of BB2 and BB3 from the shared processing layer (bitwise)
+            - Concatenate the BB1 feature vector with the BB2+BB3 aggregated feature vector for a vector of size 1024
+            - Dimension per layer after BB processing layers: 1024 --> 256 --> 1
+                - The first layer is linear relu activation
+                - The last layer is a linear layer with sigmoid activation to produce the output prediction
     
     Methods:
     forward(self, x) -- returns the output of x after passing through the model
     """
     def __init__(self, fingerprint_length):
-        super(BBFP_PermInvarNN_v1, self).__init__()
+        super(PermutationInvariant_BuildingBlock_MLP, self).__init__()
         self.fp_length = fingerprint_length
         # Shared layers for the second and third building blocks
         self.shared_fc = nn.Linear(fingerprint_length, 512)
@@ -117,7 +129,7 @@ class BBFP_PermInvarNN_v1(nn.Module):
         x = F.relu(self.fc2(combined_features))
         x = torch.sigmoid(self.fc3(x))
         return x
-   
+
 # Permutation invariant MLP version 2  
 class BBFP_PermInvarNN_v2(nn.Module):
     """MLP model that uses shared layers for the first, second, and third building block fingerprints to create permutation invariance.
