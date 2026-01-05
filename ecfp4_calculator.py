@@ -6,6 +6,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 from tqdm import tqdm
 import argparse
+import sys 
 
 from utils import *
 
@@ -20,14 +21,16 @@ Purpose: Calculate ECFP4 fingerprints from a csv file containing SMILES & write 
 Usage: python ecfp4_calculator.py <filename> <output_dir> [options]
 
 Arguments:
-  filename    - CSV file with a 'molecule_smiles' column (can contain additional columns as well)
-  output_dir  - Output directory path
+    filename    - CSV file with a 'molecule_smiles' column (can contain additional columns as well). If option -b (--bb_fingerprints) is specified, the CSV file must also contain
+    columns for each building block, of the form 'building_block1_smiles', 'building_block2_smiles', etc...
+    output_dir  - Output directory path
 
 Options:
-  -c, --chunk_size INT  - Chunk size for CSV reading (default: 500000)
-  -s, --ecfp4_size INT  - ECFP4 fingerprint size (default: 2048)  
-  -r, --remove_dy       - Remove Dy tag, replace with PEG linker
-  -h, --help           - Show this help message
+    -c, --chunk_size INT  - Chunk size for CSV reading (default: 500000)
+    -s, --ecfp4_size INT  - ECFP4 fingerprint size (default: 2048)  
+    -r, --remove_dy       - Remove Dy tag, replace with PEG linker
+    -b, --bb_fingerprints - Calculate building block fingerprints 
+    -h, --help            - Show this help message
 """
         print(help_text)
         sys.exit(0)
@@ -37,8 +40,9 @@ def main():
     parser.add_argument('filename', help="file path to the train csv file, which contains a column called 'molecule_smiles'")
     parser.add_argument('output_dir', help="path to the output directory")
     parser.add_argument('-c', '--chunk_size', type=int, default=500000, help='change the chunk_size for reading in the input csv (default is 500,000)')
-    parser.add_argument('-s', '--ecfp4_size', type=int, default=2048, help='change the size of ECFP4 fingerprints (default is 2048)')
+    parser.add_argument('-s', '--ecfp4_size', type=int, default=1024, help='change the size of ECFP4 fingerprints (default is 1024)')
     parser.add_argument('-r', '--remove_dy', action='store_true', help='if specified, the Dy tag found in some DELs will be removed and replaced with a PEG linker')
+    parser.add_argument('-b', 'bb_fingerprints', action='store_true', help='if specified, fingerprints will be calculated for building blocks as well.')
     parser.add_argument('-h', '--help', action=HelpAction)
     
     args = parser.parse_args()
@@ -62,8 +66,28 @@ def main():
         fingerprints = Parallel(n_jobs=-1)(delayed(retrieve_mol_fp)(sm, 'ECFP4', args.ecfp4_size) for sm in chunk['molecule_smiles'])
         print('Fingerprints calculated.')
         
+        if args.bb_fingerprints == True: 
+        # also compute the fingerprints for each building block
+            bb_fingerprint_cols = []
+            bb_fingerprint_colnames = []
+            for column in list(chunk.columns):
+                if 'building_block' in str(column):
+                    bb_num =  str(column).split('block')[1]
+                    bb_num = bb_num.split('_')[0]
+                    bbfingerprints = Parallel(n_jobs=-1)(delayed(retrieve_mol_fp)(sm, 'ECFP4', args.ecfp4_size) for sm in chunk[column])
+                    bb_fingerprint_cols.append(bb_fingerprint_cols)
+                    colname = f'bb{bb_num}_ecfp4_fp'
+                    bb_fingerprint_colnames.append(colname)
+                
+        # write to the new dataframe
         df = chunk.copy()
-        df['ecfp4_fp'] = fingerprints
+        # full molecule fingerprints
+        df['fullmolecule_ecfp4_fp'] = fingerprints
+        
+        if args.bb_fingerprints == True: 
+            # write the building block fingerprints
+            for cname, c in zip(bb_fingerprint_colnames, bb_fingerprint_cols):
+                df[cname] = c
         
         # Convert DataFrame to PyArrow Table and write to Parquet
         table = pa.Table.from_pandas(df)
