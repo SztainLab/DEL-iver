@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# Attention module
 class AttentionModule(nn.Module):
     """Create AttentionModule for attention layers in models, inherited from torch.nn.Module class.
 
@@ -129,7 +128,8 @@ class PermutationInvariant_BuildingBlock_MLP(nn.Module):
         # Further processing the combined features
         x = F.relu(self.fc2(combined_features))
         x = torch.sigmoid(self.fc3(x))
-        return x 
+        return x
+
 class PermutationInvariant_BuildingBlock_MLP_V1(nn.Module):
     """MLP model class that uses the concatenated fingerprints from 3 building blocks and shared layers for BBs 1, 2, and 3 to predict the probability of binding to one target. This class is inherited from the nn.Module class.
         
@@ -189,9 +189,10 @@ class PermutationInvariant_BuildingBlock_MLP_V2(nn.Module):
             - BB2, and BB3 processing layer: for BB2 and BB3, fingerprint length --> 1024 then relu activation
             - Add the features of BB2 and BB3 from the shared processing layer (bitwise)
             - Apply attention to the aggregated BB2 and BB3 feature vector
+            - Concatenate the aggregated BB2 and BB3 vector with the processed BB1 vector
             - Dimension per layer after BB processing layers: 2048 --> 1024 --> 512 --> 256 --> 1
-                - The first layer is linear relu activation
-                - The last layer is a linear layer with sigmoid activation to produce the output prediction
+                - All but the last layer is composed of linear a linear layer followed by relu activation
+                - The last layer is a simple linear layer
     
     Methods:
     forward(self, x) -- returns the output of x after passing through the model
@@ -239,22 +240,27 @@ class PermutationInvariant_BuildingBlock_MLP_V2(nn.Module):
         x = self.fc5(x)
         return x
     
-# Permutation invariant MLP version 4
-class BBFP_PermInvarNN_v4(nn.Module):
-    """MLP model that uses shared layers for the second and third building block fingerprints to create permutation invariance between BB2 and BB3.
-    Also applies attention and batch normalization
-        - Linear layer with relu activation for bb1 with batch normalization (no reduction in size)
-        - Shared linear layer with relu activation applied to bb2 and bb3 with batch normalization (no reduction in size)
-        - Attention layer to aggregate outputs of shared layer from bb2 and bb3
-        - Concatenate fp1 after first layer with aggregated attention output from bb2 and bb3
-        - Three linear layers with relu activation with batch normalization
-        - One linear layer (no activation)
+class PermutationInvariant_BuildingBlock_MLP_V3(nn.Module):
+    """MLP model class that uses the concatenated fingerprints from 3 building blocks and shared layers for BBs 2 and 3, with attention to predict the probability of binding to one target. This class is inherited from the nn.Module class.
+        
+        This model differs from PermutationInvariant_BuildingBlock_MLP_V2 in that: 
+            - Batch normalization is applied after BB processing and between layers 
+        
+        Model architecture (5 layers):
+            - BB1 processing layer: fingerprint length --> 1024 then batch normalization and relu activation
+            - BB2, and BB3 processing layer: for BB2 and BB3, fingerprint length --> 1024 then batch normalization and relu activation
+            - Add the features of BB2 and BB3 from the shared processing layer (bitwise)
+            - Apply attention to the aggregated BB2 and BB3 feature vector
+            - Concatenate the aggregated BB2 and BB3 vector with the processed BB1 vector
+            - Dimension per layer after BB processing layers: 2048 --> 1024 --> 512 --> 256 --> 1
+                - All but the last layer is composed of linear a linear layer followed by batch normalization then relu activation
+                - The last layer is a simple linear layer
     
     Methods:
     forward(self, x) -- returns the output of x after passing through the model
-    """ 
+    """
     def __init__(self, fingerprint_length):
-        super(BBFP_PermInvarNN_v4, self).__init__()
+        super(PermutationInvariant_BuildingBlock_MLP_V3, self).__init__()
         self.fp_length = fingerprint_length
 
         # Shared layers for the second and third building blocks
@@ -303,9 +309,12 @@ class BBFP_PermInvarNN_v4(nn.Module):
         x = self.fc5(x)
         return x
 
-# Model that uses fingerprints of molecules to predict one target
-class MolFP_SimpleNN(nn.Module):
+class FullMoleculeFP_NN(nn.Module):
     """MLP model that uses full molecule fingerprints to predict on one target.
+    
+    This model differs from building block models in that it considers the molecule as a whole, so does not directly consider the building blocks individually.
+    
+    Model architecture (4 layers) fingerprint_length --> 1024 --> 512 --> 256 --> 1:
         - Three linear layers with relu activation
         - One linear layer with sigmoid activation
     
@@ -313,7 +322,7 @@ class MolFP_SimpleNN(nn.Module):
     forward(self, x) -- returns the output of x after passing through the model
     """ 
     def __init__(self, fingerprint_length):
-        super(MolFP_SimpleNN, self).__init__()
+        super(FullMoleculeFP_NN, self).__init__()
         self.fc1 = nn.Linear(fingerprint_length, 1024)
         self.fc2 = nn.Linear(1024, 512)
         self.fc3 = nn.Linear(512, 256)
@@ -326,22 +335,17 @@ class MolFP_SimpleNN(nn.Module):
         x = torch.sigmoid(self.fc4(x))
         return x
     
-# Model that predicts read count from building block fingerprints
-class BBFP_PermInvarNN_v3_ReadCount(nn.Module):
+
+class PermutationInvariant_BuildingBlock_MLP_V2_ReadCount(nn.Module):
     """MLP model that uses shared layers for the second and third building block fingerprints to create permutation invariance between BB2 and BB3.
-    Predicts read count rather than binding probability.
-        - Linear layer with relu activation for bb1 (no reduction in size)
-        - Shared linear layer with relu activation applied to bb2 and bb3 (no reduction in size)
-        - Attention layer to aggregate outputs of shared layer from bb2 and bb3
-        - Concatenate fp1 after first layer with aggregated attention output from bb2 and bb3
-        - Three linear layers with relu activation with batch normalization
-        - One linear layer
+    
+    This model is inherited from PermutationInvariant_BuildingBlock_MLP_V2 but it differs in that it predicts DEL read counts instead of binding probability 
     
     Methods:
     forward(self, x) -- returns the output of x after passing through the model
     """ 
     def __init__(self, fingerprint_length):
-        super(BBFP_PermInvarNN_v3, self).__init__()
+        super(PermutationInvariant_BuildingBlock_MLP_V2, self).__init__()
         self.fp_length = fingerprint_length
 
         # Shared layers for the second and third building blocks
