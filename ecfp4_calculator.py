@@ -27,7 +27,7 @@ Arguments:
 
 Options:
     -c, --chunk_size INT  - Chunk size for CSV reading (default: 500000)
-    -s, --ecfp4_size INT  - ECFP4 fingerprint size (default: 2048)  
+    -s, --ecfp4_size INT  - ECFP4 fingerprint size (default: 1024)  
     -r, --remove_dy       - Remove Dy tag, replace with PEG linker
     -b, --bb_fingerprints - Calculate building block fingerprints 
     -h, --help            - Show this help message
@@ -37,7 +37,7 @@ Options:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('filename', help="file path to the train csv file, which contains a column called 'molecule_smiles'")
+    parser.add_argument('filename', help="file path to the train csv file, which contains a column called 'molecule_smiles' and 'building_block{i}_smiles'... if -b is specified")
     parser.add_argument('output_dir', help="path to the output directory")
     parser.add_argument('-c', '--chunk_size', type=int, default=500000, help='change the chunk_size for reading in the input csv (default is 500,000)')
     parser.add_argument('-s', '--ecfp4_size', type=int, default=1024, help='change the size of ECFP4 fingerprints (default is 1024)')
