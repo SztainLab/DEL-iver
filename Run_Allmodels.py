@@ -19,13 +19,15 @@ class HelpAction(argparse.Action):
     
     def __call__(self, parser, namespace, values, option_string=None):
         help_text = """
-Purpose: Train models 
+Purpose: Train models and scan hyperparameters for predicting binding probability of ligands to 
 
-Usage: python Run_Allmodels.py <filename> <output_dir> [options]
+Usage: python Run_Allmodels.py <train_filename> <validation_filename> <test_filename> <output_dir> [options]
 
 Arguments:
-    filename    - the parquet file output from running ecfp4_calculator.py
-    output_dir  - Output directory path
+    train_filename      - 
+    validation_filename -
+    test_filename       -
+    output_dir          - Output directory path
 
 Options:
     -e, --epochs INT                              - Specify the number of epochs for training (default is to scan 10, 100, 500)
