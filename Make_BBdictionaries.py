@@ -6,7 +6,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 import pickle
 import argparse
+import os
 import sys
+import pyarrow as pa
+import pyarrow.parquet as pq
 import pandas as pd
 from joblib import Parallel, delayed
 import multiprocessing
@@ -113,18 +116,34 @@ def main():
         df = df.drop('molecule_smiles', axis=1)
         
         if args.bb_fingerprints == True:
-            # write the building block id columns as well 
+            # write the building block id columns as well
+            for colname in list(bbsmilesdicts.keys()):
+                newname = f'{colname[:-9]}_id'
+                smilesname = f'{colname[:-9]}_smiles' 
+                df[newname] = df[smilesname].map(bbsmilesdicts[colname])
+                
+                bbdict_idecfp4 = dict(zip(df[newname], df[colname]))
+                bb_dicts[colname] |= bbdict_idecfp4
             
             # remove the remaining smiles and ecfp4 columns
+            df = df.drop(colname, axis=1)
+            df = df.drop(smilesname, axis=1)
             
             
-            
-    # write the bb --> ecfp4 dictionaries to pickle files    
-    pickle.write
+    # make output directory if it doesn't already exist
+    os.makedirs(args.output_dir, exist_ok=True) 
     
-    # also write a new csv file that has all smiles and ecfp4 columns removed
-    # remove any columns with "smiles" or "ecfp4" in it 
-
+    # write the bb --> ecfp4 dictionaries to pickle files    
+    with open(f'{args.output_dir}/{args.prefix}_fullmolecule_dict.pkl', 'wb') as f:
+        pickle.dump(full_molecule_dict, f)
+        
+    for colname, coldict in bb_dicts.items():
+        with open(f'{args.output_dir}/{args.prefix}_{colname}.pkl', 'wb') as f:
+            pickle.dump(coldict, f)
+    
+    # also write a new parquet file that has all smiles and ecfp4 columns removed
+    table = pa.Table.from_pandas(df)
+    pq.write_to_dataset(table, root_path=args.output_dir, compression='snappy')
 
 if __name__ == '__main__':
     main()
