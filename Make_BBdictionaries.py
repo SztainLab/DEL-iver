@@ -30,9 +30,9 @@ Storing the fingerprints in dictionaries and identifying molecules and building 
 Usage: python Make_BBdictionaries.py <filename> <output_dir> <prefix> [options]
 
 Arguments:
-    filename    - the parquet file output from running ecfp4_calculator.py
+    filename    - the parquet file output from running ECFP4_calculator.py
     output_dir  - output directory path
-    prefix      - prefix for output pickle and csv files (e.g. ecfp4_1024_)
+    prefix      - prefix for output pickle and parquet files (e.g. ecfp4_1024_)
 
 Options:
     -c, --chunk_size INT                                          - Chunk size for parquet reading (default: 500000)
@@ -45,9 +45,10 @@ Options:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('filename', help="the parquet file output from running ecfp4_calculator.py")
+    parser.add_argument('filename', help="the parquet file output from running ECFP4_calculator.py")
     parser.add_argument('output_dir', help="path to the output directory")
-    parser.add_argument('prefix', help='prefix for output pickle files (e.g. ecfp4_1024)')
+    parser.add_argument('prefix', help='prefix for output pickle and parquet files (e.g. ecfp4_1024)')
+    parser.add_argument('-c', '--chunk_size', type=int, default=500000, help='change the chunk_size for reading in the input csv (default is 500,000)')
     parser.add_argument('b', '--bb_fingerprints', action='store_true', help='if specified, building block dictionaries will be generated in addition to the full molecule fingerprints')
     parser.add_argument('-l', '--bb_list', nargs='+', default=None, help='space delimited list of bb ecfp4 column names) - Must be specified if option -b is specified')
     parser.add_argument('-h', '--help', action=HelpAction)
