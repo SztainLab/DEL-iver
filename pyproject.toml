@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 # Self-descriptive entries which should always be present
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
-[project]
+[project] 
 name = "DEL-iver"
 description = "DEL-iver: A Python package for loading, processing and analysing  DNA encoded library (DEL) also automates training/testing predictive models in cheminformatics workflows."
 dynamic = ["version"]
@@ -64,7 +64,7 @@ where = ["."]
 
 # Ref https://setuptools.pypa.io/en/latest/userguide/datafiles.html#package-data
 [tool.setuptools.package-data]
-DEL-iver = [
+DEL_iver = [
     "py.typed"
 ]
 
@@ -84,4 +84,4 @@ match = ["*"]
 default-tag = "1.0.0"
 
 [tool.versioningit.write]
-file = "DEL-iver/_version.py"
+file = "DEL_iver/_version.py"
