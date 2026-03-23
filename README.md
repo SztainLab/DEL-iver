@@ -8,6 +8,12 @@ Order to run scripts:
   - Split_TestTrainVal.py
   - Run_Allmodels.py
 
+
+## For development 
+`pip install -e .` 
+
+in current branch
+
 Machine learning model descriptions and usage for models in `models.py`:
   - ...
   - ...
