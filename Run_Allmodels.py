@@ -89,6 +89,7 @@ def main():
                 for model in models:
                     # load the model
                     
+                    
                     # train model, including validation runs and plot train/validation loss across epochs 
     
                     # run inference on test sets, and plot AUROC, mAP of model on test set
