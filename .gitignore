@@ -1,1 +1,6 @@
 DEL_iver.egg-info/
+
+test.py
+
+DEL_iver/__pycache__/
+DEL_iver/data_loader/__pycache__/

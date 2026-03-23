@@ -3,7 +3,6 @@
 #Any function listed here will be callable with no imports needed other then 
 
 # Import everything you want available at the top level when you run import DEL_iver
-from .data_loader import *
-from .models import *
-from .molecules import *
-from .utils import *
+from .data_loader.data_reader import DEL_Data_Reader
+
+
