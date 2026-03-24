@@ -114,3 +114,24 @@ def replace_Dy(smiles):
                                         peg_mol)[0]
     
     return Chem.MolToSmiles(edited_mol)
+
+
+def determine_ddr_type(ddr):
+    """
+    Return the underlying data stored in a Data_Reader.
+
+    Returns
+    -------
+    pd.DataFrame OR iterator
+    """
+
+    if ddr is None:
+        raise ValueError("ddr cannot be None")
+
+    if getattr(ddr, "df", None) is not None:
+        return ddr.df
+
+    if getattr(ddr, "iter", None) is not None:
+        return ddr.iter
+
+    raise ValueError("Data_Reader has neither df nor iter set.")

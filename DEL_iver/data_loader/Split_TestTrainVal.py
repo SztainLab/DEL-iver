@@ -1,4 +1,5 @@
 #!/bin/python
+from curses.ascii import DEL
 import os 
 import numpy as np
 #import torch
@@ -46,13 +47,14 @@ Options:
         sys.exit(0)
 
 #!currently chunk size is not used in this version of the function but i have not removed it because i dont want to make too many chnanges at once
-def split_data(df:pd.DataFrame,prefix:str = None,output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10 ,chunk_dize:int = 500000 ): #TODO: BUILD IN A CHECK TO SEE IF SPLITTING DATA RESULTS IN NOTHING, FIGURE OUT WHY IT CRASHED WITH CHUNK SIZE 5, I ASSUME IT COULD NOT DO THE 3 WAY SPLIT WITH HOW MUCH DATA WAS PER ROW
+def split_data(ddr: "DEL.Data_Reader", prefix:str = None,output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10 ,chunk_dize:int = 500000 ): #TODO: BUILD IN A CHECK TO SEE IF SPLITTING DATA RESULTS IN NOTHING, FIGURE OUT WHY IT CRASHED WITH CHUNK SIZE 5, I ASSUME IT COULD NOT DO THE 3 WAY SPLIT WITH HOW MUCH DATA WAS PER ROW
     """
     Splits a DataFrame or file into train/validation/test and writes parquet files.
     """
 
-    if df is None:
-        raise ValueError("Must provide df from Data_Reader")
+    data=determine_ddr_type(ddr)
+
+
     # Sanity check for split sizes
     if not 0 < trainsplit < 1:
         raise ValueError("`trainsplit` must be between 0 and 1.")
@@ -62,9 +64,9 @@ def split_data(df:pd.DataFrame,prefix:str = None,output_dir:str = None,trainspli
         raise ValueError("Sum of `trainsplit` and `validationsplit` must be less than 1.")
 
     #Handles getting an entire data frame 
-    if isinstance(df, pd.DataFrame):
+    if isinstance(data, pd.DataFrame):
         # split the dataframe into train, validation, and test sets
-        train_df, temp_df = train_test_split(df, train_size=trainsplit, random_state=42)
+        train_df, temp_df = train_test_split(data, train_size=trainsplit, random_state=42)
         val_df, test_df = train_test_split(temp_df, train_size=validationsplit, random_state=42) 
         
         # write the train, validation, test splits to parquet files
@@ -80,11 +82,11 @@ def split_data(df:pd.DataFrame,prefix:str = None,output_dir:str = None,trainspli
             
         
     #Handles needing to iterate over chunks
-    elif hasattr(df, "__iter__") and not isinstance(df, pd.DataFrame):
+    elif hasattr(data, "__iter__") and not isinstance(data, pd.DataFrame):
         train_list = []
         val_list = []
         test_list = []
-        for chunk in df:
+        for chunk in data:
             train_df, temp_df = train_test_split(chunk, train_size=trainsplit, random_state=42)
             val_df, test_df = train_test_split(temp_df,train_size=validationsplit,random_state=42,)
             train_list.append(train_df)

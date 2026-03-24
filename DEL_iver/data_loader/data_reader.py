@@ -2,6 +2,16 @@ import pandas as pd
 
 class Data_Reader: 
 
+    def __init__(self):
+        # Placeholder attributes; they will be set by classmethods
+        self.df = None
+        self.iter=None
+        self.n_building_blocks = None
+        self.building_blocks = None
+        self.misc_cols = None
+
+
+
     @classmethod
     def _format_columns(cls, df: pd.DataFrame,
                         building_blocks: list,
@@ -68,31 +78,29 @@ class Data_Reader:
                  molecule_smiles: str = None,
                  id_col: str = None,
                  misc_cols: list = None,
-                 **kwargs) -> pd.DataFrame:
+                 **kwargs):
         """
-        Reads CSV and auto-formats columns.
+        Reads CSV and auto-formats columns, storing metadata in the object.
         """
+        # Instantiate empty object
+        self = cls()
+
+        # Store metadata
+        self.n_building_blocks = len(building_blocks)
+        self.building_blocks = building_blocks
+        self.misc_cols = misc_cols
+
+        # Read CSV and format columns
         df = pd.read_csv(filepath, **kwargs)
         df = cls._format_columns(df,
-                                building_blocks=building_blocks,
-                                molecule_smiles=molecule_smiles,
-                                id_col=id_col,
-                                misc_cols=misc_cols)
-        cls.df = df
-        return df
+                                 building_blocks=building_blocks,
+                                 molecule_smiles=molecule_smiles,
+                                 id_col=id_col,
+                                 misc_cols=misc_cols)
+        self.df = df
+        return self
 
-    @classmethod
-    def iterator_from_csv(cls, filepath: str, chunk_size: int, **kwargs):
-        """
-        Reads a CSV file in chunks and returns an iterator of DataFrames.
 
-        Returns:
-            TextFileReader: An iterator that yields DataFrames of size chunk_size.
-        """
-        if chunk_size <= 0 and not type(chunk_size) == int:
-            raise ValueError("chunk_size must be a positive integer.")
-        cls.df_iterator = pd.read_csv(filepath, chunksize=chunk_size, **kwargs)
-        return cls.df_iterator
 
 
     @classmethod
@@ -107,6 +115,11 @@ class Data_Reader:
         Reads a CSV file in chunks, formats columns, and returns an iterator of DataFrames
         with canonical column names and order.
         """
+        self = cls()
+        self.n_building_blocks = len(building_blocks)
+        self.building_blocks = building_blocks
+        self.misc_cols = misc_cols
+
         if chunk_size <= 0 or not isinstance(chunk_size, int):
             raise ValueError("chunk_size must be a positive integer.")
 
@@ -128,8 +141,8 @@ class Data_Reader:
                 
 
 
-        cls.df_iterator = formatted_chunk_iterator()
-        return cls.df_iterator
+        self.iter = formatted_chunk_iterator()
+        return self
 
     @classmethod
     def from_parquet(cls, filepath: str, **kwargs):
