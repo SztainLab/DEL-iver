@@ -46,7 +46,7 @@ Options:
         sys.exit(0)
 
 #!currently chunk size is not used in this version of the function but i have not removed it because i dont want to make too many chnanges at once
-def split_data(df:pd.DataFrame,prefix:str = None,output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10 ,chunk_dize:int = 500000 ):
+def split_data(df:pd.DataFrame,prefix:str = None,output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10 ,chunk_dize:int = 500000 ): #TODO: BUILD IN A CHECK TO SEE IF SPLITTING DATA RESULTS IN NOTHING, FIGURE OUT WHY IT CRASHED WITH CHUNK SIZE 5, I ASSUME IT COULD NOT DO THE 3 WAY SPLIT WITH HOW MUCH DATA WAS PER ROW
     """
     Splits a DataFrame or file into train/validation/test and writes parquet files.
     """
