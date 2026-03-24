@@ -1,22 +1,24 @@
 #!/bin/python
-
+import os 
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import pickle
+#import torch
+#import torch.nn as nn
+#import torch.nn.functional as F
+#import pickle
 from sklearn.model_selection import train_test_split
 import argparse
-import os
+#import os
 import sys
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pandas as pd
-from joblib import Parallel, delayed
-import multiprocessing
-import tqdm
+#from joblib import Parallel, delayed
+#import multiprocessing
+#import tqdm
 
-from utils import *
+from DEL_iver.utils.utils import *
+
+
 
 class HelpAction(argparse.Action):
     def __init__(self, option_strings, dest, **kwargs):
@@ -43,6 +45,37 @@ Options:
         print(help_text)
         sys.exit(0)
 
+def split_data(df:pd.DataFrame,prefix:str = None,output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10 ,chunk_dize:int = 500000 ):
+    """
+    Splits a DataFrame or file into train/validation/test and writes parquet files.
+    """
+
+    if df is None:
+        raise ValueError("Must provide df from Data_Reader")
+
+    # Sanity check for split sizes
+    if not 0 < trainsplit < 1:
+        raise ValueError("`trainsplit` must be between 0 and 1.")
+    if not 0 <= validationsplit < 1:
+        raise ValueError("`validationsplit` must be between 0 and 1.")
+    if trainsplit + validationsplit >= 1:
+        raise ValueError("Sum of `trainsplit` and `validationsplit` must be less than 1.")
+
+    # split the dataframe into train, validation, and test sets
+    train_df, temp_df = train_test_split(df, train_size=trainsplit, random_state=42)
+    val_df, test_df = train_test_split(temp_df, train_size=validationsplit, random_state=42) 
+
+    # write the train, validation, test splits to parquet files
+    if output_dir: 
+        os.makedirs(output_dir,exist_ok=True)
+        if prefix is None:
+            prefix = "data"
+        train_df.to_parquet(f'{output_dir}/{prefix}_trainset.parquet')
+        val_df.to_parquet(f'{output_dir}/{prefix}_validationset.parquet')
+        test_df.to_parquet(f'{output_dir}/{prefix}_testset.parquet')
+
+    return train_df, val_df, test_df
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('filename', help="the parquet file output from running Make_BBdictionaries.py")
@@ -56,15 +89,10 @@ def main():
     args = parser.parse_args()    
 
     df = pd.read_parquet(args.filename)
-    
-    # split the dataframe into train, validation, and test sets
-    train_df, temp_df = train_test_split(df, train_size=args.trainsplit, random_state=42)
-    val_df, test_df = train_test_split(temp_df, train_size=args.validationsplit, random_state=42) 
-    
-    # write the train, validation, test splits to parquet files
-    train_df.to_parquet(f'{args.output_dir}/{args.prefix}_trainset.parquet')
-    val_df.to_parquet(f'{args.output_dir}/{args.prefix}_validationset.parquet')
-    test_df.to_parquet(f'{args.output_sir}/{args.prefix}_testset.parquet')
+
+    #i moved the code from main into its own function, and i call it
+    split_data(df=df,prefix=args.prefix,output_dir=args.output_dir,trainsplit=args.trainsplit,validationsplit=args.validationsplit,chunk_size=args.chunk_size)
+
     
 if __name__ == '__main__':
     main()
