@@ -12,7 +12,19 @@ Order to run scripts:
 ## For development 
 `pip install -e .` 
 
-in current branch
+## Basic usage 
+```
+import DEL_iver as DEL
+
+
+data=DEL.Data_Reader.from_csv('DEL_iver/tests/data/example.csv')
+print(len(data))
+#1999
+
+train_df, val_df, test_df=DEL.split_data(data)
+print(len(train_df),len(val_df),len(test_df))
+# 1599 40 360
+```
 
 Machine learning model descriptions and usage for models in `models.py`:
   - ...
