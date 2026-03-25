@@ -14,8 +14,9 @@ import pandas as pd
 from joblib import Parallel, delayed
 import multiprocessing
 import tqdm
+from tqdm import tqdm
 
-from utils import *
+from DEL_iver.utils.utils import *
 
 class HelpAction(argparse.Action):
     def __init__(self, option_strings, dest, **kwargs):
@@ -42,6 +43,62 @@ Options:
 """
         print(help_text)
         sys.exit(0)
+
+#todo include disinthons
+def generate_BB_dictionaries(ddr, bb_fingerprints: bool):
+    
+    # full molecule maps
+    full_molecule_smile_to_int = {}
+    full_molecule_int_to_smile = {}
+    jfull = 0
+
+    # bb maps: one forward + one reverse dict per bb column
+    bb_smile_to_int = {}
+    bb_int_to_smile = {}
+    jbbs = {}
+
+    bb_list = ddr.building_blocks      # e.g. ['col_2', 'col_3', 'col_5']
+    reader = ddr.data
+    molecule_smiles = ddr.molecule_smiles  # e.g. 'col_6'
+
+    if bb_fingerprints:
+        for colname in bb_list:
+            bb_smile_to_int[colname] = {}
+            bb_int_to_smile[colname] = {}
+            jbbs[colname] = 0
+
+    for i, chunk in tqdm(enumerate(reader)):
+
+        # --- full molecule ---
+        for smile in chunk[molecule_smiles].unique():
+            if smile not in full_molecule_smile_to_int:
+                full_molecule_smile_to_int[smile] = jfull
+                full_molecule_int_to_smile[jfull] = smile
+                jfull += 1
+
+        # --- building blocks ---
+        if bb_fingerprints:
+            for colname in bb_list:
+                for smile in chunk[colname].unique():
+                    if smile not in bb_smile_to_int[colname]:
+                        idx = jbbs[colname]
+                        bb_smile_to_int[colname][smile] = idx
+                        bb_int_to_smile[colname][idx] = smile
+                        jbbs[colname] += 1
+
+
+    #TODO: maybe make it return a data frame or something simple
+    if bb_fingerprints:
+        return (full_molecule_smile_to_int, full_molecule_int_to_smile,
+                bb_smile_to_int, bb_int_to_smile)
+    else:
+        return full_molecule_smile_to_int, full_molecule_int_to_smile
+
+
+
+
+
+
 
 def main():
     parser = argparse.ArgumentParser()
