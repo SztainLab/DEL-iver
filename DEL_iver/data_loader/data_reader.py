@@ -1,10 +1,16 @@
 import pandas as pd
 
 class Data_Reader: 
+    """
+    Lazily reads DEL dataset files and holds metadata about columns.
+    Supports CSV (chunked) and Parquet. Use named constructors to instantiate.
+    """
 
-    MOLECULE_COL = "molecule_smiles"
-    ID_COL = "id"
-    BB_COL_TEMPLATE = "building_block{i}_smiles"
+    class Fields(Enum):
+        DATA = "data"
+        BUILDING_BLOCKS = "building_blocks"
+        MOLECULE_SMILES = "molecule_smiles"
+
 
     def __init__(self):
         # Placeholder attributes; they will be set by classmethods
@@ -23,7 +29,26 @@ class Data_Reader:
         self.n_chunks = None
         self.actual_chunk_sizes=None
 
+from enum import Enum
+import pandas as pd
 
+class Data_Reader:
+    """Class to hold data and related attributes"""
+
+    class Fields(Enum):
+        DATA = "data"
+        BUILDING_BLOCKS = "building_blocks"
+        MOLECULE_SMILES = "molecule_smiles"
+
+    def __init__(self):
+        self.data = None
+        self.building_blocks = None
+        self.molecule_smiles = None
+
+
+    # ------------------------------------------------------------------ #
+    #  Construction                                                        #
+    # ------------------------------------------------------------------ #
 
     @classmethod
     def from_csv(cls, filepath: str,
@@ -54,6 +79,21 @@ class Data_Reader:
         return self
 
 
+    @classmethod
+    def from_parquet(cls, filepath: str, **kwargs): #!TO BE DONE
+        """
+        Reads a Parquet file. Chunking is not supported. #pyarrow.dataset does support it maybe we should make that be the enginge for parquet.
+
+        Returns:
+            pd.DataFrame: The loaded DataFrame.
+        """
+        cls.df = pd.read_parquet(filepath, **kwargs)
+        return cls.df
+
+    # ------------------------------------------------------------------ #
+    #  Data access                                                         #
+    # ------------------------------------------------------------------ #
+
     @property
     def data(self):
         """Always returns a fresh iterable of DataFrames."""
@@ -61,6 +101,7 @@ class Data_Reader:
             return [pd.read_csv(self.source_file)]  # wrap in list
         else:
             return pd.read_csv(self.source_file, chunksize=self.chunk_size)
+
 
     def get_chunk(self, n:int):
         data=self.data
@@ -75,6 +116,46 @@ class Data_Reader:
             self.chunk = None 
             print(f"Data loaded does not have {n} chunks.")
             return None
+
+
+    # ------------------------------------------------------------------ #
+    #  Validation                                                          #
+    # ------------------------------------------------------------------ #
+
+
+    def validate_required_data(self, required_fields):
+        """
+        Validates that this Data_Reader instance has all required attributes
+        defined and not None (or empty).
+        """
+        missing = []
+
+        for field in required_fields:
+            # if Enum, get its value; otherwise assume string
+            field_name = field.value if hasattr(field, "value") else field
+            try:
+                value = getattr(self, field_name)
+            except AttributeError:
+                missing.append(f"{field_name} (not defined)")
+                continue
+
+            if value is None:
+                missing.append(field_name)
+            elif hasattr(value, "empty") and value.empty:
+                missing.append(f"{field_name} (empty)")
+            elif isinstance(value, (list, dict, set)) and len(value) == 0:
+                missing.append(f"{field_name} (empty)")
+
+        if missing:
+            raise ValueError(
+                f"Missing required data for {type(self).__name__}: {', '.join(missing)}"
+            )
+
+
+    # ------------------------------------------------------------------ #
+    #  Private helpers                                                     #
+    # ------------------------------------------------------------------ #
+
 
     def _compute_n_chunks(self): #!might be slow
         if self.chunk_size is None:
@@ -100,14 +181,5 @@ class Data_Reader:
 
 
 
-    @classmethod
-    def from_parquet(cls, filepath: str, **kwargs): #!TO BE DONE
-        """
-        Reads a Parquet file. Chunking is not supported. #pyarrow.dataset does support it maybe we should make that be the enginge for parquet.
 
-        Returns:
-            pd.DataFrame: The loaded DataFrame.
-        """
-        cls.df = pd.read_parquet(filepath, **kwargs)
-        return cls.df
-    
+
