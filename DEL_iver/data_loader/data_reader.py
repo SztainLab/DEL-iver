@@ -1,25 +1,24 @@
 import pandas as pd
 import warnings
 from enum import Enum
-import pandas as pd
 from pathlib import Path
 import pyarrow as pa
+import pyarrow.csv as pv
 import pyarrow.parquet as pq
+from tqdm import tqdm
 
 from DEL_iver.utils.cache import get_cache_path, is_cached, clear_cache
 
-class Data_Reader:
+
+
+class DataReader:
     """Class to hold data and related attributes"""
 
-    DEFAULT_CHUNK_SIZE=10000
+    DEFAULT_MEMORY_MB=256
 
-    class Fields(Enum):
-        DATA = "data"
-        BUILDING_BLOCKS = "building_blocks"
-        MOLECULE_SMILES = "molecule_smiles"
-
+    #!google if this is needed
     def __init__(self):
-        self.filepath=None
+        #self.filepath=None
         self.building_blocks = None
         self.molecule_smiles = None
 
@@ -27,98 +26,57 @@ class Data_Reader:
     #  Construction                                                        #
     # ------------------------------------------------------------------ #
 
+
+    #!give option to choose for it to go to to cache or not
     @classmethod
     def from_csv(cls, filepath: str,
                         building_blocks: list ,
-                        chunk_size: int = DEFAULT_CHUNK_SIZE,
+                        memory_per_chunk_mb: int = DEFAULT_MEMORY_MB ,
                         molecule_smiles: str = None ,
                         data_cols: list = None,
                         **kwargs):
         """
 
         """
+        #!source might not exist but could still be cached under that file name need to check for that
         source = Path(filepath)
         if not source.exists():
             raise FileNotFoundError(f"No file found at {filepath}")
 
-
-        if not isinstance(chunk_size, int) or chunk_size <= 0:
-            raise ValueError("chunk_size must be a positive non-zero integer.")
+        if not isinstance(memory_per_chunk_mb, int) or memory_per_chunk_mb <= 0:
+            raise ValueError("memory_per_chunk_mb must be a positive non-zero integer.")
 
         self = cls()
         self.building_blocks = building_blocks
-        self.chunk_size = chunk_size
         self.molecule_smiles=molecule_smiles
         self.data_cols = data_cols
         self.n_building_blocks = len(building_blocks)
 
-
-
-
         parquet_path = get_cache_path(source)
 
         if is_cached(source):
+            warnings.warn(
+                        f"Loading {parquet_path} from cache"
+                        f"To remove run clear_cache({parquet_path})",
+                        UserWarning)
             cached_chunk_size = pq.read_metadata(parquet_path).row_group(0).num_rows
-            if cached_chunk_size != chunk_size:
-                warnings.warn(
-                    f"Cached parquet was written with row_group_size={cached_chunk_size}. "
-                    f"Ignoring requested chunk_size={chunk_size}. "
-                    f"Call deliv.clear_cache('{source.name}') to reconvert with new chunk size.",
-                    UserWarning
-                )
             self.chunk_size = cached_chunk_size
         else:
             warnings.warn(
-                f"Converting {source.name} to parquet for efficient access. "
-                f"Cached at {parquet_path} — this will not repeat on future calls.",
-                UserWarning
-            )
-            parquet_path.parent.mkdir(parents=True, exist_ok=True)
-            tmp_path = parquet_path.with_suffix(".tmp.parquet")
-            writer = None
+                        f"Caching CSV to Parquet using ~{memory_per_chunk_mb}MB chunks. "
+                        f"This is a one-time process.",
+                        UserWarning)
+            self._convert_csv_to_parquet(source, parquet_path,memory_per_chunk_mb) 
 
-            try:
-                for chunk in pd.read_csv(source, chunksize=self.chunk_size):
-
-                    table = pa.Table.from_pandas(chunk)
-
-                    if writer is None:
-
-                        writer = pq.ParquetWriter(
-                            tmp_path,
-                            table.schema,
-                        )
-
-                    writer.write_table(
-                        table,
-                        row_group_size=self.chunk_size
-                        )
-
-            except Exception:
-                tmp_path.unlink(missing_ok=True)
-                raise
-
-            finally:
-                if writer:
-                    writer.close()
-                    tmp_path.rename(parquet_path)
-                    
-                    
 
         self.source_file = parquet_path
+
         return self
-
-
-
-
-
-
 
 
     @classmethod
     def from_parquet(cls, filepath: str, **kwargs): #!TO BE DONE
         """
-        Reads a Parquet file. Chunking is not supported. #pyarrow.dataset does support it maybe we should make that be the enginge for parquet.
 
         Returns:
             pd.DataFrame: The loaded DataFrame.
@@ -131,34 +89,19 @@ class Data_Reader:
 
     @property
     def data(self):
-        """Always returns a fresh iterable of DataFrames."""
-        return pd.read_csv(self.source_file, chunksize=self.chunk_size)
+        return pq.ParquetFile(self.source_file)
 
     @property
     def n_chunks(self) -> int:
-        if self.n_rows is not None:
-            self.__chunks = -(-self.n_rows // self.chunk_size)  # ceiling div
-        else:
-            warnings.warn(
-                "n_rows not specified. Counting rows via full file scan — "
-                "this may be slow for large files. Pass n_rows to from_csv() to avoid this.",
-                UserWarning
-            )
-            self.n_rows = self._count_rows()
-            self._n_chunks = -(-self.n_rows // self.chunk_size)
-        return self.n_chunks
+        return pq.ParquetFile(self.source_file).num_row_groups
 
-    def get_chunk(self, n: int) -> pd.DataFrame:
-        """Returns chunk n directly without iterating through previous chunks."""
-        if n < 0 or n >= self._n_chunks:
-            raise IndexError(f"Chunk index {n} out of range [0, {self.n_chunks - 1}]")
-        
-        skip = n * self.chunk_size + 1  # +1 to preserve header
-        return pd.read_csv(
-            self.source_file,
-            skiprows=range(1, skip),  # skip rows but keep header
-            nrows=self.chunk_size
-        )
+
+    def data_splits(self):
+        raise NotImplementedError
+        #!check for 
+
+    def get_chunk(self, n: int):
+        return pq.ParquetFile(self.source_file).read_row_group(n)
 
     # ------------------------------------------------------------------ #
     #  Validation                                                          #
@@ -199,29 +142,85 @@ class Data_Reader:
     # ------------------------------------------------------------------ #
 
 
-    def _compute_n_chunks(self): #!might be slow
-        if self.chunk_size is None:
-            return 1
-        else:
-            # count rows without loading full file
-            row_count = sum(1 for _ in open(self.source_file)) - 1  
-            return -(-row_count // self.chunk_size)   
-    
+
+    #!neeed to handle script getting cancelled gracefully delete partial file
+    def _convert_csv_to_parquet(self, csv_path: Path, parquet_path: Path,memory_per_chunk_mb) -> None:
+            parquet_path.parent.mkdir(parents=True, exist_ok=True)
+            tmp_path = parquet_path.with_suffix(".tmp.parquet")
+            
+        # Calculate exact bytes from MB
+            block_size_bytes = memory_per_chunk_mb * 1024 * 1024
+            read_options = pv.ReadOptions(block_size=block_size_bytes)
+
+            writer = None
+            try:
+                
+                with pv.open_csv(csv_path, read_options=read_options) as reader:
+                    for batch in tqdm(reader, desc=f"Converting {csv_path.name}",unit="Chunk"):
+                        table = pa.Table.from_batches([batch])
+                        if writer is None:
+                            writer = pq.ParquetWriter(tmp_path, table.schema)
+                        writer.write_table(table)
+                tmp_path.rename(parquet_path)
+            except Exception:
+                if tmp_path.exists(): tmp_path.unlink()
+                raise
+            finally:
+                if writer: writer.close()
+
+
+
+
+
 
     def _get_actual_chunk_sizes(self):
-        if self.chunk_size is None:
-            return [sum(1 for _ in open(self.source_file)) - 1]
-        
-        row_count = sum(1 for _ in open(self.source_file)) - 1
-        n_chunks = -(-row_count // self.chunk_size)
-        
-        sizes = [self.chunk_size] * (n_chunks - 1)
-        last_size = row_count - self.chunk_size * (n_chunks - 1)
-        sizes.append(last_size)
-        return sizes
+        raise NotImplementedError
 
 
 
 
 
 
+'''
+Here's your todo list:
+
+**`from_csv`**
+- add `n_rows` as optional parameter, store as `self.n_rows`
+- initialise `self.__n_chunks = None` before the cache block
+
+**`from_parquet`**
+- implement it — same signature shape as `from_csv` minus `chunk_size` warning logic
+- validate parquet file is readable via `pq.read_metadata()` on entry
+- set `self.chunk_size` from actual row group size in the file
+
+**`data` property**
+- switch from `pd.read_csv` to `pq.ParquetFile(self.source_file).iter_batches(batch_size=self.chunk_size)`
+- yields Arrow record batches — decide if you want `.to_pandas()` inside the property or leave that to the caller
+
+**`n_chunks` property**
+- fix recursion bug — `return self.__n_chunks` not `return self.n_chunks`
+- fix backing variable name inconsistency — `self.__chunks` vs `self.__n_chunks`
+- use `math.ceil` instead of ceiling division trick
+
+**`get_chunk`**
+- replace `pd.read_csv` + `skiprows` with `pq.ParquetFile(self.source_file).read_row_group(n).to_pandas()`
+- bounds check should use `self.n_chunks` not `self._n_chunks`
+
+**`__init__`**
+- add `self.__n_chunks = None`
+- add `self.n_rows = None`
+- add `self.source_file = None`
+- remove `self.filepath` — it's never used anywhere
+
+**Dead code to delete**
+- `_compute_n_chunks` — replaced by `n_chunks` property
+- `_get_actual_chunk_sizes` — replaced by parquet row group metadata
+
+**`_count_rows`**
+- implement it using binary newline counting with 64MB buffer
+- only needed as fallback when `n_rows` not provided by user
+
+**`validate_required_data`**
+- `Fields.DATA` enum member points to `"data"` but `data` is now a property not an attribute — decide if validation of `data` still makes sense or remove it from `Fields`
+
+'''
