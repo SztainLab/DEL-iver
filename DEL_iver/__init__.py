@@ -4,7 +4,8 @@
 # Import everything you want available at the top level when you run import DEL_iver
 from .data_loader.data_reader import DataReader
 from .data_loader.Split_TestTrainVal import split_data
-#from .molecules.Make_BBdictionaries import generate_BB_dictionaries
+from .molecules.Make_BBdictionaries import generate_bb_dictionaries
+from .analysis.compute import compute_pbind_and_enrichment
 
 
 
