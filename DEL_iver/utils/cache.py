@@ -15,7 +15,9 @@ class CacheNames(Enum):
     ROOT = Path(user_cache_dir("DEL_iver"))
     BB_DICTIONARIES = "bb_dictionaries"
     SPLITS = "splits"
-    COMPUTE= "compute"
+    COMPUTE= "analysis"
+    MODELS = "models"
+    
 
 
 #!TODO: if loading from cache do a check for building block list provided to be usable

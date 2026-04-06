@@ -42,6 +42,39 @@ def load_bb_test_dicts(bbs_dict_1_file, bbs_dict_2_file, bbs_dict_3_file):
         bbs_3 = pickle.load(file)
     return bbs_1, bbs_2, bbs_3
     
+
+
+def validate_required_data(obj, required_fields):
+    missing = []
+
+    for field in required_fields:
+        # if Enum, use its value; otherwise assume string
+        field_name = field.value if hasattr(field, "value") else field
+        try:
+            value = getattr(obj, field_name)
+        except AttributeError:
+            missing.append(f"{field_name} (not defined)")
+            continue
+
+        if value is None:
+            missing.append(field_name)
+        elif hasattr(value, "empty") and value.empty:
+            missing.append(f"{field_name} (empty)")
+        elif isinstance(value, (list, dict, set)) and len(value) == 0:
+            missing.append(f"{field_name} (empty)")
+
+    if missing:
+        raise ValueError(
+            f"Missing required data for {type(obj).__name__}: {', '.join(missing)}"
+        )
+
+
+
+
+
+
+
+
 def retrieve_mol_fp(smiles, fingerprint_type, fingerprint_length=1024):
     """Generate and return the molecule's fingerprint as a numpy array.
         Args:
