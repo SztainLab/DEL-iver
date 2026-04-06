@@ -35,48 +35,35 @@ the heart of the code is the data reader, it contains everything that is needed 
  'actual_chunk_sizes': [500, 500, 500, 499] #list of the size of each chunk gets computed by the class
 
 
-## Basic usage 
+## Analysis usage 
 ```
 
 import DEL_iver as deliv
 
-print("=="*20,"Testing with chunks from csv")
-ddr=deliv.Data_Reader.from_csv('DEL_iver/tests/data/example_messy_input.csv',
-                                                chunk_size=500,
-                                                building_blocks=["col_2", "col_3", "col_5"],
-                                                molecule_smiles="col_6",
-                                                misc_cols=["col_1"]
+ddr=deliv.DataReader.from_csv('/users/group/DEL-iver/DEL_iver/tests/data/large_example.csv',
+                                                memory_per_chunk_mb=300,
+                                                building_blocks=["buildingblock1_smiles", "buildingblock2_smiles", "buildingblock3_smiles"]
+
                                                 )
-print(type(ddr))
+
 print(vars(ddr))
-
-print("BUILDING BLOCK FALSE")
-full_molecule_smile_to_int, full_molecule_int_to_smile=deliv.generate_BB_dictionaries(ddr,bb_fingerprints=False)
-
-
-# --- Molecules ---
-print(f"Full molecule dict (SMILES -> int), total entries: {len(full_molecule_smile_to_int)}")
-print("Preview:", list(full_molecule_smile_to_int.items())[:2])
-
-print(f"Full molecule dict (int -> SMILES), total entries: {len(full_molecule_int_to_smile)}")
-print("Preview:", list(full_molecule_int_to_smile.items())[:2])
+print(ddr.data)
+print(type(ddr.data))
+print(ddr.get_chunk(10))
+print(type(ddr.get_chunk(10)))
+print(ddr.n_chunks)
+deliv.split_data(ddr)
 
 
-full_molecule_smile_to_int, full_molecule_int_to_smile,bb_smile_to_int, bb_int_to_smile=deliv.generate_BB_dictionaries(ddr,bb_fingerprints=True)
+#this will split the data, it returns a table with a single column wit 0,1,2 as identifying numbers that assigned it to a split, it also supports different splits, this also gets written to cache
 
+splits=deliv.split_data(ddr,seed=123)
 
+#table is per row the idenityfying number assigned to each smile, id_to_smile is a dictionary for loop up later
+table, id_to_smile=deliv.generate_bb_dictionaries(ddr) 
 
-print("BUILDING BLOCK TRUE")
-# --- Building blocks ---
-for colname, mapping in bb_smile_to_int.items():
-    print(f"\nBuilding block column '{colname}' (SMILES -> int), total entries: {len(mapping)}")
-    print("Preview:", list(mapping.items())[:2])
-
-for colname, mapping in bb_int_to_smile.items():
-    print(f"\nBuilding block column '{colname}' (int -> SMILES), total entries: {len(mapping)}")
-    print("Preview:", list(mapping.items())[:2])
-
-
+#here the split_group variable was used which returns a dictionary PER split, if not it returns for entire data set also gets cachced 
+bb_stats, disynthon_stats=deliv.compute_pbind_and_enrichment(ddr,method="epsilon",split_col="split_group")
 
 
 ```
