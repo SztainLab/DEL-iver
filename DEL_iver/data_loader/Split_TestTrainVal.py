@@ -17,7 +17,7 @@ import pandas as pd
 #import tqdm
 from pathlib import Path
 from DEL_iver.utils.utils import *
-from DEL_iver.utils.cache import get_cache_path, is_cached, clear_cache
+from DEL_iver.utils.cache import CacheManager , CacheNames
 from tqdm import tqdm
 
 
@@ -53,7 +53,6 @@ def split_data(ddr: "DEL.Data_Reader",output_dir:str = None,trainsplit:float = 0
     Splits a DataFrame or file into train/validation/test and writes parquet files.
     """
 
-
     # Sanity check for split sizes
     if not 0 < trainsplit < 1:
         raise ValueError("`trainsplit` must be between 0 and 1.")
@@ -62,61 +61,58 @@ def split_data(ddr: "DEL.Data_Reader",output_dir:str = None,trainsplit:float = 0
     if trainsplit + validationsplit >= 1:
         raise ValueError("Sum of `trainsplit` and `validationsplit` must be less than 1.")
 
-
-    # Determine output directory
-    if output_dir is None:
-        # Assuming get_cache_path logic
-        cache_src = Path(ddr.source_file).parent / "splits"
-    else:
-        cache_src = Path(output_dir)
-
-    # Define file paths
-
+# Determine output directory
     prefix = ddr.source_file.stem
-    paths = {
-        "train": cache_src / f"{prefix}.train.parquet",
-        "val": cache_src / f"{prefix}.validation.parquet",
-        "test": cache_src / f"{prefix}.test.parquet"
-    }
+    t_pct = int(trainsplit * 100)
+    v_pct = int(validationsplit * 100)
 
-    cache_src.mkdir(parents=True, exist_ok=True)
-
+    filename = f"{prefix}.splits_t{t_pct}_v{v_pct}_seed{seed}.parquet"
+    # --- Build single output path ---
+    output_path = ddr.cache.get_path(CacheNames.SPLITS, filename=filename)
+    
     pf = pq.ParquetFile(ddr.source_file)
-    schema = pf.schema.to_arrow_schema()
+    
+    # Create a schema with a single integer column named "splits"
+    schema = pa.schema([
+        pa.field("splits", pa.int8())
+    ])
+    
+    writer = pq.ParquetWriter(str(output_path), schema)
 
-    writers = {
-            "train": pq.ParquetWriter(str(paths["train"]), schema),
-            "val": pq.ParquetWriter(str(paths["val"]), schema),
-            "test": pq.ParquetWriter(str(paths["test"]), schema)
-        }
-
+    rng = np.random.default_rng(seed)
+    accumulated_tables = []
     try:
-        # 6. Process by Row Group (Faster than small chunks)
-        for i in tqdm(range(pf.num_row_groups), desc="Splitting Row Groups"):
-            table = pf.read_row_group(i)
-            num_rows = table.num_rows
+
+        for i in tqdm(range(pf.num_row_groups), desc="Generating Split Column"):
+
+            num_rows = pf.metadata.row_group(i).num_rows
             
             # Generate random assignments (0=train, 1=val, 2=test)
-            # Using a seed ensures reproducibility if needed
-            rng = np.random.default_rng(seed)
             choices = rng.choice(
                 [0, 1, 2],
                 size=num_rows,
                 p=[trainsplit, validationsplit, testsplit]
             )
-
-            # Filter and Write only if the split contains rows
-            for idx, key in enumerate(["train", "val", "test"]):
-                split_table = table.filter(pa.array(choices == idx))
-                if split_table.num_rows > 0:
-                    writers[key].write_table(split_table)
-
+            
+            # Create a single-column PyArrow table for this chunk
+            split_array = pa.array(choices, type=pa.int8())
+            split_table = pa.Table.from_arrays([split_array], schema=schema)
+            
+            # Write the table
+            writer.write_table(split_table)
+            accumulated_tables.append(split_table)
+            
     finally:
-        # Essential: Close all writers to finalize footers
-        for w in writers.values():
-            w.close()
+        # Essential: Close writer to finalize footers
+        writer.close()
+        
+    splits_table = pa.concat_tables(accumulated_tables)
 
-                
+    return splits_table
+
+
+
+
 
 
 def verify_data_split_feasibility(
