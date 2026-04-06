@@ -1,5 +1,4 @@
 #!/bin/python
-from curses.ascii import DEL
 import os 
 import numpy as np
 #import torch
@@ -16,8 +15,10 @@ import pandas as pd
 #from joblib import Parallel, delayed
 #import multiprocessing
 #import tqdm
-
+from pathlib import Path
 from DEL_iver.utils.utils import *
+from DEL_iver.utils.cache import CacheManager , CacheNames
+from tqdm import tqdm
 
 
 
@@ -46,14 +47,11 @@ Options:
         print(help_text)
         sys.exit(0)
 
-#!currently chunk size is not used in this version of the function but i have not removed it because i dont want to make too many chnanges at once
-def split_data(ddr: "DEL.Data_Reader", prefix:str = None,output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10 ,chunk_dize:int = 500000 ): #TODO: BUILD IN A CHECK TO SEE IF SPLITTING DATA RESULTS IN NOTHING, FIGURE OUT WHY IT CRASHED WITH CHUNK SIZE 5, I ASSUME IT COULD NOT DO THE 3 WAY SPLIT WITH HOW MUCH DATA WAS PER ROW
+
+def split_data(ddr: "DEL.Data_Reader",output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10 ,testsplit = 0.10 ,seed:int = 42):
     """
     Splits a DataFrame or file into train/validation/test and writes parquet files.
     """
-
-    data=ddr.data
-    data_type=ddr.data_type
 
     # Sanity check for split sizes
     if not 0 < trainsplit < 1:
@@ -63,47 +61,59 @@ def split_data(ddr: "DEL.Data_Reader", prefix:str = None,output_dir:str = None,t
     if trainsplit + validationsplit >= 1:
         raise ValueError("Sum of `trainsplit` and `validationsplit` must be less than 1.")
 
-    #Handles getting an entire data frame 
-    if data_type == DataTypeEnum.DATAFRAME:
-        # split the dataframe into train, validation, and test sets
-        train_df, temp_df = train_test_split(data, train_size=trainsplit, random_state=42)
-        val_df, test_df = train_test_split(temp_df, train_size=validationsplit, random_state=42) 
-        
-        # write the train, validation, test splits to parquet files
-        if output_dir: 
-            os.makedirs(output_dir,exist_ok=True)
-            if prefix is None:
-                prefix = "data"
-            train_df.to_parquet(f'{output_dir}/{prefix}_trainset.parquet')
-            val_df.to_parquet(f'{output_dir}/{prefix}_validationset.parquet')
-            test_df.to_parquet(f'{output_dir}/{prefix}_testset.parquet')
+# Determine output directory
+    prefix = ddr.source_file.stem
+    t_pct = int(trainsplit * 100)
+    v_pct = int(validationsplit * 100)
 
-        return train_df, val_df, test_df
+    filename = f"{prefix}.splits_t{t_pct}_v{v_pct}_seed{seed}.parquet"
+    # --- Build single output path ---
+    output_path = ddr.cache.get_path(CacheNames.SPLITS, filename=filename)
+    
+    pf = pq.ParquetFile(ddr.source_file)
+    
+    # Create a schema with a single integer column named "splits"
+    schema = pa.schema([
+        pa.field("splits", pa.int8())
+    ])
+    
+    writer = pq.ParquetWriter(str(output_path), schema)
+
+    rng = np.random.default_rng(seed)
+    accumulated_tables = []
+    try:
+
+        for i in tqdm(range(pf.num_row_groups), desc="Generating Split Column"):
+
+            num_rows = pf.metadata.row_group(i).num_rows
             
+            # Generate random assignments (0=train, 1=val, 2=test)
+            choices = rng.choice(
+                [0, 1, 2],
+                size=num_rows,
+                p=[trainsplit, validationsplit, testsplit]
+            )
+            
+            # Create a single-column PyArrow table for this chunk
+            split_array = pa.array(choices, type=pa.int8())
+            split_table = pa.Table.from_arrays([split_array], schema=schema)
+            
+            # Write the table
+            writer.write_table(split_table)
+            accumulated_tables.append(split_table)
+            
+    finally:
+        # Essential: Close writer to finalize footers
+        writer.close()
         
-    #Handles needing to iterate over chunks
-    elif data_type == DataTypeEnum.ITERATOR:
-        train_list = []
-        val_list = []
-        test_list = []
-        for chunk in data:
-            train_df, temp_df = train_test_split(chunk, train_size=trainsplit, random_state=42)
-            val_df, test_df = train_test_split(temp_df,train_size=validationsplit,random_state=42,)
-            train_list.append(train_df)
-            val_list.append(val_df)
-            test_list.append(test_df)
+    splits_table = pa.concat_tables(accumulated_tables)
+
+    return splits_table
 
 
-        train_df = pd.concat(train_list, ignore_index=True)
-        val_df = pd.concat(val_list, ignore_index=True)
-        test_df = pd.concat(test_list, ignore_index=True)
 
-        if output_dir:
-                    train_df.to_parquet(f"{output_dir}/{prefix}_train.parquet")
-                    val_df.to_parquet(f"{output_dir}/{prefix}_val.parquet")
-                    test_df.to_parquet(f"{output_dir}/{prefix}_test.parquet")
-                    
-        return train_df, val_df, test_df
+
+
 
 def verify_data_split_feasibility(
     ddr, train_frac:float, val_frac:None, test_frac=None, min_rows_per_split=1
@@ -128,13 +138,10 @@ def verify_data_split_feasibility(
     if test_frac <= 0:
         raise ValueError("`test_frac` must be positive after accounting for train and val fractions.")
 
-    # Check actual chunks
-    if not hasattr(ddr, "actual_chunk_sizes") or not ddr.actual_chunk_sizes:
-        raise ValueError("`actual_chunk_sizes` not set. Make sure chunks are computed.")
 
     bad_chunks = []
 
-    for i, n_rows in enumerate(ddr.actual_chunk_sizes):
+    for i, n_rows in enumerate(ddr.chunk_size):
         n_train = int(n_rows * train_frac)
         n_val = int(n_rows * val_frac)
         n_test = n_rows - n_train - n_val  # ensures total rows accounted for
@@ -151,33 +158,18 @@ def verify_data_split_feasibility(
     return True  # All checks passed
 
 #!TODO: AS IT IS NOW, THE ENTIRE DATA GETS LOADED INTO MEMORY , NEED TO FIX BUT IT WORKS WITH SMALL TEST DAT SET
-def split_data(ddr: "DEL.Data_Reader", prefix:str = None,output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10,testsplit:float=0.10 ,chunk_dize:int = 500000 ): #TODO: BUILD IN A CHECK TO SEE IF SPLITTING DATA RESULTS IN NOTHING, FIGURE OUT WHY IT CRASHED WITH CHUNK SIZE 5, I ASSUME IT COULD NOT DO THE 3 WAY SPLIT WITH HOW MUCH DATA WAS PER ROW
+def split_data1(ddr: "DEL.Data_Reader", prefix:str = None,output_dir:str = None,trainsplit:float = 0.80 ,validationsplit:float = 0.10,testsplit:float=0.10): #TODO: BUILD IN A CHECK TO SEE IF SPLITTING DATA RESULTS IN NOTHING, FIGURE OUT WHY IT CRASHED WITH CHUNK SIZE 5, I ASSUME IT COULD NOT DO THE 3 WAY SPLIT WITH HOW MUCH DATA WAS PER ROW
     """
-    Splits a DataFrame or file into train/validation/test and writes parquet files.
+
     """
 
 
     status=verify_data_split_feasibility(ddr,train_frac=trainsplit,val_frac=validationsplit,test_frac=testsplit)
 
-    # Sanity check for split sizes
-
-    
     data=ddr.data
 
-    train_list = []
-    val_list = []
-    test_list = []
-    for chunk in data:
-        train_df, temp_df = train_test_split(chunk, train_size=trainsplit, random_state=42)
-        val_df, test_df = train_test_split(temp_df,train_size=validationsplit,random_state=42,)
-        train_list.append(train_df)
-        val_list.append(val_df)
-        test_list.append(test_df)
 
 
-    train_df = pd.concat(train_list, ignore_index=True)
-    val_df = pd.concat(val_list, ignore_index=True)
-    test_df = pd.concat(test_list, ignore_index=True)
 
     if output_dir:
                 train_df.to_parquet(f"{output_dir}/{prefix}_train.parquet")

@@ -6,3 +6,15 @@ DEL_iver/__pycache__/
 DEL_iver/data_loader/__pycache__/
 DEL_iver/utils/__pycache__/
 DEL_iver/molecules/__pycache__/
+DEL_iver/tests/data/example.csv
+DEL_iver/tests/data/huge_example.csv
+DEL_iver/tests/data/make_huge_example.sh
+DEL_iver/tests/data/nohup.out
+DEL_iver/tests/data/tmp
+DEL_iver/data_loader/temp_data_reader.py
+DEL_iver/tests/data/clean_huge-example.py
+DEL_iver/tests/data/large_example.csv
+DEL_iver/tests/data/make_large_example.sh
+DEL_iver/tests/data/make_medium_example.py
+DEL_iver/tests/data/make_medium_example.sh
+DEL_iver/tests/data/medium_example.csv

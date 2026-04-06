@@ -11,12 +11,15 @@ import sys
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pandas as pd
+import pyarrow.compute as pc
 from joblib import Parallel, delayed
 import multiprocessing
 import tqdm
 from tqdm import tqdm
-
+from itertools import combinations
+import itertools
 from DEL_iver.utils.utils import *
+from DEL_iver.utils.cache import CacheManager, CacheNames
 
 class HelpAction(argparse.Action):
     def __init__(self, option_strings, dest, **kwargs):
@@ -44,55 +47,104 @@ Options:
         print(help_text)
         sys.exit(0)
 
-#todo include disinthons
-def generate_BB_dictionaries(ddr, bb_fingerprints: bool):
+
+
+def _make_bb_smiles_to_id_dict(source_file,building_blocks):
+    pf = pq.ParquetFile(source_file)
+    pf= pf.read(columns=building_blocks)
+
+    all_smiles = set()
+    for block in tqdm(building_blocks,desc="Finding unique building blocks"):
+        all_smiles.update(pc.unique(pf[block]).to_pylist())
+    smile_to_id = {smile: idx for idx, smile in enumerate(all_smiles)}
+    return smile_to_id 
     
-    # full molecule maps
-    full_molecule_smile_to_int = {}
-    full_molecule_int_to_smile = {}
-    jfull = 0
 
-    # bb maps: one forward + one reverse dict per bb column
-    bb_smile_to_int = {}
-    bb_int_to_smile = {}
-    jbbs = {}
+def _assign_id_per_row(source_file,building_blocks,smile_to_id):
+    pf = pq.ParquetFile(source_file)
+    pf= pf.read(columns=building_blocks)
+    col_arrays = {}
+    for block in tqdm(building_blocks, desc="Assigning to table"):
+        encoded = pc.dictionary_encode(pf[block].cast(pa.large_string()).combine_chunks())
+        block_dict = encoded.dictionary.to_pylist()
+        # Map block-local dictionary to global IDs (small, only unique values)
+        local_to_global = pa.array([smile_to_id[s] for s in block_dict], type=pa.int32())
+        # Vectorized index remapping — no Python loop over rows
+        col_arrays[f"{block}_id"] = pc.take(local_to_global, encoded.indices)
 
-    bb_list = ddr.building_blocks      # e.g. ['col_2', 'col_3', 'col_5']
-    reader = ddr.data
-    molecule_smiles = ddr.molecule_smiles  # e.g. 'col_6'
+    table = pa.table(col_arrays)
 
-    if bb_fingerprints:
-        for colname in bb_list:
-            bb_smile_to_int[colname] = {}
-            bb_int_to_smile[colname] = {}
-            jbbs[colname] = 0
-
-    for i, chunk in tqdm(enumerate(reader)):
-
-        # --- full molecule ---
-        for smile in chunk[molecule_smiles].unique():
-            if smile not in full_molecule_smile_to_int:
-                full_molecule_smile_to_int[smile] = jfull
-                full_molecule_int_to_smile[jfull] = smile
-                jfull += 1
-
-        # --- building blocks ---
-        if bb_fingerprints:
-            for colname in bb_list:
-                for smile in chunk[colname].unique():
-                    if smile not in bb_smile_to_int[colname]:
-                        idx = jbbs[colname]
-                        bb_smile_to_int[colname][smile] = idx
-                        bb_int_to_smile[colname][idx] = smile
-                        jbbs[colname] += 1
+    return table
 
 
-    #TODO: maybe make it return a data frame or something simple
-    if bb_fingerprints:
-        return (full_molecule_smile_to_int, full_molecule_int_to_smile,
-                bb_smile_to_int, bb_int_to_smile)
-    else:
-        return full_molecule_smile_to_int, full_molecule_int_to_smile
+
+#TODO: USE GROUPBY LOGIC 
+def _assign_disynthon_ids(table, building_blocks):
+    bb_id_cols = [f"{bb}_id" for bb in building_blocks]
+    col_arrays = {}
+    combos = list(combinations(range(len(building_blocks)), 2))
+
+    for combo in tqdm(combos, desc="Assigning disynthon ids"):
+        col_names = [bb_id_cols[i] for i in combo]
+        combo_label = "_".join(str(i + 1) for i in combo)
+
+        # Combine columns into a single string key e.g. "12_345"
+        key = pc.binary_join_element_wise(
+            *[pc.cast(table[col].combine_chunks(), pa.string()) for col in col_names],
+            "_"
+        )
+        encoded = pc.dictionary_encode(key)
+        col_arrays[f"disynthon_{combo_label}_id"] = encoded.indices.cast(pa.int32())
+
+    return pa.table({**{c: table[c] for c in table.schema.names}, **col_arrays})
+
+#todo include disinthons
+def generate_bb_dictionaries(ddr):
+
+    source_file=ddr.source_file
+    building_blocks=ddr.building_blocks
+
+    output_path = ddr.cache.get_path(
+        CacheNames.BB_DICTIONARIES,
+        filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
+    )
+    
+
+    #TODO: check if building_blocks list is in the column od source_file if not raise error, this should be handle by cache_manager when instantiating the data reader
+
+    #TODO: if output already exists for this cache, then skip this step
+
+    source_file=ddr.source_file
+    building_blocks=ddr.building_blocks
+
+
+    smile_to_id=_make_bb_smiles_to_id_dict(source_file,building_blocks)
+    id_to_smile = {idx: smile for smile, idx in smile_to_id.items()}
+
+
+    table=_assign_id_per_row(source_file,building_blocks,smile_to_id)
+
+    table=_assign_disynthon_ids(table,building_blocks)
+
+    pq.write_table(table, output_path) #TODO: writting should be handled by the cache manager
+
+    print(table)
+
+    return table, id_to_smile
+
+## now just compute pbind and enrichment
+
+
+
+
+
+
+
+
+
+    
+
+
 
 
 
