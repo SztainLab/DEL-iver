@@ -6,7 +6,7 @@ from DEL_iver.utils.cache import CacheManager, CacheNames
 from tqdm import tqdm
 
 
-def _load_tables(ddr, building_blocks):
+def _load_tables(ddr, building_blocks,split_col=None):
     bb_dict_path = ddr.cache.get_path(
         CacheNames.BB_DICTIONARIES,
         filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
@@ -14,8 +14,13 @@ def _load_tables(ddr, building_blocks):
     if not ddr.cache.is_cached(bb_dict_path):
         raise RuntimeError("BB dictionaries not found. Run generate_bb_dictionaries(ddr) first.")
 
+    columns = building_blocks + [ddr.label]
+
+    if split_col is not None:
+        columns.append(split_col)
+
     bb_table = pq.read_table(bb_dict_path)
-    source_table = pq.read_table(ddr.source_file, columns=building_blocks + [ddr.label])
+    source_table = pq.read_table(ddr.source_file, columns=columns)
 
     for col in bb_table.schema.names:
         source_table = source_table.append_column(col, bb_table[col])
@@ -29,7 +34,10 @@ def _get_global_totals(source_table, label_col):
     return total_hits, total_nonhits
 
 
-def _count_hits_and_total(table, group_col, label_col):
+def _count_hits_and_total(table, group_col, label_col,extra_col=None):
+    if extra_col:
+        group_col=[group_col+extra_col]
+        
     hits = (
         table.filter(pc.equal(table[label_col], 1))
         .group_by(group_col)
@@ -147,6 +155,20 @@ def _attach_disynthon_smiles(stats, source_table, dis_col, bb_smi_cols):
     lookup = pa.table({"id": lookup[dis_col], "smiles": combined_smiles})
     return stats.join(lookup, "id")
 
+def _count_hits_and_total_disynthon(table, dis_col, bb_id_cols, label_col):
+    group_cols = [dis_col] + bb_id_cols
+    hits = (
+        table.filter(pc.equal(table[label_col], 1))
+        .group_by(group_cols)
+        .aggregate([(label_col, "count")])
+        .rename_columns(group_cols + ["nhits"])
+    )
+    total = (
+        table.group_by(group_cols)
+        .aggregate([(label_col, "count")])
+        .rename_columns(group_cols + ["ntotal"])
+    )
+    return total.join(hits, group_cols, join_type="left outer")
 
 def _compute_bb_enrichment(source_table, bb_id_cols, label_col, total_hits, total_nonhits, method, min_occurrences):
     counts = _aggregate_bb_counts_across_positions(source_table, bb_id_cols, label_col) #!ALL GOOD UP TO HERE IS CORRECT
@@ -155,12 +177,12 @@ def _compute_bb_enrichment(source_table, bb_id_cols, label_col, total_hits, tota
     return stats.append_column("type", pa.array(["building_block"] * len(stats))) #!ALL GOOD UP TO HERE IS CORRECT
 
 
-def _compute_disynthon_enrichment(source_table, dis_col, label_col, total_hits, total_nonhits, method, min_occurrences):
-
+def _compute_disynthon_enrichment(source_table, dis_col,relevant_bb_id_cols, label_col, total_hits, total_nonhits, method, min_occurrences):
 
     renamed = source_table.rename_columns({dis_col: "id"} if dis_col != "id" else {})
+    
 
-    counts = _count_hits_and_total(renamed, "id", label_col)
+    counts = _count_hits_and_total_disynthon(renamed, "id", relevant_bb_id_cols,label_col)
 
     stats = _apply_enrichment(counts, total_hits, total_nonhits, method, min_occurrences)
     #stats = _attach_disynthon_smiles(stats, source_table, dis_col, bb_smi_cols)
@@ -176,40 +198,97 @@ def _write_output(ddr, table):
     print(f"Written to {output_path}")
 
 
-def compute_pbind_and_enrichment(ddr, method='laplace', min_occurrences=0, include_bb1=True):
-    building_blocks = ddr.building_blocks if include_bb1 else ddr.building_blocks[1:] #TODO:GIVE OPTION TO EXLCUDE WHICHEVER YOUD LIKE
+#def compute_pbind_and_enrichment(ddr, method='laplace', min_occurrences=0, include_bb1=True):
+#    building_blocks = ddr.building_blocks if include_bb1 else ddr.building_blocks[1:] #TODO:GIVE OPTION TO EXLCUDE WHICHEVER YOUD LIKE
 
-    source_table, bb_table = _load_tables(ddr, building_blocks)
-    disynthon_cols = [c for c in bb_table.schema.names if c.startswith("disynthon_")] #!ALL GOOD UP TO HERE IS CORRECT dont like strings but ce la vi
+#    source_table, bb_table = _load_tables(ddr, building_blocks)
+#    disynthon_cols = [c for c in bb_table.schema.names if c.startswith("disynthon_")] #!ALL GOOD UP TO HERE IS CORRECT dont like strings but ce la vi
+#    bb_id_cols = [f"{bb}_id" for bb in building_blocks]
+
+
+#    total_hits, total_nonhits = _get_global_totals(source_table, ddr.label) #!ALL GOOD UP TO HERE IS CORRECT
+
+#    bb_stats = _compute_bb_enrichment( #!ALL GOOD UP TO HERE IS CORRECT
+#        source_table, 
+#        bb_id_cols, 
+#        ddr.label, 
+#        total_hits, 
+#        total_nonhits, 
+#        method, 
+#        min_occurrences
+#    )
+
+#    disynthon_stats = []
+#    for dis_col in tqdm(disynthon_cols, desc="Computing disynthon pbind"):
+#        combo_indices = [int(i) - 1 for i in dis_col.replace("disynthon_", "").replace("_id", "").split("_")]
+#        relevant_bb_id_cols = [bb_id_cols[i] for i in combo_indices]
+#        result = _compute_disynthon_enrichment(
+#            source_table,
+#            dis_col,
+#            relevant_bb_id_cols,
+#            ddr.label,
+#            total_hits,
+#            total_nonhits,
+#            method,
+#            min_occurrences
+#        )
+#        disynthon_stats.append(result)
+
+    #final_table = pa.concat_tables([bb_stats] + disynthon_stats, promote_options="default")
+
+
+
+
+
+    #TODO: MAKE IT WRITGHT OUT WITH CACHE MANAGER
+#    #_write_output(ddr, final_table)
+#    print("it worked")
+#    return bb_stats, disynthon_stats
+
+
+
+def compute_pbind_and_enrichment(ddr, method='laplace', min_occurrences=0, include_bb1=True, split_col=None):
+    building_blocks = ddr.building_blocks if include_bb1 else ddr.building_blocks[1:]
+
+    source_table, bb_table = _load_tables(ddr, building_blocks,split_col=split_col)
+    disynthon_cols = [c for c in bb_table.schema.names if c.startswith("disynthon_")]
     bb_id_cols = [f"{bb}_id" for bb in building_blocks]
+    total_hits, total_nonhits = _get_global_totals(source_table, ddr.label)
 
+    if split_col is None:
+        splits = {None: source_table}
+    else:
+        # Get unique values in split column
+        unique_vals = pc.unique(source_table[split_col]).to_pylist()
+        splits = {
+            val: source_table.filter(pc.equal(source_table[split_col], val))
+            for val in unique_vals
+        }
 
-    total_hits, total_nonhits = _get_global_totals(source_table, ddr.label) #!ALL GOOD UP TO HERE IS CORRECT
+    bb_results = {}
+    disynthon_results = {}
 
-    bb_stats = _compute_bb_enrichment( #!ALL GOOD UP TO HERE IS CORRECT
-        source_table, 
-        bb_id_cols, 
-        ddr.label, 
-        total_hits, 
-        total_nonhits, 
-        method, 
-        min_occurrences
-    )
+    for split_val, split_table in splits.items():
+        split_total_hits, split_total_nonhits = _get_global_totals(split_table, ddr.label)
 
-    disynthon_stats = []
-    for dis_col in tqdm(disynthon_cols, desc="Computing disynthon pbind"):
-        result = _compute_disynthon_enrichment(
-            source_table,
-            dis_col,
-            ddr.label,
-            total_hits,
-            total_nonhits,
-            method,
-            min_occurrences
+        bb_stats = _compute_bb_enrichment(
+            split_table, bb_id_cols, ddr.label,
+            split_total_hits, split_total_nonhits, method, min_occurrences
         )
-        disynthon_stats.append(result)
+        bb_results[split_val] = bb_stats
 
-    final_table = pa.concat_tables([bb_stats] + disynthon_stats, promote_options="default")
-    _write_output(ddr, final_table)
-    print("it worked")
-    return final_table
+        dis_stats = {}
+        for dis_col in tqdm(disynthon_cols, desc=f"Computing disynthon pbind [{split_val}]"):
+            combo_indices = [int(i) - 1 for i in dis_col.replace("disynthon_", "").replace("_id", "").split("_")]
+            relevant_bb_id_cols = [bb_id_cols[i] for i in combo_indices]
+            dis_stats[dis_col] = _compute_disynthon_enrichment(
+                split_table, dis_col, relevant_bb_id_cols, ddr.label,
+                split_total_hits, split_total_nonhits, method, min_occurrences
+            )
+        disynthon_results[split_val] = dis_stats
+
+    # Flatten if no split
+    if split_col is None:
+        return bb_results[None], disynthon_results[None]
+
+    return bb_results, disynthon_results
