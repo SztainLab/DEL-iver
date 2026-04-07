@@ -98,8 +98,9 @@ def _assign_disynthon_ids(table, building_blocks):
 
     return pa.table({**{c: table[c] for c in table.schema.names}, **col_arrays})
 
-#todo include disinthons
+
 def generate_bb_dictionaries(ddr):
+
 
     source_file=ddr.source_file
     building_blocks=ddr.building_blocks
@@ -108,7 +109,7 @@ def generate_bb_dictionaries(ddr):
         CacheNames.BB_DICTIONARIES,
         filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
     )
-    
+
 
     #TODO: check if building_blocks list is in the column od source_file if not raise error, this should be handle by cache_manager when instantiating the data reader
 
@@ -122,13 +123,25 @@ def generate_bb_dictionaries(ddr):
     id_to_smile = {idx: smile for smile, idx in smile_to_id.items()}
 
 
+    id_to_smile_table = pa.table({
+        "id": list(id_to_smile.keys()),
+        "smiles": list(id_to_smile.values())
+    })
+
+    pq.write_table(
+        id_to_smile_table,
+        output_path.with_name(output_path.stem + "_id_to_smiles.parquet")
+    )
+
     table=_assign_id_per_row(source_file,building_blocks,smile_to_id)
 
     table=_assign_disynthon_ids(table,building_blocks)
 
     pq.write_table(table, output_path) #TODO: writting should be handled by the cache manager
 
-    print(table)
+    #print(table)
+
+
 
     return table, id_to_smile
 
