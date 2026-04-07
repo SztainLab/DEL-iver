@@ -69,6 +69,7 @@ class CacheManager:
             UserWarning)
         return True
 
+#TODO: Before conversion run a quick schema check across all chunks
     def convert_csv_to_parquet(self, memory_per_chunk_mb: int) -> Path:
         parquet_path = self.get_parquet_path()
         tmp_path = parquet_path.with_suffix(".tmp.parquet")

@@ -56,9 +56,39 @@ def _make_bb_smiles_to_id_dict(source_file,building_blocks):
     all_smiles = set()
     for block in tqdm(building_blocks,desc="Finding unique building blocks"):
         all_smiles.update(pc.unique(pf[block]).to_pylist())
-    smile_to_id = {smile: idx for idx, smile in enumerate(all_smiles)}
-    return smile_to_id 
+        
     
+    sorted_smiles = sorted(list(all_smiles))
+    smile_to_id = {smile: idx for idx, smile in enumerate(sorted_smiles)}
+    
+    return smile_to_id
+    
+def _make_bb_smiles_to_id_dict(source_file, building_blocks):
+    pf = pq.ParquetFile(source_file)
+    # We read all columns to see where each SMILES lives
+    table = pf.read(columns=building_blocks)
+    
+    # 1. Track which SMILES belong to which BB 'home'
+    # We use a dict to ensure a SMILES is only added once
+    ordered_unique_smiles = []
+    seen = set()
+
+    for block in building_blocks:
+        # Get unique SMILES for this specific column
+        column_smiles = pc.unique(table[block]).to_pylist()
+        
+        # Add them to our list ONLY if we haven't seen them in a previous BB
+        for s in column_smiles:
+            if s not in seen:
+                ordered_unique_smiles.append(s)
+                seen.add(s)
+
+    # 2. Now assign IDs based on this specific order
+    # Molecules found in BB1 get low numbers (0, 1, 2...)
+    # Molecules found ONLY in BB2 start after BB1's unique list ends
+    smile_to_id = {smile: idx for idx, smile in enumerate(ordered_unique_smiles)}
+    
+    return smile_to_id
 
 def _assign_id_per_row(source_file,building_blocks,smile_to_id):
     pf = pq.ParquetFile(source_file)
@@ -77,26 +107,33 @@ def _assign_id_per_row(source_file,building_blocks,smile_to_id):
     return table
 
 
-
-#TODO: USE GROUPBY LOGIC 
-def _assign_disynthon_ids(table, building_blocks):
-    bb_id_cols = [f"{bb}_id" for bb in building_blocks]
+def _assign_disynthon_ids(table, ddr):
+    bb_id_cols = [f"{bb}_id" for bb in ddr.building_blocks]
     col_arrays = {}
-    combos = list(combinations(range(len(building_blocks)), 2))
 
-    for combo in tqdm(combos, desc="Assigning disynthon ids"):
-        col_names = [bb_id_cols[i] for i in combo]
-        combo_label = "_".join(str(i + 1) for i in combo)
+    for dis_col in tqdm(ddr.disynthons, desc="Assigning disynthon ids"):
+        combo_indices = [int(i) - 1 for i in dis_col.replace("disynthon_", "").replace("_id", "").split("_")]
+        col_names = [bb_id_cols[i] for i in combo_indices]
 
-        # Combine columns into a single string key e.g. "12_345"
         key = pc.binary_join_element_wise(
             *[pc.cast(table[col].combine_chunks(), pa.string()) for col in col_names],
             "_"
         )
-        encoded = pc.dictionary_encode(key)
-        col_arrays[f"disynthon_{combo_label}_id"] = encoded.indices.cast(pa.int32())
+
+        # Build a deterministic mapping: sort unique keys, assign IDs by sorted rank
+        unique_keys = pc.unique(key).to_pylist()
+        unique_keys_sorted = sorted(unique_keys)  # sort gives stable, run-independent order
+        key_to_id = {k: i for i, k in enumerate(unique_keys_sorted)}
+
+        # Map each row's key to its deterministic integer ID
+        key_list = key.to_pylist()
+        ids = pa.array([key_to_id[k] for k in key_list], type=pa.int32())
+
+        col_arrays[dis_col] = ids
 
     return pa.table({**{c: table[c] for c in table.schema.names}, **col_arrays})
+
+
 
 
 def generate_bb_dictionaries(ddr):
@@ -135,9 +172,17 @@ def generate_bb_dictionaries(ddr):
 
     table=_assign_id_per_row(source_file,building_blocks,smile_to_id)
 
-    table=_assign_disynthon_ids(table,building_blocks)
+    table=_assign_disynthon_ids(table,ddr)
 
-    pq.write_table(table, output_path) #TODO: writting should be handled by the cache manager
+    bb1_ids = set(table["buildingblock1_smiles_id"].to_pylist())
+    bb2_ids = set(table["buildingblock2_smiles_id"].to_pylist())
+    bb3_ids = set(table["buildingblock3_smiles_id"].to_pylist())
+
+    print("BB1 ∩ BB2:", len(bb1_ids & bb2_ids))
+    print("BB1 ∩ BB3:", len(bb1_ids & bb3_ids))
+    print("BB2 ∩ BB3:", len(bb2_ids & bb3_ids))
+
+    pq.write_table(table, output_path) 
 
     #print(table)
 
