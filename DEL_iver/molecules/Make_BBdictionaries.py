@@ -49,20 +49,20 @@ Options:
 
 
 
-def _make_bb_smiles_to_id_dict(source_file,building_blocks):
-    pf = pq.ParquetFile(source_file)
-    pf= pf.read(columns=building_blocks)
+#def _make_bb_smiles_to_id_dict(source_file,building_blocks): #!need to remove i think
+#    pf = pq.ParquetFile(source_file)
+#    pf= pf.read(columns=building_blocks)
 
-    all_smiles = set()
-    for block in tqdm(building_blocks,desc="Finding unique building blocks"):
-        all_smiles.update(pc.unique(pf[block]).to_pylist())
-        
-    
-    sorted_smiles = sorted(list(all_smiles))
-    smile_to_id = {smile: idx for idx, smile in enumerate(sorted_smiles)}
-    
-    return smile_to_id
-    
+#    all_smiles = set()
+#    for block in tqdm(building_blocks,desc="Finding unique building blocks"):
+#        all_smiles.update(pc.unique(pf[block]).to_pylist())
+#        
+#    
+#    sorted_smiles = sorted(list(all_smiles))
+#    smile_to_id = {smile: idx for idx, smile in enumerate(sorted_smiles)}
+#    
+#    return smile_to_id
+
 def _make_bb_smiles_to_id_dict(source_file, building_blocks):
     pf = pq.ParquetFile(source_file)
     # We read all columns to see where each SMILES lives
@@ -73,7 +73,7 @@ def _make_bb_smiles_to_id_dict(source_file, building_blocks):
     ordered_unique_smiles = []
     seen = set()
 
-    for block in building_blocks:
+    for block in tqdm(building_blocks,desc="Finding unique building blocks"):
         # Get unique SMILES for this specific column
         column_smiles = pc.unique(table[block]).to_pylist()
         
@@ -94,45 +94,49 @@ def _assign_id_per_row(source_file,building_blocks,smile_to_id):
     pf = pq.ParquetFile(source_file)
     pf= pf.read(columns=building_blocks)
     col_arrays = {}
-    for block in tqdm(building_blocks, desc="Assigning to table"):
+    for block in tqdm(building_blocks, desc="Matching ID to Row"):
         encoded = pc.dictionary_encode(pf[block].cast(pa.large_string()).combine_chunks())
         block_dict = encoded.dictionary.to_pylist()
         # Map block-local dictionary to global IDs (small, only unique values)
         local_to_global = pa.array([smile_to_id[s] for s in block_dict], type=pa.int32())
         # Vectorized index remapping — no Python loop over rows
         col_arrays[f"{block}_id"] = pc.take(local_to_global, encoded.indices)
-
     table = pa.table(col_arrays)
 
     return table
 
-
-def _assign_disynthon_ids(table, ddr):
-    bb_id_cols = [f"{bb}_id" for bb in ddr.building_blocks]
+def _assign_disynthon_ids(table, building_blocks):
+    bb_id_cols = [f"{bb}_id" for bb in building_blocks]
+    combos = list(combinations(range(len(building_blocks)), 2))
     col_arrays = {}
 
-    for dis_col in tqdm(ddr.disynthons, desc="Assigning disynthon ids"):
-        combo_indices = [int(i) - 1 for i in dis_col.replace("disynthon_", "").replace("_id", "").split("_")]
-        col_names = [bb_id_cols[i] for i in combo_indices]
+    for combo in tqdm(combos, desc="Disynthon combos", position=0):
+        i, j = combo
+        combo_label = "_".join(str(x + 1) for x in combo)
+        bb_a, bb_b = bb_id_cols[i], bb_id_cols[j]
 
-        key = pc.binary_join_element_wise(
-            *[pc.cast(table[col].combine_chunks(), pa.string()) for col in col_names],
-            "_"
-        )
+        with tqdm(total=2, desc=f"  combo {combo_label}", position=1, leave=False) as inner:
 
-        # Build a deterministic mapping: sort unique keys, assign IDs by sorted rank
-        unique_keys = pc.unique(key).to_pylist()
-        unique_keys_sorted = sorted(unique_keys)  # sort gives stable, run-independent order
-        key_to_id = {k: i for i, k in enumerate(unique_keys_sorted)}
+            inner.set_description(f"  [{combo_label}] Cantor pairing")
+            a = pc.cast(table[bb_a].combine_chunks(), pa.int64())
+            b = pc.cast(table[bb_b].combine_chunks(), pa.int64())
+            apb        = pc.add(a, b)
+            apbp1      = pc.add(apb, pa.scalar(1, pa.int64()))
+            tri        = pc.divide(pc.multiply(apb, apbp1), pa.scalar(2, pa.int64()))
+            cantor_key = pc.add(tri, b)
+            inner.update(1)
 
-        # Map each row's key to its deterministic integer ID
-        key_list = key.to_pylist()
-        ids = pa.array([key_to_id[k] for k in key_list], type=pa.int32())
+            inner.set_description(f"  [{combo_label}] Dictionary encoding")
+            encoded = pc.dictionary_encode(cantor_key)
+            col_arrays[f"disynthon_{combo_label}_id"] = pc.cast(
+                encoded.indices, pa.int32()
+            )
+            inner.update(1)
 
-        col_arrays[dis_col] = ids
-
-    return pa.table({**{c: table[c] for c in table.schema.names}, **col_arrays})
-
+    return pa.table({
+        **{c: table[c] for c in table.schema.names},
+        **col_arrays
+    })
 
 
 
@@ -172,36 +176,14 @@ def generate_bb_dictionaries(ddr):
 
     table=_assign_id_per_row(source_file,building_blocks,smile_to_id)
 
-    table=_assign_disynthon_ids(table,ddr)
-
-    bb1_ids = set(table["buildingblock1_smiles_id"].to_pylist())
-    bb2_ids = set(table["buildingblock2_smiles_id"].to_pylist())
-    bb3_ids = set(table["buildingblock3_smiles_id"].to_pylist())
-
-    print("BB1 ∩ BB2:", len(bb1_ids & bb2_ids))
-    print("BB1 ∩ BB3:", len(bb1_ids & bb3_ids))
-    print("BB2 ∩ BB3:", len(bb2_ids & bb3_ids))
+    table=_assign_disynthon_ids(table,building_blocks)
 
     pq.write_table(table, output_path) 
-
-    #print(table)
-
 
 
     return table, id_to_smile
 
 ## now just compute pbind and enrichment
-
-
-
-
-
-
-
-
-
-    
-
 
 
 
