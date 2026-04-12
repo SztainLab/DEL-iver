@@ -2,14 +2,50 @@
 
 Package for processing DNA-encoded library data, training ML models, and picking hits from make on demand libraries
 
+## Quick Start for Beginners
+
+The defult functions can all be carried out using a single python script after installation following the steps below:
+
+1. Copy this github repository to your local device.
+
+   * This currently requires a linux environment, which is standard for Mac. For windows users, we reccomend first installing [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install/windows-gui-install).
+
+In your terminal, type
+
+   ```
+   git clone https://github.com/SztainLab/DEL-iver.git
+   ```
+2. run setup ...
+3. ensure data is in the correct format and folder ...
+4. run!
+
+```
+python DEL_iver_results.py
+```
+   
+What this script does:
+
+1. Reads DEL data ...
+2. ...
+
+Output files: 
+
+1. results ... 
+
+## Troubleshooting 
+
+## Advanced Settings
+
+
+
+
+## For development 
+
 Order to run scripts:
   - ECFP4calculator.py
   - Make_BBdictionaries.py
   - Split_TestTrainVal.py
   - Run_Allmodels.py
-
-
-## For development 
 
 To install when in current directory:
 `pip install -e .` 
