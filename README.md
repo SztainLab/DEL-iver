@@ -24,11 +24,11 @@ pip install -e .
 
 The input must be a CSV file where:
 
-Each row represents a single compound.
+- Each row represents a single compound.
 
-Each column represents a building block.
+- Each column represents a building block or data relating to it.
 
-Each building block column contains a valid SMILES string.
+- Each building block column contains a valid SMILES string.
 
 You must explicitly provide the building block column names when loading the data. A label column contain either 0 or 1 can also be used for computing Pbind.
 
@@ -40,21 +40,95 @@ Example format:
 
 
 
-4. run!
+## 4. Set variable and execute
 
+At the top of the DEL_iver_results.py script, only a few key variables need to be defined before running the analysis.
+
+
+Here’s a cleaned-up, README-ready version of that section with consistent formatting and clarity:
+
+---
+
+## 4. Set variables and execute
+
+At the top of the `DEL_iver_results.py` script, only a small number of configuration variables need to be defined before running the analysis.
+
+---
+
+### Required configuration
+
+```python id="cfg1"
+input = "path/to/input.csv"
+```
+
+Path to the input CSV file containing the DEL dataset.
+
+---
+
+```python id="cfg2"
+bb_cols = [
+    "buildingblock1_smiles",
+    "buildingblock2_smiles",
+    "buildingblock3_smiles"
+]
+```
+
+List of building block columns in the dataset.
+
+* The **order of this list is important**
+* It defines the mapping:
+
+  * `bb_cols[0]` → BB1
+  * `bb_cols[1]` → BB2
+  * `bb_cols[2]` → BB3
+
+Each column must contain valid SMILES strings.
+
+---
+
+```python id="cfg3"
+label = "binds"
+```
+
+Binary label column (optional or required depending on the selected metric):
+
+* Must contain only:
+
+  * `1` → hit / binder
+  * `0` → non-hit / non-binder
+
+This column is used for enrichment and performance-based metrics.
+
+---
+
+### Optional configuration
+
+```python id="cfg4"
+output = "path/to/output"
+```
+
+Output directory where results, figures, and computed tables will be saved, if not specified results get written to the file systems cache directory.
+
+---
+
+
+
+
+
+### Run the pipeline
+
+Once the variables are set, execute the full analysis pipeline with:
 ```
 python DEL_iver_results.py
 ```
-   
 What this script does:
 
-1. Reads DEL data ...
-2. Convert it to storage / memory efficient parqut format
-3. enumerates all building blocks
-4. computes metrics for pbind
-5. helps filter to find the top molecules per pbind
+1. Reads DEL data and convert it to storage / memory efficient parquet format.
+3. Enumerates all building blocks and disynthon combinations possible within the data. 
+4. Computes pbind.
+5. Filters to find the top molecules per pbind.
 6. Generates ECFP4 embeddings for each building block
-7. trains models on the fingerprints
+7. Trains models on the fingerprints
 8. Generates plots at several steps along the process for visualization
 
 
