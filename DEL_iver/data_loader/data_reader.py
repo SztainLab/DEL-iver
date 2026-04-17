@@ -6,7 +6,7 @@ import pyarrow as pa
 import pyarrow.csv as pv
 import pyarrow.parquet as pq
 from tqdm import tqdm
-
+from itertools import combinations
 from DEL_iver.utils.cache import CacheManager, CacheNames
 
     #TODO: check if building_blocks list is in the column od source_file if not raise error, this should be handle by cache_manager when instantiating the data reader
@@ -56,6 +56,9 @@ class DataReader:
         self.cache = CacheManager(source, output_dir=output_dir)
         self.label=label
 
+        combos = list(combinations(range(self.n_building_blocks), 2))
+        self.disynthons = [f"disynthon_{'_'.join(str(i + 1) for i in combo)}_id" for combo in combos]
+
         if self.cache.needs_conversion():
             self.cache.convert_csv_to_parquet(memory_per_chunk_mb)
 
@@ -66,11 +69,7 @@ class DataReader:
 
     @classmethod
     def from_parquet(cls, filepath: str, **kwargs): #!TO BE DONE
-        """
 
-        Returns:
-            pd.DataFrame: The loaded DataFrame.
-        """
         raise NotImplementedError
 
     # ------------------------------------------------------------------ #

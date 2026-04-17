@@ -6,6 +6,13 @@ from .data_loader.data_reader import DataReader
 from .data_loader.Split_TestTrainVal import split_data
 from .molecules.Make_BBdictionaries import generate_bb_dictionaries
 from .analysis.compute import compute_pbind_and_enrichment
+from .analysis.compute import find_best_bb
+from .analysis.compute import find_best_disynthon
+from .analysis.plotting import draw_disynthons
+from .analysis.plotting import draw_bb
+from .analysis.plotting import plot_disynthons
+from .analysis.compute import compute_chemical_descriptors
+from .analysis.plotting import plot_bb
 
 
 

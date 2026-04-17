@@ -104,6 +104,16 @@ bb_stats, disynthon_stats=deliv.compute_pbind_and_enrichment(ddr,method="epsilon
 
 ```
 
+Note on difference between pbind and enrichment: 
+
+Pbind
+This is the raw "Success Rate." It measures how often a building block appeared in the successful "Hit" pool relative to how many times it was present in the total library.
+
+Enrichment: 
+This is a "Signal-to-Noise" ratio. It compares the frequency of a building block in the Hits to its frequency in the Non-Hits (or the background library).
+
+
+
 Machine learning model descriptions and usage for models in `models.py`:
   - ...
   - ...
