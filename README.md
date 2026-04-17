@@ -1,4 +1,6 @@
-<img src="https://github.com/SztainLab/DEL-iver/blob/main/logo.png" width="200"/>
+<p align="center">
+  <img src="https://github.com/SztainLab/DEL-iver/raw/main/logo.png" width="200"/>
+</p>
 
 Package for processing DNA-encoded library data, training ML models, and picking hits from make on demand libraries
 
