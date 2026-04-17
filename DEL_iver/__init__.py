@@ -11,6 +11,8 @@ from .analysis.compute import find_best_disynthon
 from .analysis.plotting import draw_disynthons
 from .analysis.plotting import draw_bb
 from .analysis.plotting import plot_disynthons
+from .analysis.compute import compute_chemical_descriptors
+from .analysis.plotting import plot_bb
 
 
 

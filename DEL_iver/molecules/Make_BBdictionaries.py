@@ -1,9 +1,9 @@
 #!/bin/python
 
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+
+
+
 import pickle
 import argparse
 import os
@@ -90,7 +90,7 @@ def _make_bb_smiles_to_id_dict(source_file, building_blocks):
     
     return smile_to_id
 
-def _assign_id_per_row(source_file,building_blocks,smile_to_id):
+def _assign_id_per_row(source_file,building_blocks,smile_to_id): 
     pf = pq.ParquetFile(source_file)
     pf= pf.read(columns=building_blocks)
     col_arrays = {}
@@ -100,13 +100,41 @@ def _assign_id_per_row(source_file,building_blocks,smile_to_id):
         # Map block-local dictionary to global IDs (small, only unique values)
         local_to_global = pa.array([smile_to_id[s] for s in block_dict], type=pa.int32())
         # Vectorized index remapping — no Python loop over rows
-        col_arrays[f"{block}_id"] = pc.take(local_to_global, encoded.indices)
+        col_arrays[f"{block}_chemical_id"] = pc.take(local_to_global, encoded.indices)
     table = pa.table(col_arrays)
 
     return table
 
+def _assign_positional_id(table, building_blocks):
+    """
+    Adds a {block}_positional_id column for each building block.
+    Each block's chemical IDs are re-enumerated independently from 0..N-1,
+    so the same smile in different blocks gets different positional IDs.
+    Same smile within a block always gets the same positional ID.
+    """
+    new_cols = {}
+    offset = 0
+
+    for block in building_blocks:
+        chemical_id_col = table[f"{block}_chemical_id"].combine_chunks()
+
+        # dictionary-encode to get a fresh 0..N-1 enumeration local to this block
+        encoded = pc.dictionary_encode(chemical_id_col)
+        local_ids = pc.cast(encoded.indices, pa.int32())
+
+        # shift by cumulative offset so ranges don't overlap across blocks
+        n_unique = len(encoded.dictionary)
+        new_cols[f"{block}_positional_id"] = pc.add(local_ids, pa.scalar(offset, pa.int32()))
+        offset += n_unique
+
+    return pa.table({
+        **{c: table[c] for c in table.schema.names},
+        **new_cols
+    })
+
+
 def _assign_disynthon_ids(table, building_blocks):
-    bb_id_cols = [f"{bb}_id" for bb in building_blocks]
+    bb_id_cols = [f"{bb}_positional_id" for bb in building_blocks]
     combos = list(combinations(range(len(building_blocks)), 2))
     col_arrays = {}
 
@@ -175,7 +203,7 @@ def generate_bb_dictionaries(ddr):
     )
 
     table=_assign_id_per_row(source_file,building_blocks,smile_to_id)
-
+    table = _assign_positional_id(table, building_blocks)
     table=_assign_disynthon_ids(table,building_blocks)
 
     pq.write_table(table, output_path) 
@@ -183,7 +211,7 @@ def generate_bb_dictionaries(ddr):
 
     return table, id_to_smile
 
-## now just compute pbind and enrichment
+
 
 
 
