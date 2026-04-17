@@ -17,6 +17,7 @@ class CacheNames(Enum):
     SPLITS = "splits"
     COMPUTE= "analysis"
     MODELS = "models"
+    SMILESEMBEDDING = "smiles_embedding"
     
 
 

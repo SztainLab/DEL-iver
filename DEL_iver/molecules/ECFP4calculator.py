@@ -1,3 +1,5 @@
+#!/bin/python
+
 import pandas as pd
 import numpy as np
 from joblib import Parallel, delayed
@@ -5,93 +7,131 @@ import multiprocessing
 import pyarrow as pa
 import pyarrow.parquet as pq
 from tqdm import tqdm
-import argparse
 import sys 
+import pickle
+import os
+from itertools import combinations
+import itertools
+from DEL_iver.utils.utils import *
+from DEL_iver.utils.cache import CacheManager, CacheNames
 
-from utils import *
-
-class HelpAction(argparse.Action):
-    def __init__(self, option_strings, dest, **kwargs):
-        super().__init__(option_strings, dest, nargs=0, **kwargs)
+def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, remove_dy=False):
+    """
+    Calculate ECFP4 fingerprints from a parquet file containing SMILES strings.
     
-    def __call__(self, parser, namespace, values, option_string=None):
-        help_text = """
-Purpose: Calculate ECFP4 fingerprints from a csv file containing SMILES & write to parquet file
-
-Usage: python ecfp4_calculator.py <filename> <output_dir> [options]
-
-Arguments:
-    filename    - CSV file with a 'molecule_smiles' column (can contain additional columns as well). If option -b (--bb_fingerprints) is specified, the CSV file must also contain
-    columns for each building block, of the form 'building_block1_smiles', 'building_block2_smiles', etc...
-    output_dir  - Output directory path
-
-Options:
-    -c, --chunk_size INT  - Chunk size for CSV reading (default: 500000)
-    -s, --ecfp4_size INT  - ECFP4 fingerprint size (default: 1024)  
-    -r, --remove_dy       - Remove Dy tag, replace with PEG linker
-    -b, --bb_fingerprints - Calculate building block fingerprints 
-    -h, --help            - Show this help message
-"""
-        print(help_text)
-        sys.exit(0)
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('filename', help="file path to the train csv file, which contains a column called 'molecule_smiles' and 'building_block{i}_smiles'... if -b is specified")
-    parser.add_argument('output_dir', help="path to the output directory")
-    parser.add_argument('-c', '--chunk_size', type=int, default=500000, help='change the chunk_size for reading in the input csv (default is 500,000)')
-    parser.add_argument('-s', '--ecfp4_size', type=int, default=1024, help='change the size of ECFP4 fingerprints (default is 1024)')
-    parser.add_argument('-r', '--remove_dy', action='store_true', help='if specified, the Dy tag found in some DELs will be removed and replaced with a PEG linker')
-    parser.add_argument('-b', 'bb_fingerprints', action='store_true', help='if specified, fingerprints will be calculated for building blocks as well.')
-    parser.add_argument('-h', '--help', action=HelpAction)
+    Parameters:
+    -----------
+    output_prefix : str
+        A string specifying the prefix for output files. 
+        E.G if output_prefix='mybbs', the output would be named 'mybbs_bb1_fingerprints.parquet'
+    chunk_size : int, default=500000
+        Chunk size for reading the input parquet file
+    ecfp4_size : int, default=1024
+        Size of ECFP4 fingerprints
+    remove_dy : bool, default=False
+        Whether to remove Dy tag and replace with PEG linker
     
-    args = parser.parse_args()
+    Returns:
+    --------
+    parquet file 
+        parquet files containing IDs and ECFP4 fingerprints, one parquet for each bb set
+    
+    Example:
+    --------
+    >>> df = gen_fingerprints(
+    ...     output_prefix="experiment1",
+    ...     chunk_size=1000000,
+    ...     ecfp4_size=2048
+    ... )
+    """
     
     print(f'Using {multiprocessing.cpu_count()} CPUs...')
+    print(f'Output prefix: {output_prefix}')
+    print(f'Chunk size: {chunk_size}')
+    print(f'ECFP4 size: {ecfp4_size}')
+    print(f'Remove Dy: {remove_dy}')
+    
+    filename = ddr.cache.get_path(
+        CacheNames.BB_DICTIONARIES,
+        filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}_id_to_smiles.parquet"
+    )
 
-    # Read CSV in chunks and write to Parquet in batches
-    if args.chunk_size != 500000:
-        chunk_size = args.chunk_size
-    else:
-        chunk_size = 500000
-        
-    reader = pd.read_csv(args.filename, chunksize=chunk_size)
+    filename_map = ddr.cache.get_path(
+        CacheNames.BB_DICTIONARIES,
+        filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
+    )
 
-    for i, chunk in tqdm(enumerate(reader)):
-        print(f'Processing chunk {i}')
-        if args.remove_dy == True: 
-            chunk['molecule_smiles'] = chunk['molecule_smiles'].apply(replace_Dy)
-            print('Dy replaced with PEG linker in SMILES')
-            
-        fingerprints = Parallel(n_jobs=-1)(delayed(retrieve_mol_fp)(sm, 'ECFP4', args.ecfp4_size) for sm in chunk['molecule_smiles'])
-        print('Fingerprints calculated.')
+    # print(filename)
+    # Read parquet file in batches
+    parquet_file = pq.ParquetFile(filename)
+    all_fps = []
+    all_ids = []
+    for batch in tqdm(parquet_file.iter_batches(batch_size=chunk_size), desc="Processing batches"):
+        chunk = batch.to_pandas()
+        print(chunk.head())
+        cs = list(chunk.columns)
         
-        if args.bb_fingerprints == True: 
-        # also compute the fingerprints for each building block
-            bb_fingerprint_cols = []
-            bb_fingerprint_colnames = []
-            for column in list(chunk.columns):
-                if 'building_block' in str(column):
-                    bb_num =  str(column).split('block')[1]
-                    bb_num = bb_num.split('_')[0]
-                    bbfingerprints = Parallel(n_jobs=-1)(delayed(retrieve_mol_fp)(sm, 'ECFP4', args.ecfp4_size) for sm in chunk[column])
-                    bb_fingerprint_cols.append(bb_fingerprint_cols)
-                    colname = f'bb{bb_num}_ecfp4_fp'
-                    bb_fingerprint_colnames.append(colname)
-                
-        # write to the new dataframe
-        df = chunk.copy()
-        # full molecule fingerprints
-        df['fullmolecule_ecfp4_fp'] = fingerprints
+        # Apply Dy replacement if requested
+        if remove_dy:
+            chunk[cs[1]] = chunk[cs[1]].apply(replace_Dy)
         
-        if args.bb_fingerprints == True: 
-            # write the building block fingerprints
-            for cname, c in zip(bb_fingerprint_colnames, bb_fingerprint_cols):
-                df[cname] = c
+        # Compute fingerprints for each SMILES string
+        print(cs[1][0])
+
+        fps = [retrieve_mol_fp(smi, 'ECFP4', ecfp4_size) for smi in chunk[cs[1]]]
+        ids = chunk[cs[0]].tolist()
         
-        # Convert DataFrame to PyArrow Table and write to Parquet
+        all_fps.extend(fps)
+        all_ids.extend(ids)
+    
+    # Create DataFrame with IDs and fingerprints
+    result_df = pd.DataFrame({
+        'id': all_ids,
+        'ecfp4_fingerprint': all_fps
+    })
+
+    parquet_map = pq.ParquetFile(filename_map)
+    df_map = parquet_map.read().to_pandas()
+    # print(df_map.columns)
+
+    bb_cols = list(ddr.building_blocks)
+
+    bb1_pos_ids = list(df_map[f'{bb_cols[0]}_positional_id'])
+    bb2_pos_ids = list(df_map[f'{bb_cols[1]}_positional_id'])
+    bb3_pos_ids = list(df_map[f'{bb_cols[2]}_positional_id'])
+    
+    bb1_df = result_df[result_df['id'].isin(bb1_pos_ids)]
+    bb2_df = result_df[result_df['id'].isin(bb2_pos_ids)]
+    bb3_df = result_df[result_df['id'].isin(bb3_pos_ids)]
+
+    for bname, df in zip(['bb1', 'bb2', 'bb3'], [bb1_df, bb2_df, bb3_df]):
+        # Save to parquet file
+        output_out = ddr.cache.get_path(
+            CacheNames.SMILESEMBEDDING,
+            filename=f"{output_prefix}_{bname}_fingerprints.parquet"
+        )
+    
+        # Convert to PyArrow Table and save as Parquet
         table = pa.Table.from_pandas(df)
-        pq.write_to_dataset(table, root_path=args.output_dir, compression='snappy')
+        print(len(df))
+        pq.write_table(table, (output_out))
+        print(f"Fingerprints saved to: {output_out}")
+
+    print(f"Total fingerprints generated: {len(result_df)}")
 
 if __name__ == '__main__':
-    main()
+    print("""
+    This script is designed to be imported and called as a function.
+    
+    Example usage:
+    
+    from this_script_name import gen_fingerprints
+    
+    df = gen_fingerprints(
+        filename="path/to/your/data.parquet",
+        output_prefix="my_experiment",
+        chunk_size=500000,
+        ecfp4_size=1024,
+        remove_dy=False
+    )
+    """)
