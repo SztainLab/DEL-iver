@@ -40,15 +40,6 @@ Example format:
 
 
 
-## 4. Set variable and execute
-
-At the top of the DEL_iver_results.py script, only a few key variables need to be defined before running the analysis.
-
-
-Here’s a cleaned-up, README-ready version of that section with consistent formatting and clarity:
-
----
-
 ## 4. Set variables and execute
 
 At the top of the `DEL_iver_results.py` script, only a small number of configuration variables need to be defined before running the analysis.
