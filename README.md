@@ -108,7 +108,7 @@ Output directory where results, figures, and computed tables will be saved, if n
 
 
 
-### Run the pipeline
+### Run the results pipeline
 
 Once the variables are set, execute the full analysis pipeline with:
 ```
@@ -117,10 +117,10 @@ python DEL_iver_results.py
 What this script does:
 
 1. Reads DEL data and convert it to storage / memory efficient parquet format.
-3. Enumerates all building blocks and disynthon combinations possible within the data. 
-4. Computes pbind.
-5. Filters to find the top molecules per pbind.
-6. Generates figures of building block and disynthon distributions
+2. Enumerates all building blocks and disynthon combinations possible within the data. 
+3. Computes pbind.
+4. Filters to find the top molecules per pbind.
+5. Generates figures of building block and disynthon distributions
 
 
 It outputs: 
@@ -129,6 +129,60 @@ It outputs:
 3) Top 10 BB and structures from data (bb_structures.png)
 4) Top 10 disynthon and structures from data(disynthon_structures.png)
 5) Table of disynthon statistics 
+
+**Note that for the `DEL_iver_models.py` and `DEL_iver_analogs.py` scripts, the output_prefix must be set to the same string**
+### Run the model training pipeline
+
+The variables you will need to set at the top of the `DEL_iver_models.py` are the input file (which is the same as the one you provided for the `DEL_iver_results.py` script
+and the output_prefix.
+
+Once the variables are set, execute the full model training/inference pipeline with:
+```
+python DEL_iver_models.py
+```
+
+What this script does: 
+1. Reads DEL data and convert it to storage / memory efficient parquet format.
+2. Enumerates all building blocks and disynthon combinations possible within the data.
+3. Computes the ECFP4 fingerprints of all building blocks in the DEL dataset.
+4. Splits the DEL dataset in 80/20 train/test split.
+5. Trains the default building block ML model on the train split.
+6. Performs inference using the trained model on all of the molecules in the test dataset.
+7. If the script writes out a file or png, it will state where that file has been written. 
+
+It outputs:
+1) Parquet files of the BB ECFP4 fingerprints
+2) Parquet files of the train and test datasets that result from the 80/20 train/test split
+3) The trained model as a `.pth` file
+4) A parquet file with the predicted binding probabilities of the model on the test set
+5) AUROC plot showing the performance of the trained model on the test set (png)
+6) Precision recall plot showing the performance of the trained model on the test set (png)
+
+### Run the analog proposal pipeline
+
+The variables you need to at the top of the `DEL_iver_analogs.py` are the path to the analog csv that you want to analyze (the only requirment here is that there is a `SMILES` column) and the output_predix.
+
+Once the variables are set, execute the full analog similarity comparison / analog proposal pipeline with:
+```
+python DEL_iver_analogs.py
+```
+
+What this script does:
+1. Reads the analog dataset provided.
+2. Computes ECFP4 fingerprints of the analog molecules.
+3. Generates a UMAP embedding of the DEL bb molecules and the analog molecules.
+4. Calculates pairwise tanimoto similarity scores between all DEL bbs against all analog molecules.
+5. For each DEL molecule, which consists of 3 bbs, an analog for each bb is chosen as molecule with highest similarity to the specific bb.
+   For example, if there is DEL bb1, bb2, bb3, there will be analog1, analog2, analog3, one for each bb that makes up the full DEL molecule.
+6. Performs inference on each of the sets of proposed analogs per one DEL molecule. A binding probability is predicted.
+7. If the script writes out a file or png, it will state where that file has been written. 
+
+It outputs:
+1) A parquet file of the ECFP4 fingerprints for the analog dataset provided
+2) A parquet file of the UMAP embedding coordinates for each bb and analog model, with labels identifying which set the molecule belongs to
+3) A png of the UMAP embedding, colored by the different molecule sets
+4) A parquet file containing the proposed analogs and the tanimoto similarity scores of the proposed analogs
+5) A parquet file that contains the predicted binding probabilities of the proposed analogs
 
 ## Troubleshooting 
 TBD
