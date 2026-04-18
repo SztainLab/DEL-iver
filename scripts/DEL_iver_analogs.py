@@ -2,12 +2,13 @@
 
 import DEL_iver as deliv
 
+enamine_db = 'data/enamine_bbs_small.csv'
+output_prefix ='example_prefix'
+
 # calculate ECFP4 fingerprints of analog molecules, calculate analog similarities
 # propose analogs for each DEL molecule
-# the same output_prefic as the above functions should be used here
-deliv.analog_embed(ddr, 'data/enamine_bbs_small.csv', output_prefix='testing')
+deliv.analog_embed(ddr, enamine_db, output_prefix=output_prefix)
 
 # predict binding probability (from the models trained in del_iver_models.py) of
 # proposed analogs
-# the same output_prefix as output_prefix used to train models should be used here
-deliv.inference_analog_moles(ddr, output_prefix='testing')
+deliv.inference_analog_moles(ddr, output_prefix=output_prefix)

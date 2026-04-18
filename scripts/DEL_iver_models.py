@@ -7,21 +7,21 @@ import DEL_iver as deliv
 # the following is an example csv found in the data directory
 input="data/example.csv"
 bb_cols=["bb1_smiles","bb2_smiles","bb3_smiles"]
+output_prefix ='example_prefix'
+
 ddr = deliv.DataReader.from_csv(input,building_blocks=bb_cols, label='binds')
 
 # generate the bb id to SMILES dictionaries 
 table, id_to_smile = deliv.generate_bb_dictionaries(ddr)
 
 # generate ECPF4 fingerprints from SMIILES
-deliv.gen_fingerprints(ddr, output_prefix='testing')
+deliv.gen_fingerprints(ddr, output_prefix=output_prefix)
 
 # train the default model on BB ECFP4 fingerprints
-# the same output_prefix from gen_fingerprints() should be used here 
-deliv.train_default(ddr, output_prefix='testing')
+deliv.train_default(ddr, output_prefix=output_prefix)
 
 # inference on the test file created while training
-# the same output_prefix as the above functions should be used here
-deliv.inference(ddr, output_prefix='testing')
+deliv.inference(ddr, output_prefix=output_prefix)
 
 # uncomment the following if you'd like to train an invariant model and inference using that model
 # deliv.train_invariant(ddr, output_prefix='testing')
