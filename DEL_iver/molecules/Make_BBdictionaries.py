@@ -1,9 +1,6 @@
 #!/bin/python
 
 import numpy as np
-
-
-
 import pickle
 import argparse
 import os
@@ -46,22 +43,6 @@ Options:
 """
         print(help_text)
         sys.exit(0)
-
-
-
-#def _make_bb_smiles_to_id_dict(source_file,building_blocks): #!need to remove i think
-#    pf = pq.ParquetFile(source_file)
-#    pf= pf.read(columns=building_blocks)
-
-#    all_smiles = set()
-#    for block in tqdm(building_blocks,desc="Finding unique building blocks"):
-#        all_smiles.update(pc.unique(pf[block]).to_pylist())
-#        
-#    
-#    sorted_smiles = sorted(list(all_smiles))
-#    smile_to_id = {smile: idx for idx, smile in enumerate(sorted_smiles)}
-#    
-#    return smile_to_id
 
 def _make_bb_smiles_to_id_dict(source_file, building_blocks):
     pf = pq.ParquetFile(source_file)

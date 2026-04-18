@@ -1,0 +1,800 @@
+SMILES,Catalog_ID,IUPAC_Name,URL
+CCOc1ccc(N=C(CCl)Nc2ccc(OCC)cc2)cc1,EN300-06504,"2-chloro-N,N'-bis(4-ethoxyphenyl)ethanimidamide",https://www.enaminestore.com/catalog/EN300-06504
+CC(C)N(CC(=O)Nc1ccc(Cl)cc1C(F)(F)F)C(=O)CCl,EN300-09516,2-chloro-N-({[4-chloro-2-(trifluoromethyl)phenyl]carbamoyl}methyl)-N-(propan-2-yl)acetamide,https://www.enaminestore.com/catalog/EN300-09516
+CCCC(C)(C)O,EN300-61549,2-methylpentan-2-ol,https://www.enaminestore.com/catalog/EN300-61549
+Cc1cn2ccsc2n1,EN300-17423,"6-methylimidazo[2,1-b][1,3]thiazole",https://www.enaminestore.com/catalog/EN300-17423
+CC(Cl)C(=O)NCC1CCCCC1,EN300-08443,2-chloro-N-(cyclohexylmethyl)propanamide,https://www.enaminestore.com/catalog/EN300-08443
+O=C(O)c1cc(-c2ccc(Br)cc2)n[nH]1,EN300-13028,3-(4-bromophenyl)-1H-pyrazole-5-carboxylic acid,https://www.enaminestore.com/catalog/EN300-13028
+COc1ccc(C)cc1C(C)=O,EN300-13453,1-(2-methoxy-5-methylphenyl)ethan-1-one,https://www.enaminestore.com/catalog/EN300-13453
+NS(=O)(=O)c1ccc(N2CCOCC2)c(C(=O)O)c1,EN300-12879,2-(morpholin-4-yl)-5-sulfamoylbenzoic acid,https://www.enaminestore.com/catalog/EN300-12879
+CCNC(=S)n1ncc(C(=O)OCC)c1N,EN300-13398,ethyl 5-amino-1-(ethylcarbamothioyl)-1H-pyrazole-4-carboxylate,https://www.enaminestore.com/catalog/EN300-13398
+COc1ccc(C)cc1C=O,EN300-13716,2-methoxy-5-methylbenzaldehyde,https://www.enaminestore.com/catalog/EN300-13716
+O=C(O)Cn1cnc2c(oc3ccccc32)c1=O,EN300-13447,"2-{6-oxo-8-oxa-3,5-diazatricyclo[7.4.0.0,2,7]trideca-1(9),2(7),3,10,12-pentaen-5-yl}acetic acid",https://www.enaminestore.com/catalog/EN300-13447
+C=C(Br)C(F)(F)F,EN300-25972,"2-bromo-3,3,3-trifluoroprop-1-ene",https://www.enaminestore.com/catalog/EN300-25972
+CS(=O)(=O)c1ccccc1N,EN300-25505,2-methanesulfonylaniline,https://www.enaminestore.com/catalog/EN300-25505
+Cc1c(C)n(-c2ccc(O)cc2)c2[nH]cnc(=O)c12,EN300-26846,"7-(4-hydroxyphenyl)-5,6-dimethyl-1H,4H,7H-pyrrolo[2,3-d]pyrimidin-4-one",https://www.enaminestore.com/catalog/EN300-26846
+O=C(O)CCc1ccc2c(c1)OCO2,EN300-24326,"3-(1,3-dioxaindan-5-yl)propanoic acid",https://www.enaminestore.com/catalog/EN300-24326
+CC(Oc1ccc(C(C)(C)C)cc1)C(=O)O,EN300-11785,2-(4-tert-butylphenoxy)propanoic acid,https://www.enaminestore.com/catalog/EN300-11785
+Cc1ccc(CNC(=O)NC(CC(C)C)C(=O)O)cc1,EN300-26719,4-methyl-2-({[(4-methylphenyl)methyl]carbamoyl}amino)pentanoic acid,https://www.enaminestore.com/catalog/EN300-26719
+Cl.c1cc2c(s1)CCNC2,EN300-26520,"4H,5H,6H,7H-thieno[3,2-c]pyridine hydrochloride",https://www.enaminestore.com/catalog/EN300-26520
+Cl.NNc1cccc([N+](=O)[O-])c1,EN300-20466,(3-nitrophenyl)hydrazine hydrochloride,https://www.enaminestore.com/catalog/EN300-20466
+NS(=O)(=O)c1cc(C(=O)O)cs1,EN300-23792,5-sulfamoylthiophene-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-23792
+CONC(=O)CCl,EN300-26804,2-chloro-N-methoxyacetamide,https://www.enaminestore.com/catalog/EN300-26804
+CC1(CSc2ccccc2C(=O)O)NC(=O)NC1=O,EN300-11148,"2-{[(4-methyl-2,5-dioxoimidazolidin-4-yl)methyl]sulfanyl}benzoic acid",https://www.enaminestore.com/catalog/EN300-11148
+O=C(Nc1cccc([N+](=O)[O-])c1)Oc1ccccc1,EN300-27176,phenyl N-(3-nitrophenyl)carbamate,https://www.enaminestore.com/catalog/EN300-27176
+Oc1ccc(Oc2ccccn2)cc1,EN300-28547,4-(pyridin-2-yloxy)phenol,https://www.enaminestore.com/catalog/EN300-28547
+ClCc1noc(-c2ccsc2)n1,EN300-28957,"3-(chloromethyl)-5-(thiophen-3-yl)-1,2,4-oxadiazole",https://www.enaminestore.com/catalog/EN300-28957
+CCOC(=O)c1nc2ccccc2s1,EN300-25508,"ethyl 1,3-benzothiazole-2-carboxylate",https://www.enaminestore.com/catalog/EN300-25508
+COC(=O)c1cccc(C#Cc2cccc(N)c2)c1,EN300-27699,methyl 3-[2-(3-aminophenyl)ethynyl]benzoate,https://www.enaminestore.com/catalog/EN300-27699
+Cc1ccc(Cn2nc(C)c(C=O)c2SCC(=O)O)cc1,EN300-25392,2-({4-formyl-3-methyl-1-[(4-methylphenyl)methyl]-1H-pyrazol-5-yl}sulfanyl)acetic acid,https://www.enaminestore.com/catalog/EN300-25392
+CC(c1ccc(O)cc1)(c1ccc(O)cc1)c1ccc(F)cc1,EN300-26782,4-[1-(4-fluorophenyl)-1-(4-hydroxyphenyl)ethyl]phenol,https://www.enaminestore.com/catalog/EN300-26782
+CC(C)CN1CCC(N)CC1,EN300-30377,1-(2-methylpropyl)piperidin-4-amine,https://www.enaminestore.com/catalog/EN300-30377
+COc1ccc(C2CCCN2C(=O)CCl)cc1OC,EN300-28448,"2-chloro-1-[2-(3,4-dimethoxyphenyl)pyrrolidin-1-yl]ethan-1-one",https://www.enaminestore.com/catalog/EN300-28448
+Cc1cc(NC(=O)CCl)on1,EN300-24698,"2-chloro-N-(3-methyl-1,2-oxazol-5-yl)acetamide",https://www.enaminestore.com/catalog/EN300-24698
+NC1CCc2[nH]ncc2C1,EN300-40800,"4,5,6,7-tetrahydro-1H-indazol-5-amine",https://www.enaminestore.com/catalog/EN300-40800
+Cc1ccc(-c2nc(N)sc2C)cc1,EN300-08659,"5-methyl-4-(4-methylphenyl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-08659
+CC(NS(=O)(=O)c1ccc2c(c1)OCCCO2)C(=O)O,EN300-10978,"2-(3,4-dihydro-2H-1,5-benzodioxepine-7-sulfonamido)propanoic acid",https://www.enaminestore.com/catalog/EN300-10978
+COC(=O)c1sc(S(=O)(=O)NCCC(=O)O)c(C(=O)OC)c1C,EN300-08677,"3-[3,5-bis(methoxycarbonyl)-4-methylthiophene-2-sulfonamido]propanoic acid",https://www.enaminestore.com/catalog/EN300-08677
+CC(=O)c1ccc(O)c(CN2CCCCC2)c1.Cl,EN300-11722,1-{4-hydroxy-3-[(piperidin-1-yl)methyl]phenyl}ethan-1-one hydrochloride,https://www.enaminestore.com/catalog/EN300-11722
+CN(C)CC(=O)O,EN300-66975,2-(dimethylamino)acetic acid,https://www.enaminestore.com/catalog/EN300-66975
+N[C@H](CCO)C(=O)O,EN300-50993,(2R)-2-amino-4-hydroxybutanoic acid,https://www.enaminestore.com/catalog/EN300-50993
+O=Cc1ccc(-c2nc3ccccc3s2)o1,EN300-10420,"5-(1,3-benzothiazol-2-yl)furan-2-carbaldehyde",https://www.enaminestore.com/catalog/EN300-10420
+Cc1ccc(Cn2nc(C)c(C(=O)O)c2C)cc1,EN300-07741,"3,5-dimethyl-1-[(4-methylphenyl)methyl]-1H-pyrazole-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-07741
+O=C(O)CCc1ccco1,EN300-11243,3-(furan-2-yl)propanoic acid,https://www.enaminestore.com/catalog/EN300-11243
+CCc1c(C)sc2nc(CC(=O)N3CCOCC3)[nH]c(=O)c12,EN300-07923,"5-ethyl-6-methyl-2-[2-(morpholin-4-yl)-2-oxoethyl]-3H,4H-thieno[2,3-d]pyrimidin-4-one",https://www.enaminestore.com/catalog/EN300-07923
+Cc1ccc(S(=O)(=O)NC(C(=O)O)C(C)C)cc1C,EN300-10802,"2-(3,4-dimethylbenzenesulfonamido)-3-methylbutanoic acid",https://www.enaminestore.com/catalog/EN300-10802
+CC(=O)c1ccc(N2CCCCC2)c(F)c1,EN300-07758,1-[3-fluoro-4-(piperidin-1-yl)phenyl]ethan-1-one,https://www.enaminestore.com/catalog/EN300-07758
+CC(C)N1C(=O)NC(=O)C1=O,EN300-10861,"1-(propan-2-yl)imidazolidine-2,4,5-trione",https://www.enaminestore.com/catalog/EN300-10861
+CN(CC(=O)Nc1ccccc1C(F)(F)F)C(=O)CCl,EN300-11911,2-chloro-N-methyl-N-({[2-(trifluoromethyl)phenyl]carbamoyl}methyl)acetamide,https://www.enaminestore.com/catalog/EN300-11911
+CNCc1ccc(OC(F)F)cc1,EN300-07489,{[4-(difluoromethoxy)phenyl]methyl}(methyl)amine,https://www.enaminestore.com/catalog/EN300-07489
+Cc1cc(Cl)cc(C)c1OC(C)C(=O)NN,EN300-08759,"2-(4-chloro-2,6-dimethylphenoxy)propanehydrazide",https://www.enaminestore.com/catalog/EN300-08759
+BrCC1CC1,EN300-78939,(bromomethyl)cyclopropane,https://www.enaminestore.com/catalog/EN300-78939
+O=C(Nc1ccccc1C(=O)O)c1ccc(Cl)cc1,EN300-11456,2-(4-chlorobenzamido)benzoic acid,https://www.enaminestore.com/catalog/EN300-11456
+CCc1cccc(CC)c1NC(=O)CC(=O)c1ccccc1,EN300-11557,"N-(2,6-diethylphenyl)-3-oxo-3-phenylpropanamide",https://www.enaminestore.com/catalog/EN300-11557
+OCC1CCCCC1,EN300-21580,cyclohexylmethanol,https://www.enaminestore.com/catalog/EN300-21580
+C=C(C)C(=O)OC(=O)C(=C)C,EN300-19247,2-methylprop-2-enoyl 2-methylprop-2-enoate,https://www.enaminestore.com/catalog/EN300-19247
+O=C(Cl)N(c1ccccc1)c1ccccc1,EN300-19988,"N,N-diphenylcarbamoyl chloride",https://www.enaminestore.com/catalog/EN300-19988
+CCC1(c2ccccc2)NC(=O)N(CC(=O)O)C1=O,EN300-08821,"2-(4-ethyl-2,5-dioxo-4-phenylimidazolidin-1-yl)acetic acid",https://www.enaminestore.com/catalog/EN300-08821
+CNCCOc1ccc(Cl)cc1,EN300-07966,[2-(4-chlorophenoxy)ethyl](methyl)amine,https://www.enaminestore.com/catalog/EN300-07966
+COc1ccc(NCc2ccc(N(C)C)cc2)cc1,EN300-11804,N-{[4-(dimethylamino)phenyl]methyl}-4-methoxyaniline,https://www.enaminestore.com/catalog/EN300-11804
+CCCOc1ccc(OCCBr)cc1,EN300-09138,1-(2-bromoethoxy)-4-propoxybenzene,https://www.enaminestore.com/catalog/EN300-09138
+CCOc1cc(C(=O)O)ccc1OCCOc1ccccc1,EN300-06256,3-ethoxy-4-(2-phenoxyethoxy)benzoic acid,https://www.enaminestore.com/catalog/EN300-06256
+CC(C)(C)C1CCc2sc(C(=O)NN)cc2C1,EN300-09153,"5-tert-butyl-4,5,6,7-tetrahydro-1-benzothiophene-2-carbohydrazide",https://www.enaminestore.com/catalog/EN300-09153
+Cc1ccc(C(=O)O)s1,EN300-21259,5-methylthiophene-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-21259
+COc1ccccc1N1CCNCC1,EN300-33366,1-(2-methoxyphenyl)piperazine,https://www.enaminestore.com/catalog/EN300-33366
+Nc1nncs1,EN300-17228,"1,3,4-thiadiazol-2-amine",https://www.enaminestore.com/catalog/EN300-17228
+O=C=Nc1cccc(Cl)c1,EN300-21284,1-chloro-3-isocyanatobenzene,https://www.enaminestore.com/catalog/EN300-21284
+COC(=O)C1(C)CC1(Cl)Cl,EN300-15477,"methyl 2,2-dichloro-1-methylcyclopropane-1-carboxylate",https://www.enaminestore.com/catalog/EN300-15477
+Nc1cc(S(=O)(=O)Nc2ccccc2Cl)ccc1N1CCOCC1,EN300-02174,3-amino-N-(2-chlorophenyl)-4-(morpholin-4-yl)benzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-02174
+O=C1Cc2ccccc2N1,EN300-20422,"2,3-dihydro-1H-indol-2-one",https://www.enaminestore.com/catalog/EN300-20422
+CC(C)(C)C(=O)C(Cl)Cl,EN300-18636,"1,1-dichloro-3,3-dimethylbutan-2-one",https://www.enaminestore.com/catalog/EN300-18636
+CCC(=O)Cc1ccccc1,EN300-21394,1-phenylbutan-2-one,https://www.enaminestore.com/catalog/EN300-21394
+O=Cc1cccc(C(F)(F)F)c1,EN300-21347,3-(trifluoromethyl)benzaldehyde,https://www.enaminestore.com/catalog/EN300-21347
+Cc1cc(C(=O)O)c(C)n1-c1ccc(Cl)cc1,EN300-50276,"1-(4-chlorophenyl)-2,5-dimethyl-1H-pyrrole-3-carboxylic acid",https://www.enaminestore.com/catalog/EN300-50276
+Cc1cccc(C(N)=O)c1N,EN300-29544,2-amino-3-methylbenzamide,https://www.enaminestore.com/catalog/EN300-29544
+CC(C)=CC(=O)O,EN300-20709,3-methylbut-2-enoic acid,https://www.enaminestore.com/catalog/EN300-20709
+NCCC(=O)NC1CCCCC1,EN300-51026,3-amino-N-cyclohexylpropanamide,https://www.enaminestore.com/catalog/EN300-51026
+O=C(O)c1cccc(S(=O)(=O)Nc2cccc(C(F)(F)F)c2)c1,EN300-00305,3-{[3-(trifluoromethyl)phenyl]sulfamoyl}benzoic acid,https://www.enaminestore.com/catalog/EN300-00305
+O=C(O)c1cc(S(=O)(=O)NCc2ccccc2)ccc1O,EN300-00349,5-(benzylsulfamoyl)-2-hydroxybenzoic acid,https://www.enaminestore.com/catalog/EN300-00349
+NCCO,EN300-19392,2-aminoethan-1-ol,https://www.enaminestore.com/catalog/EN300-19392
+NCCc1ccccn1,EN300-20439,2-(pyridin-2-yl)ethan-1-amine,https://www.enaminestore.com/catalog/EN300-20439
+c1nnc[nH]1,EN300-20608,"4H-1,2,4-triazole",https://www.enaminestore.com/catalog/EN300-20608
+CCOC(=O)c1c(N)sc2c1CC(C)(C)NC2(C)C,EN300-02289,"ethyl 2-amino-5,5,7,7-tetramethyl-4H,5H,6H,7H-thieno[2,3-c]pyridine-3-carboxylate",https://www.enaminestore.com/catalog/EN300-02289
+Cc1ccc(NCc2ccco2)cc1,EN300-02472,N-[(furan-2-yl)methyl]-4-methylaniline,https://www.enaminestore.com/catalog/EN300-02472
+NNC(=O)c1cccc(S(=O)(=O)Nc2ccc(Cl)cc2)c1,EN300-03580,N-(4-chlorophenyl)-3-(hydrazinecarbonyl)benzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-03580
+Nc1ccc(S(=O)(=O)NCc2ccco2)cc1,EN300-02201,4-amino-N-[(furan-2-yl)methyl]benzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-02201
+Cc1onc(-c2ccccc2Cl)c1C(=O)O,EN300-18171,"3-(2-chlorophenyl)-5-methyl-1,2-oxazole-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-18171
+Cc1ccc(-c2ccccc2C(=O)O)cc1,EN300-17191,"4'-methyl-[1,1'-biphenyl]-2-carboxylic acid",https://www.enaminestore.com/catalog/EN300-17191
+CC(=O)NN,EN300-18497,acetohydrazide,https://www.enaminestore.com/catalog/EN300-18497
+O=C(O)C(Cl)c1ccccc1,EN300-21393,2-chloro-2-phenylacetic acid,https://www.enaminestore.com/catalog/EN300-21393
+Cc1nn(-c2ccc(F)cc2)c2sc(C(=O)O)cc12,EN300-00810,"1-(4-fluorophenyl)-3-methyl-1H-thieno[2,3-c]pyrazole-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-00810
+COc1ccc2cc(-c3cc(C(=O)O)c4ccccc4n3)ccc2c1,EN300-00800,2-(6-methoxynaphthalen-2-yl)quinoline-4-carboxylic acid,https://www.enaminestore.com/catalog/EN300-00800
+Cc1nc2cc(F)cc(C(=O)O)c2nc1C,EN300-50229,"7-fluoro-2,3-dimethylquinoxaline-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-50229
+Nc1cc(S(=O)(=O)N2CCCCC2)ccc1N1CCCCC1,EN300-02369,2-(piperidin-1-yl)-5-(piperidine-1-sulfonyl)aniline,https://www.enaminestore.com/catalog/EN300-02369
+Nc1ccc(C(F)(F)F)cc1,EN300-20241,4-(trifluoromethyl)aniline,https://www.enaminestore.com/catalog/EN300-20241
+NC(=O)C(N)C(N)=O,EN300-26953,2-aminopropanediamide,https://www.enaminestore.com/catalog/EN300-26953
+O=C(O)C(c1ccccc1)c1ccccc1,EN300-20209,"2,2-diphenylacetic acid",https://www.enaminestore.com/catalog/EN300-20209
+NNC(=O)c1ccc(Cl)c(S(=O)(=O)Nc2ccccc2Cl)c1,EN300-03764,2-chloro-N-(2-chlorophenyl)-5-(hydrazinecarbonyl)benzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-03764
+OB(O)c1cc(Cl)cc(Cl)c1,EN300-59198,"(3,5-dichlorophenyl)boronic acid",https://www.enaminestore.com/catalog/EN300-59198
+Nc1nc2c(F)cc(F)cc2s1,EN300-02493,"4,6-difluoro-1,3-benzothiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02493
+O=C(CCl)Nc1c(I)cc(I)cc1I,EN300-01534,"2-chloro-N-(2,4,6-triiodophenyl)acetamide",https://www.enaminestore.com/catalog/EN300-01534
+CC(C)(C)c1ccc(OCCC(=O)O)cc1,EN300-00120,3-(4-tert-butylphenoxy)propanoic acid,https://www.enaminestore.com/catalog/EN300-00120
+O=C(O)c1ccc(CSc2ccc(Cl)cc2)cc1,EN300-00062,4-{[(4-chlorophenyl)sulfanyl]methyl}benzoic acid,https://www.enaminestore.com/catalog/EN300-00062
+O=C(O)c1c2c(nc3ccccc13)C(=Cc1cccs1)CCC2,EN300-00856,"4-[(thiophen-2-yl)methylidene]-1,2,3,4-tetrahydroacridine-9-carboxylic acid",https://www.enaminestore.com/catalog/EN300-00856
+CC(=O)NC(N)=O,EN300-19984,acetylurea,https://www.enaminestore.com/catalog/EN300-19984
+COc1cc(C=O)ccc1OC(=O)c1cccnc1,EN300-01103,4-formyl-2-methoxyphenyl pyridine-3-carboxylate,https://www.enaminestore.com/catalog/EN300-01103
+COc1ccc2nc(C)cc(Cl)c2c1,EN300-01570,4-chloro-6-methoxy-2-methylquinoline,https://www.enaminestore.com/catalog/EN300-01570
+O=C(O)c1c2c(nc3ccccc13)C(=Cc1ccc(O)cc1)CC2,EN300-00936,"3-[(4-hydroxyphenyl)methylidene]-1H,2H,3H-cyclopenta[b]quinoline-9-carboxylic acid",https://www.enaminestore.com/catalog/EN300-00936
+CCN(CC)CCNCc1cccs1,EN300-12931,[2-(diethylamino)ethyl][(thiophen-2-yl)methyl]amine,https://www.enaminestore.com/catalog/EN300-12931
+CC(=O)Nc1ccc(S(=O)(=O)N(C)c2ccc(OCC(=O)O)cc2)cc1,EN300-00562,2-[4-(N-methyl-4-acetamidobenzenesulfonamido)phenoxy]acetic acid,https://www.enaminestore.com/catalog/EN300-00562
+c1csc(NC2CCCCC2)n1,EN300-02426,"N-cyclohexyl-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02426
+NNC(=O)Cc1nc2ccccc2[nH]1,EN300-03781,"2-(1H-1,3-benzodiazol-2-yl)acetohydrazide",https://www.enaminestore.com/catalog/EN300-03781
+c1ccc(OP(Oc2ccccc2)Oc2ccccc2)cc1,EN300-19163,triphenyl phosphite,https://www.enaminestore.com/catalog/EN300-19163
+O=C(NCCO)c1cccc(S(=O)(=O)N2CCCCC2)c1,EN300-03008,N-(2-hydroxyethyl)-3-(piperidine-1-sulfonyl)benzamide,https://www.enaminestore.com/catalog/EN300-03008
+Cc1cc(S(=O)(=O)Nc2ccccc2C(=O)O)ccc1F,EN300-00471,2-(4-fluoro-3-methylbenzenesulfonamido)benzoic acid,https://www.enaminestore.com/catalog/EN300-00471
+Nc1cccc(-c2csc(N)n2)c1,EN300-02230,"4-(3-aminophenyl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02230
+Cc1c(CCl)cc(C(=O)O)cc1CCl,EN300-00166,"3,5-bis(chloromethyl)-4-methylbenzoic acid",https://www.enaminestore.com/catalog/EN300-00166
+O=C(CCl)c1ccc2c(c1)-c1cc(C(=O)CCl)ccc1C2,EN300-01880,2-chloro-1-[6-(2-chloroacetyl)-9H-fluoren-3-yl]ethan-1-one,https://www.enaminestore.com/catalog/EN300-01880
+NNC(=O)Cc1cn2ccsc2n1,EN300-03636,"2-{imidazo[2,1-b][1,3]thiazol-6-yl}acetohydrazide",https://www.enaminestore.com/catalog/EN300-03636
+CCCCOCCO,EN300-19317,2-butoxyethan-1-ol,https://www.enaminestore.com/catalog/EN300-19317
+Clc1ccc(Nc2nc3ccccc3s2)cc1,EN300-02507,"N-(4-chlorophenyl)-1,3-benzothiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02507
+Cc1ccccc1NC1=NCCS1,EN300-02452,"N-(2-methylphenyl)-4,5-dihydro-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02452
+O=C1Nc2c(Br)cccc2C1=O,EN300-01156,"7-bromo-2,3-dihydro-1H-indole-2,3-dione",https://www.enaminestore.com/catalog/EN300-01156
+O=C(O)C(Cc1cnc[nH]1)N1C(=O)c2ccccc2C1=O,EN300-00254,"2-(1,3-dioxo-2,3-dihydro-1H-isoindol-2-yl)-3-(1H-imidazol-5-yl)propanoic acid",https://www.enaminestore.com/catalog/EN300-00254
+CCN1CCc2nc(N)sc2C1,EN300-02413,"5-ethyl-4H,5H,6H,7H-[1,3]thiazolo[5,4-c]pyridin-2-amine",https://www.enaminestore.com/catalog/EN300-02413
+CC1(c2ccc3c(c2)OCCCO3)NC(=O)NC1=O,EN300-12923,"5-(3,4-dihydro-2H-1,5-benzodioxepin-7-yl)-5-methylimidazolidine-2,4-dione",https://www.enaminestore.com/catalog/EN300-12923
+Oc1ccc(OC(F)(F)F)cc1,EN300-91578,4-(trifluoromethoxy)phenol,https://www.enaminestore.com/catalog/EN300-91578
+O=C(O)c1cccc(OCc2ccccc2)c1,EN300-08215,3-(benzyloxy)benzoic acid,https://www.enaminestore.com/catalog/EN300-08215
+O=C(CCl)NC(=O)Nc1ccc2c(c1)OCCO2,EN300-05665,"3-(2-chloroacetyl)-1-(2,3-dihydro-1,4-benzodioxin-6-yl)urea",https://www.enaminestore.com/catalog/EN300-05665
+Cn1c(=O)c(Br)c(N)n(Cc2ccccc2)c1=O,EN300-01976,"6-amino-1-benzyl-5-bromo-3-methyl-1,2,3,4-tetrahydropyrimidine-2,4-dione",https://www.enaminestore.com/catalog/EN300-01976
+O=C(COc1ccccc1C(=O)O)Nc1ccc(Br)cc1,EN300-00212,2-{[(4-bromophenyl)carbamoyl]methoxy}benzoic acid,https://www.enaminestore.com/catalog/EN300-00212
+CC1(CCc2ccccc2)NC(=O)NC1=O,EN300-04038,"5-methyl-5-(2-phenylethyl)imidazolidine-2,4-dione",https://www.enaminestore.com/catalog/EN300-04038
+Cc1ccc(N(CCC#N)C(=O)CCl)cc1,EN300-08168,2-chloro-N-(2-cyanoethyl)-N-(4-methylphenyl)acetamide,https://www.enaminestore.com/catalog/EN300-08168
+CCOC=C1C(=O)N(c2ccc(OCC)cc2)C(=O)c2ccccc21,EN300-04006,"4-(ethoxymethylidene)-2-(4-ethoxyphenyl)-1,2,3,4-tetrahydroisoquinoline-1,3-dione",https://www.enaminestore.com/catalog/EN300-04006
+C1CCC(NC2=NCCCS2)CC1,EN300-02874,"N-cyclohexyl-5,6-dihydro-4H-1,3-thiazin-2-amine",https://www.enaminestore.com/catalog/EN300-02874
+N#Cc1ccc(OCC(=O)O)cc1,EN300-00087,2-(4-cyanophenoxy)acetic acid,https://www.enaminestore.com/catalog/EN300-00087
+COc1cc(C=O)ccc1OCC(=O)Nc1c(Cl)cccc1Cl,EN300-01136,"N-(2,6-dichlorophenyl)-2-(4-formyl-2-methoxyphenoxy)acetamide",https://www.enaminestore.com/catalog/EN300-01136
+COc1ccccc1NC(=O)COc1ccc(C(=O)O)cc1OC,EN300-00218,3-methoxy-4-{[(2-methoxyphenyl)carbamoyl]methoxy}benzoic acid,https://www.enaminestore.com/catalog/EN300-00218
+Cc1ccc(-n2c(C)cc(C=O)c2C)cc1,EN300-04086,"2,5-dimethyl-1-(4-methylphenyl)-1H-pyrrole-3-carbaldehyde",https://www.enaminestore.com/catalog/EN300-04086
+COc1ccc(-c2csc(C)n2)cc1OC,EN300-01420,"4-(3,4-dimethoxyphenyl)-2-methyl-1,3-thiazole",https://www.enaminestore.com/catalog/EN300-01420
+O=C(O)c1ccc2[nH]ccc2c1,EN300-69795,1H-indole-5-carboxylic acid,https://www.enaminestore.com/catalog/EN300-69795
+COC(=O)c1c(NC(=O)CCl)sc(C)c1C,EN300-04444,"methyl 2-(2-chloroacetamido)-4,5-dimethylthiophene-3-carboxylate",https://www.enaminestore.com/catalog/EN300-04444
+CC(=O)C12CC3CC(CC(O)(C3)C1)C2,EN300-03264,1-(3-hydroxyadamantan-1-yl)ethan-1-one,https://www.enaminestore.com/catalog/EN300-03264
+CN(c1ccc(O)cc1)S(=O)(=O)c1ccc(Cl)cc1,EN300-04844,4-chloro-N-(4-hydroxyphenyl)-N-methylbenzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-04844
+Cc1ccc(-c2nn(-c3ccccc3)cc2C=O)o1,EN300-01143,3-(5-methylfuran-2-yl)-1-phenyl-1H-pyrazole-4-carbaldehyde,https://www.enaminestore.com/catalog/EN300-01143
+Cc1ccc(-c2nn(Cc3ccccc3)cc2C(=O)O)cc1,EN300-11787,1-benzyl-3-(4-methylphenyl)-1H-pyrazole-4-carboxylic acid,https://www.enaminestore.com/catalog/EN300-11787
+Cc1ccc(NC(=O)C=NO)cc1,EN300-05016,2-(N-hydroxyimino)-N-(4-methylphenyl)acetamide,https://www.enaminestore.com/catalog/EN300-05016
+OB(O)c1ccc(Br)cc1,EN300-74359,(4-bromophenyl)boronic acid,https://www.enaminestore.com/catalog/EN300-74359
+O=C(O)CC(Br)C(=O)c1ccc(Cl)cc1,EN300-04601,3-bromo-4-(4-chlorophenyl)-4-oxobutanoic acid,https://www.enaminestore.com/catalog/EN300-04601
+CCOc1cc(C=C2NC(=S)N(c3ccc(OC(F)F)cc3)C2=O)ccc1O,EN300-08212,3-[4-(difluoromethoxy)phenyl]-5-[(3-ethoxy-4-hydroxyphenyl)methylidene]-2-sulfanylideneimidazolidin-4-one,https://www.enaminestore.com/catalog/EN300-08212
+Cc1ccc(N2C(=O)CSC2=S)cc1,EN300-07510,"3-(4-methylphenyl)-2-sulfanylidene-1,3-thiazolidin-4-one",https://www.enaminestore.com/catalog/EN300-07510
+O=C1C=CC(=O)N1c1ccccc1Sc1ccc(Cl)cc1,EN300-03899,"1-{2-[(4-chlorophenyl)sulfanyl]phenyl}-2,5-dihydro-1H-pyrrole-2,5-dione",https://www.enaminestore.com/catalog/EN300-03899
+CCOC(=O)c1oc2ccc(OCC)cc2c1C,EN300-05034,ethyl 5-ethoxy-3-methyl-1-benzofuran-2-carboxylate,https://www.enaminestore.com/catalog/EN300-05034
+CCOC(=O)c1oc2ccc(Br)cc2c1C,EN300-05036,ethyl 5-bromo-3-methyl-1-benzofuran-2-carboxylate,https://www.enaminestore.com/catalog/EN300-05036
+CNCCCc1n[nH]c(N)c1C#N,EN300-08532,5-amino-3-[3-(methylamino)propyl]-1H-pyrazole-4-carbonitrile,https://www.enaminestore.com/catalog/EN300-08532
+CCCCCC=O,EN300-33498,hexanal,https://www.enaminestore.com/catalog/EN300-33498
+Oc1cccnc1Cl,EN300-80718,2-chloropyridin-3-ol,https://www.enaminestore.com/catalog/EN300-80718
+NC(CC(=O)NC1CCCCC1)=NO,EN300-05777,N-cyclohexyl-2-(N'-hydroxycarbamimidoyl)acetamide,https://www.enaminestore.com/catalog/EN300-05777
+CC(C)CNc1c(N)n(CC(C)C)c(=O)[nH]c1=O,EN300-05784,"6-amino-1-(2-methylpropyl)-5-[(2-methylpropyl)amino]-1,2,3,4-tetrahydropyrimidine-2,4-dione",https://www.enaminestore.com/catalog/EN300-05784
+CC1(C)CC(C=Cc2ccccn2)=Cc2c1sc(N)c2C#N,EN300-05480,"2-amino-7,7-dimethyl-5-[2-(pyridin-2-yl)ethenyl]-6,7-dihydro-1-benzothiophene-3-carbonitrile",https://www.enaminestore.com/catalog/EN300-05480
+O=C(O)CCc1nc2ccccc2n1-c1ccccc1,EN300-00927,"3-(1-phenyl-1H-1,3-benzodiazol-2-yl)propanoic acid",https://www.enaminestore.com/catalog/EN300-00927
+CCCCn1c(N)c(NC)c(=O)[nH]c1=O,EN300-04506,"6-amino-1-butyl-5-(methylamino)-1,2,3,4-tetrahydropyrimidine-2,4-dione",https://www.enaminestore.com/catalog/EN300-04506
+O=C(CCl)NC(=O)NC1CCCC1,EN300-05515,3-(2-chloroacetyl)-1-cyclopentylurea,https://www.enaminestore.com/catalog/EN300-05515
+Cc1cc(N)n(-c2nc3ccccc3[nH]2)n1,EN300-02450,"1-(1H-1,3-benzodiazol-2-yl)-3-methyl-1H-pyrazol-5-amine",https://www.enaminestore.com/catalog/EN300-02450
+COCC(C)NC(N)=S,EN300-05472,(1-methoxypropan-2-yl)thiourea,https://www.enaminestore.com/catalog/EN300-05472
+O=C(O)CCc1nc2ccccc2c(=O)[nH]1,EN300-04546,"3-(4-oxo-3,4-dihydroquinazolin-2-yl)propanoic acid",https://www.enaminestore.com/catalog/EN300-04546
+CC(C)c1cccc(B(O)O)c1,EN300-65676,[3-(propan-2-yl)phenyl]boronic acid,https://www.enaminestore.com/catalog/EN300-65676
+CC(C)c1ccc(S(=O)(=O)Cl)cc1,EN300-05198,4-(propan-2-yl)benzene-1-sulfonyl chloride,https://www.enaminestore.com/catalog/EN300-05198
+Cl.N=C(N)c1ccccn1,EN300-44861,pyridine-2-carboximidamide hydrochloride,https://www.enaminestore.com/catalog/EN300-44861
+COc1ccc(NCCC(=O)O)cc1,EN300-04879,3-[(4-methoxyphenyl)amino]propanoic acid,https://www.enaminestore.com/catalog/EN300-04879
+O=C(Cc1ccccc1)Nc1ccccc1C(=O)O,EN300-08313,2-(2-phenylacetamido)benzoic acid,https://www.enaminestore.com/catalog/EN300-08313
+Cc1ccc(C)c(NC2=NC(C)(C)CS2)c1,EN300-02802,"N-(2,5-dimethylphenyl)-4,4-dimethyl-4,5-dihydro-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02802
+O=C(O)Cc1cccc(Cl)c1,EN300-64105,2-(3-chlorophenyl)acetic acid,https://www.enaminestore.com/catalog/EN300-64105
+CN1C(=O)c2ccc(N)cc2C1=O,EN300-02523,"5-amino-2-methyl-2,3-dihydro-1H-isoindole-1,3-dione",https://www.enaminestore.com/catalog/EN300-02523
+CCN1CCCC1CN,EN300-21034,1-(1-ethylpyrrolidin-2-yl)methanamine,https://www.enaminestore.com/catalog/EN300-21034
+Cc1ccc(-c2csc3nc(CCl)[nH]c(=O)c23)cc1,EN300-06195,"2-(chloromethyl)-5-(4-methylphenyl)-3H,4H-thieno[2,3-d]pyrimidin-4-one",https://www.enaminestore.com/catalog/EN300-06195
+O=c1cc(CCl)occ1O,EN300-06838,2-(chloromethyl)-5-hydroxy-4H-pyran-4-one,https://www.enaminestore.com/catalog/EN300-06838
+C=CCNc1nc(-c2ccc(Cl)cc2)cs1,EN300-05818,"4-(4-chlorophenyl)-N-(prop-2-en-1-yl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-05818
+CCOC=C1C(=O)N(c2cccc(S(=O)(=O)N(CC)CC)c2)C(=O)c2ccccc21,EN300-04937,"3-[4-(ethoxymethylidene)-1,3-dioxo-1,2,3,4-tetrahydroisoquinolin-2-yl]-N,N-diethylbenzene-1-sulfonamide",https://www.enaminestore.com/catalog/EN300-04937
+CCOC=C1C(=O)N(c2ccc(C(C)C)cc2)C(=O)c2ccccc21,EN300-04938,"4-(ethoxymethylidene)-2-[4-(propan-2-yl)phenyl]-1,2,3,4-tetrahydroisoquinoline-1,3-dione",https://www.enaminestore.com/catalog/EN300-04938
+O=C(O)c1ccc2c(=O)[nH]c(CCl)nc2c1,EN300-06922,"2-(chloromethyl)-4-oxo-3,4-dihydroquinazoline-7-carboxylic acid",https://www.enaminestore.com/catalog/EN300-06922
+Nc1sc2c(c1C(=O)NCC1CCCO1)CCCC2,EN300-05177,"2-amino-N-[(oxolan-2-yl)methyl]-4,5,6,7-tetrahydro-1-benzothiophene-3-carboxamide",https://www.enaminestore.com/catalog/EN300-05177
+CC(NS(=O)(=O)c1cc(C(F)(F)F)ccc1Cl)C(=O)O,EN300-07517,2-[2-chloro-5-(trifluoromethyl)benzenesulfonamido]propanoic acid,https://www.enaminestore.com/catalog/EN300-07517
+Cc1c(C(=O)O)oc2c(Cl)cccc12,EN300-04920,7-chloro-3-methyl-1-benzofuran-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-04920
+Cc1cc(NCCC#N)ccc1Cl,EN300-06861,3-[(4-chloro-3-methylphenyl)amino]propanenitrile,https://www.enaminestore.com/catalog/EN300-06861
+CC1(C)CC2CC(C)(CN2S(=O)(=O)c2cccc(C(=O)O)c2)C1,EN300-00304,"3-({1,3,3-trimethyl-6-azabicyclo[3.2.1]octan-6-yl}sulfonyl)benzoic acid",https://www.enaminestore.com/catalog/EN300-00304
+Cc1nn(C2CCS(=O)(=O)C2)c2nc(C3CC3)cc(C(=O)O)c12,EN300-12107,"6-cyclopropyl-1-(1,1-dioxo-1lambda6-thiolan-3-yl)-3-methyl-1H-pyrazolo[3,4-b]pyridine-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-12107
+CC(C)(C)c1ccc(C(=O)NN2C(=O)CSC2=S)cc1,EN300-01489,"4-tert-butyl-N-(4-oxo-2-sulfanylidene-1,3-thiazolidin-3-yl)benzamide",https://www.enaminestore.com/catalog/EN300-01489
+CC(C)(C)OC(=O)N1CCCC(C(=O)O)C1,EN300-21759,1-[(tert-butoxy)carbonyl]piperidine-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-21759
+COC(=O)C(C#N)c1nc2ccccc2nc1Cl,EN300-14696,methyl 2-(3-chloroquinoxalin-2-yl)-2-cyanoacetate,https://www.enaminestore.com/catalog/EN300-14696
+O=C(Nc1nc(-c2ccc(Cl)c(Cl)c2)cs1)C(Cl)c1ccccc1,EN300-02078,"2-chloro-N-[4-(3,4-dichlorophenyl)-1,3-thiazol-2-yl]-2-phenylacetamide",https://www.enaminestore.com/catalog/EN300-02078
+COc1cccc(-c2nc(C=O)cs2)c1,EN300-09775,"2-(3-methoxyphenyl)-1,3-thiazole-4-carbaldehyde",https://www.enaminestore.com/catalog/EN300-09775
+CNCc1ccc(N2CCCC2)cc1,EN300-15146,methyl({[4-(pyrrolidin-1-yl)phenyl]methyl})amine,https://www.enaminestore.com/catalog/EN300-15146
+Cc1nc2ccccc2n1CC(=O)NN,EN300-03831,"2-(2-methyl-1H-1,3-benzodiazol-1-yl)acetohydrazide",https://www.enaminestore.com/catalog/EN300-03831
+O=C(CCl)c1ccc(NC(=O)c2ccccc2)cc1,EN300-13170,N-[4-(2-chloroacetyl)phenyl]benzamide,https://www.enaminestore.com/catalog/EN300-13170
+CC(C)NS(=O)(=O)c1ccccc1C(=O)O,EN300-11040,2-[(propan-2-yl)sulfamoyl]benzoic acid,https://www.enaminestore.com/catalog/EN300-11040
+CC(C)OC(=O)c1cccc(-c2nn[nH]n2)c1,EN300-14367,"propan-2-yl 3-(2H-1,2,3,4-tetrazol-5-yl)benzoate",https://www.enaminestore.com/catalog/EN300-14367
+Cl.NCCCn1nc2ccccn2c1=O,EN300-50257,"2-(3-aminopropyl)-2H,3H-[1,2,4]triazolo[4,3-a]pyridin-3-one hydrochloride",https://www.enaminestore.com/catalog/EN300-50257
+O=C(O)c1cc(S(=O)(=O)N2CCCC2)ccc1Cl,EN300-10570,2-chloro-5-(pyrrolidine-1-sulfonyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-10570
+O=C(O)CCNC(=O)NC12CC3CC(CC(C3)C1)C2,EN300-07551,3-{[(adamantan-1-yl)carbamoyl]amino}propanoic acid,https://www.enaminestore.com/catalog/EN300-07551
+COc1cccc(C2(C)NC(=O)N(N)C2=O)c1,EN300-09045,"3-amino-5-(3-methoxyphenyl)-5-methylimidazolidine-2,4-dione",https://www.enaminestore.com/catalog/EN300-09045
+CCOC(=O)c1cn[nH]c1,EN300-93017,ethyl 1H-pyrazole-4-carboxylate,https://www.enaminestore.com/catalog/EN300-93017
+CN(CC(=O)O)S(=O)(=O)c1ccc2ccccc2c1,EN300-12311,2-(N-methylnaphthalene-2-sulfonamido)acetic acid,https://www.enaminestore.com/catalog/EN300-12311
+CNCc1ccc(OC)cc1,EN300-06567,[(4-methoxyphenyl)methyl](methyl)amine,https://www.enaminestore.com/catalog/EN300-06567
+ClCC1CN(Cc2ccccc2)CCO1,EN300-07729,4-benzyl-2-(chloromethyl)morpholine,https://www.enaminestore.com/catalog/EN300-07729
+O=C(O)c1cc(Cl)ccc1F,EN300-21731,5-chloro-2-fluorobenzoic acid,https://www.enaminestore.com/catalog/EN300-21731
+Cc1cc(C(=O)CCl)c(C)n1-c1ccccc1,EN300-08105,"2-chloro-1-(2,5-dimethyl-1-phenyl-1H-pyrrol-3-yl)ethan-1-one",https://www.enaminestore.com/catalog/EN300-08105
+O=C(O)/C=C/S(=O)(=O)c1ccccc1,EN300-14654,(2E)-3-(benzenesulfonyl)prop-2-enoic acid,https://www.enaminestore.com/catalog/EN300-14654
+Cc1ccoc1C(=O)O,EN300-23429,3-methylfuran-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-23429
+C=CCc1cc(C(=O)O)cc(OC)c1OC,EN300-23872,"3,4-dimethoxy-5-(prop-2-en-1-yl)benzoic acid",https://www.enaminestore.com/catalog/EN300-23872
+ClCc1nc(-c2ccsc2)no1,EN300-14521,"5-(chloromethyl)-3-(thiophen-3-yl)-1,2,4-oxadiazole",https://www.enaminestore.com/catalog/EN300-14521
+O=C(O)c1ccc(CCl)cc1,EN300-15139,4-(chloromethyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-15139
+Clc1ccccc1OCC1CO1,EN300-22422,2-[(2-chlorophenoxy)methyl]oxirane,https://www.enaminestore.com/catalog/EN300-22422
+CCOC(=O)CC1=Nn2c(C)nnc2SC1,EN300-05832,"ethyl 2-{3-methyl-7H-[1,2,4]triazolo[3,4-b][1,3,4]thiadiazin-6-yl}acetate",https://www.enaminestore.com/catalog/EN300-05832
+CCCOc1ccccc1NC(=O)CCl,EN300-24576,2-chloro-N-(2-propoxyphenyl)acetamide,https://www.enaminestore.com/catalog/EN300-24576
+COc1cc(NC(=O)CCl)c(OC)cc1Cl,EN300-24578,"2-chloro-N-(4-chloro-2,5-dimethoxyphenyl)acetamide",https://www.enaminestore.com/catalog/EN300-24578
+O=C(CCl)NCCc1ccc(OC(F)F)cc1,EN300-23260,2-chloro-N-{2-[4-(difluoromethoxy)phenyl]ethyl}acetamide,https://www.enaminestore.com/catalog/EN300-23260
+CN1CCC(N)CC1,EN300-12909,1-methylpiperidin-4-amine,https://www.enaminestore.com/catalog/EN300-12909
+CCOC(=O)C=C1SCC(=O)N1CC(=O)c1ccccc1,EN300-07027,"ethyl 2-[4-oxo-3-(2-oxo-2-phenylethyl)-1,3-thiazolidin-2-ylidene]acetate",https://www.enaminestore.com/catalog/EN300-07027
+O=C(O)c1cc(-c2cccc(Cl)c2)[nH]n1,EN300-36178,5-(3-chlorophenyl)-1H-pyrazole-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-36178
+COC(=O)C(N)c1ccccc1.Cl,EN300-61162,methyl 2-amino-2-phenylacetate hydrochloride,https://www.enaminestore.com/catalog/EN300-61162
+OB(O)c1cnc2ccccc2c1,EN300-31679,(quinolin-3-yl)boronic acid,https://www.enaminestore.com/catalog/EN300-31679
+NC(=O)CC(NC(=O)c1ccccc1Cl)C(=O)O,EN300-05094,3-carbamoyl-2-[(2-chlorophenyl)formamido]propanoic acid,https://www.enaminestore.com/catalog/EN300-05094
+CNCC(=O)Nc1c(Cl)cccc1Cl.Cl,EN300-09053,"N-(2,6-dichlorophenyl)-2-(methylamino)acetamide hydrochloride",https://www.enaminestore.com/catalog/EN300-09053
+N#Cc1cccc(N=C=O)c1,EN300-36951,3-isocyanatobenzonitrile,https://www.enaminestore.com/catalog/EN300-36951
+CC(=O)c1cccc(C(=O)O)c1,EN300-86148,3-acetylbenzoic acid,https://www.enaminestore.com/catalog/EN300-86148
+NNC1=NS(=O)(=O)c2ccccc21,EN300-31674,"3-hydrazinyl-1lambda6,2-benzothiazole-1,1-dione",https://www.enaminestore.com/catalog/EN300-31674
+CNCc1ccc(-c2ccc(Cl)cc2)o1.Cl,EN300-12040,{[5-(4-chlorophenyl)furan-2-yl]methyl}(methyl)amine hydrochloride,https://www.enaminestore.com/catalog/EN300-12040
+COc1cc(C(=O)O)ccc1OCC(C)C,EN300-04350,3-methoxy-4-(2-methylpropoxy)benzoic acid,https://www.enaminestore.com/catalog/EN300-04350
+CCC(C)C(N)C(=O)OC.Cl,EN300-07772,methyl 2-amino-3-methylpentanoate hydrochloride,https://www.enaminestore.com/catalog/EN300-07772
+O=C(O)c1cccc(F)c1Cl,EN300-84945,2-chloro-3-fluorobenzoic acid,https://www.enaminestore.com/catalog/EN300-84945
+O=[N+]([O-])c1cc(S(=O)(=O)C(F)F)ccc1Cl,EN300-73641,1-chloro-4-difluoromethanesulfonyl-2-nitrobenzene,https://www.enaminestore.com/catalog/EN300-73641
+O=S(=O)(Cl)c1ccc(F)c(C(F)(F)F)c1,EN300-54679,4-fluoro-3-(trifluoromethyl)benzene-1-sulfonyl chloride,https://www.enaminestore.com/catalog/EN300-54679
+NCc1c(F)cccc1Cl,EN300-33074,1-(2-chloro-6-fluorophenyl)methanamine,https://www.enaminestore.com/catalog/EN300-33074
+COC(=O)CCN.Cl,EN300-08798,methyl 3-aminopropanoate hydrochloride,https://www.enaminestore.com/catalog/EN300-08798
+NC(CCO)c1ccccc1,EN300-39414,3-amino-3-phenylpropan-1-ol,https://www.enaminestore.com/catalog/EN300-39414
+O=Cc1ccnc2ccccc12,EN300-72982,quinoline-4-carbaldehyde,https://www.enaminestore.com/catalog/EN300-72982
+Nc1ccc(Cn2cncn2)cc1,EN300-30834,"4-[(1H-1,2,4-triazol-1-yl)methyl]aniline",https://www.enaminestore.com/catalog/EN300-30834
+O=C(O)c1ccc2c(c1)CCO2,EN300-31557,"2,3-dihydro-1-benzofuran-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-31557
+N#CCc1csc2ccccc12,EN300-42832,2-(1-benzothiophen-3-yl)acetonitrile,https://www.enaminestore.com/catalog/EN300-42832
+Nc1ccc(Cl)nn1,EN300-66006,6-chloropyridazin-3-amine,https://www.enaminestore.com/catalog/EN300-66006
+Cc1cc(-c2csc(N)n2)c(C)n1-c1ccc(F)cc1.Cl,EN300-08650,"4-[1-(4-fluorophenyl)-2,5-dimethyl-1H-pyrrol-3-yl]-1,3-thiazol-2-amine hydrochloride",https://www.enaminestore.com/catalog/EN300-08650
+CC(C)(C)OC(=O)N1CSC[C@@H]1C(=O)O,EN300-30710,"(4S)-3-[(tert-butoxy)carbonyl]-1,3-thiazolidine-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-30710
+CC(C)C(NS(=O)(=O)c1ccccc1F)C(=O)O,EN300-08378,2-(2-fluorobenzenesulfonamido)-3-methylbutanoic acid,https://www.enaminestore.com/catalog/EN300-08378
+O=C(O)c1cscn1,EN300-67411,"1,3-thiazole-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-67411
+CCNCC(=O)NCc1ccc(F)cc1.Cl,EN300-06997,2-(ethylamino)-N-[(4-fluorophenyl)methyl]acetamide hydrochloride,https://www.enaminestore.com/catalog/EN300-06997
+COc1cc2cc(C(=O)O)[nH]c2cc1OC,EN300-80483,"5,6-dimethoxy-1H-indole-2-carboxylic acid",https://www.enaminestore.com/catalog/EN300-80483
+O=Cc1cc(F)ccc1O,EN300-50297,5-fluoro-2-hydroxybenzaldehyde,https://www.enaminestore.com/catalog/EN300-50297
+CC(O)C1CCCCC1,EN300-54234,1-cyclohexylethan-1-ol,https://www.enaminestore.com/catalog/EN300-54234
+CCOC(=O)C#N,EN300-49216,ethyl cyanoformate,https://www.enaminestore.com/catalog/EN300-49216
+NC1(C(=O)O)CCCC1,EN300-39470,1-aminocyclopentane-1-carboxylic acid,https://www.enaminestore.com/catalog/EN300-39470
+CCOC(=O)c1c(NC(=O)CCl)sc(C(=O)Nc2ccc(C)cc2C)c1C,EN300-06860,"ethyl 2-(2-chloroacetamido)-5-[(2,4-dimethylphenyl)carbamoyl]-4-methylthiophene-3-carboxylate",https://www.enaminestore.com/catalog/EN300-06860
+O=C1[N-]C(=O)c2ccccc21.[K+],EN300-31459,"potassium 1,3-dioxo-2,3-dihydro-1H-isoindol-2-ide",https://www.enaminestore.com/catalog/EN300-31459
+CC1CC1CO,EN300-54463,(2-methylcyclopropyl)methanol,https://www.enaminestore.com/catalog/EN300-54463
+Cc1ccc(Cn2nc(C)c(C(=O)O)c2Cl)cc1,EN300-07742,5-chloro-3-methyl-1-[(4-methylphenyl)methyl]-1H-pyrazole-4-carboxylic acid,https://www.enaminestore.com/catalog/EN300-07742
+Cc1ccc(-c2csc3nc(CCl)[nH]c(=O)c23)s1,EN300-13246,"2-(chloromethyl)-5-(5-methylthiophen-2-yl)-3H,4H-thieno[2,3-d]pyrimidin-4-one",https://www.enaminestore.com/catalog/EN300-13246
+CC1CC(C)CN(S(=O)(=O)c2ccc(Cl)c([N+](=O)[O-])c2)C1,EN300-09826,"1-(4-chloro-3-nitrobenzenesulfonyl)-3,5-dimethylpiperidine",https://www.enaminestore.com/catalog/EN300-09826
+Cc1cc(C)cc(-n2c(C)cc(C(=O)CCl)c2C)c1,EN300-09829,"2-chloro-1-[1-(3,5-dimethylphenyl)-2,5-dimethyl-1H-pyrrol-3-yl]ethan-1-one",https://www.enaminestore.com/catalog/EN300-09829
+O=C(O)CSCC(=O)Nc1ccc(Cl)cc1,EN300-09830,2-({[(4-chlorophenyl)carbamoyl]methyl}sulfanyl)acetic acid,https://www.enaminestore.com/catalog/EN300-09830
+CCOCCCN1C(=O)NC(=O)C1=O,EN300-10161,"1-(3-ethoxypropyl)imidazolidine-2,4,5-trione",https://www.enaminestore.com/catalog/EN300-10161
+O=C(O)CCNS(=O)(=O)c1ccc(F)cc1,EN300-10323,3-(4-fluorobenzenesulfonamido)propanoic acid,https://www.enaminestore.com/catalog/EN300-10323
+COc1ccc(C(NC(=O)CCl)c2ccccc2)cc1,EN300-12648,2-chloro-N-[(4-methoxyphenyl)(phenyl)methyl]acetamide,https://www.enaminestore.com/catalog/EN300-12648
+O=[N+]([O-])c1cccc(OCC2CO2)c1,EN300-12906,2-[(3-nitrophenoxy)methyl]oxirane,https://www.enaminestore.com/catalog/EN300-12906
+Cc1ccc(C2(C)NC(=O)N(CC(=O)O)C2=O)cc1,EN300-10961,"2-[4-methyl-4-(4-methylphenyl)-2,5-dioxoimidazolidin-1-yl]acetic acid",https://www.enaminestore.com/catalog/EN300-10961
+NC(=O)c1cnn(-c2cccc(Cl)c2)c1N,EN300-11484,5-amino-1-(3-chlorophenyl)-1H-pyrazole-4-carboxamide,https://www.enaminestore.com/catalog/EN300-11484
+Fc1ccccc1COCC1CO1,EN300-09424,2-{[(2-fluorophenyl)methoxy]methyl}oxirane,https://www.enaminestore.com/catalog/EN300-09424
+CC(Cc1cccs1)NCc1ccccc1,EN300-11266,benzyl[1-(thiophen-2-yl)propan-2-yl]amine,https://www.enaminestore.com/catalog/EN300-11266
+CSCCC(NC(=O)c1ccco1)C(=O)O,EN300-08792,2-[(furan-2-yl)formamido]-4-(methylsulfanyl)butanoic acid,https://www.enaminestore.com/catalog/EN300-08792
+Nc1nc2ccccc2nc1N1CCCC1,EN300-07262,3-(pyrrolidin-1-yl)quinoxalin-2-amine,https://www.enaminestore.com/catalog/EN300-07262
+Cc1cc(O)no1,EN300-07726,"5-methyl-1,2-oxazol-3-ol",https://www.enaminestore.com/catalog/EN300-07726
+Cc1ccc(SCCCl)cc1,EN300-07728,1-[(2-chloroethyl)sulfanyl]-4-methylbenzene,https://www.enaminestore.com/catalog/EN300-07728
+O=C(O)C(Cc1c[nH]c2ccccc12)NS(=O)(=O)c1cccc(Cl)c1Cl,EN300-08638,"2-(2,3-dichlorobenzenesulfonamido)-3-(1H-indol-3-yl)propanoic acid",https://www.enaminestore.com/catalog/EN300-08638
+Cc1ccc(OCC2CO2)c(C)c1,EN300-22503,"2-[(2,4-dimethylphenoxy)methyl]oxirane",https://www.enaminestore.com/catalog/EN300-22503
+Cc1ccc(-c2nnc(O)c3ccccc23)cc1,EN300-16088,4-(4-methylphenyl)phthalazin-1-ol,https://www.enaminestore.com/catalog/EN300-16088
+COc1cc(NC(=O)Cc2cccs2)c(C(=O)O)cc1OC,EN300-09982,"4,5-dimethoxy-2-[2-(thiophen-2-yl)acetamido]benzoic acid",https://www.enaminestore.com/catalog/EN300-09982
+O=C(O)CNS(=O)(=O)c1ccc(OC(F)(F)F)cc1,EN300-10637,2-[4-(trifluoromethoxy)benzenesulfonamido]acetic acid,https://www.enaminestore.com/catalog/EN300-10637
+Cc1cc(C)cc(OCC2CO2)c1,EN300-09802,"2-[(3,5-dimethylphenoxy)methyl]oxirane",https://www.enaminestore.com/catalog/EN300-09802
+NCc1ccccc1C(F)(F)F,EN300-34311,1-[2-(trifluoromethyl)phenyl]methanamine,https://www.enaminestore.com/catalog/EN300-34311
+O=C(O)c1cccc(F)c1F,EN300-61019,"2,3-difluorobenzoic acid",https://www.enaminestore.com/catalog/EN300-61019
+CC(NC(=O)NC(=O)CCl)C1CC2CCC1C2,EN300-10479,1-(1-{bicyclo[2.2.1]heptan-2-yl}ethyl)-3-(2-chloroacetyl)urea,https://www.enaminestore.com/catalog/EN300-10479
+CC(=O)N(c1nc(CCl)cs1)c1c(C)cc(C)cc1C,EN300-11083,"N-[4-(chloromethyl)-1,3-thiazol-2-yl]-N-(2,4,6-trimethylphenyl)acetamide",https://www.enaminestore.com/catalog/EN300-11083
+Cc1cc(C)cc(CCl)c1,EN300-22394,"1-(chloromethyl)-3,5-dimethylbenzene",https://www.enaminestore.com/catalog/EN300-22394
+O=C(O)Cc1ccccc1C(F)(F)F,EN300-70094,2-[2-(trifluoromethyl)phenyl]acetic acid,https://www.enaminestore.com/catalog/EN300-70094
+N#CCc1ccc(N)cc1,EN300-18737,2-(4-aminophenyl)acetonitrile,https://www.enaminestore.com/catalog/EN300-18737
+O=Cc1c(Sc2nc3ccccc3s2)nc2ccccn2c1=O,EN300-01126,"2-(1,3-benzothiazol-2-ylsulfanyl)-4-oxo-4H-pyrido[1,2-a]pyrimidine-3-carbaldehyde",https://www.enaminestore.com/catalog/EN300-01126
+COc1cc(NC(C)=O)c(C(=O)O)cc1OC,EN300-09740,"2-acetamido-4,5-dimethoxybenzoic acid",https://www.enaminestore.com/catalog/EN300-09740
+O=C1CC2(CCCC2)C(=O)O1,EN300-12180,"2-oxaspiro[4.4]nonane-1,3-dione",https://www.enaminestore.com/catalog/EN300-12180
+CC(C)(C)Nc1ccc(C(=O)O)cc1S(=O)(=O)NC(C)(C)C,EN300-10355,4-(tert-butylamino)-3-(tert-butylsulfamoyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-10355
+Cc1c(C(=O)O)sc(S(=O)(=O)N2CCNCC2)c1C(=O)O.Cl,EN300-10457,"3-methyl-5-(piperazine-1-sulfonyl)thiophene-2,4-dicarboxylic acid hydrochloride",https://www.enaminestore.com/catalog/EN300-10457
+Clc1nc(-c2cccnc2)nc2sc3c(c12)CCC3,EN300-07427,"12-chloro-10-(pyridin-3-yl)-7-thia-9,11-diazatricyclo[6.4.0.0,2,6]dodeca-1(12),2(6),8,10-tetraene",https://www.enaminestore.com/catalog/EN300-07427
+C=CCN(Cc1ccc(Br)s1)C(=O)CCl,EN300-22647,N-[(5-bromothiophen-2-yl)methyl]-2-chloro-N-(prop-2-en-1-yl)acetamide,https://www.enaminestore.com/catalog/EN300-22647
+C#CC(C)O,EN300-84568,but-3-yn-2-ol,https://www.enaminestore.com/catalog/EN300-84568
+Nc1cccc(CO)c1,EN300-21250,(3-aminophenyl)methanol,https://www.enaminestore.com/catalog/EN300-21250
+O=C(O)c1ccc(S(=O)(=O)Cl)cc1,EN300-17765,4-(chlorosulfonyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-17765
+O=Cc1c(-c2ccccc2)nc2sccn12,EN300-00979,"6-phenylimidazo[2,1-b][1,3]thiazole-5-carbaldehyde",https://www.enaminestore.com/catalog/EN300-00979
+COc1cc2nc(C)sc2cc1OC,EN300-50216,"5,6-dimethoxy-2-methyl-1,3-benzothiazole",https://www.enaminestore.com/catalog/EN300-50216
+CCOC(=O)c1c(-c2ccc(C)cc2C)csc1NC(=O)CCl,EN300-06362,"ethyl 2-(2-chloroacetamido)-4-(2,4-dimethylphenyl)thiophene-3-carboxylate",https://www.enaminestore.com/catalog/EN300-06362
+ClCc1nnc(-c2cccs2)o1,EN300-06802,"2-(chloromethyl)-5-(thiophen-2-yl)-1,3,4-oxadiazole",https://www.enaminestore.com/catalog/EN300-06802
+CCCN1C(=O)C(=NN)c2ccccc21,EN300-04780,"3-hydrazinylidene-1-propyl-2,3-dihydro-1H-indol-2-one",https://www.enaminestore.com/catalog/EN300-04780
+CC(C)Cn1c2c(c(=O)n(C)c1=O)C(=O)CN2,EN300-07203,"3-methyl-1-(2-methylpropyl)-1H,2H,3H,4H,5H,6H,7H-pyrrolo[2,3-d]pyrimidine-2,4,5-trione",https://www.enaminestore.com/catalog/EN300-07203
+Cc1ccc(N2CC(C(=O)O)CC2=O)cc1,EN300-06157,1-(4-methylphenyl)-5-oxopyrrolidine-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-06157
+CC(C)CNC(N)=O,EN300-17153,(2-methylpropyl)urea,https://www.enaminestore.com/catalog/EN300-17153
+Cc1nc(N2CCCCC2)sc1C(=O)c1ccc(Cl)c([N+](=O)[O-])c1,EN300-06934,"1-[5-(4-chloro-3-nitrobenzoyl)-4-methyl-1,3-thiazol-2-yl]piperidine",https://www.enaminestore.com/catalog/EN300-06934
+NNC(=O)c1cc2c(s1)CCCCCC2,EN300-08852,"4H,5H,6H,7H,8H,9H-cycloocta[b]thiophene-2-carbohydrazide",https://www.enaminestore.com/catalog/EN300-08852
+CC(C)C(C)N,EN300-20873,3-methylbutan-2-amine,https://www.enaminestore.com/catalog/EN300-20873
+CC(C)(C)C1CCc2c(sc(N)c2C#N)C1,EN300-10306,"2-amino-6-tert-butyl-4,5,6,7-tetrahydro-1-benzothiophene-3-carbonitrile",https://www.enaminestore.com/catalog/EN300-10306
+ClCc1csc(NN=Cc2cccs2)n1,EN300-09867,"4-(chloromethyl)-2-{2-[(thiophen-2-yl)methylidene]hydrazin-1-yl}-1,3-thiazole",https://www.enaminestore.com/catalog/EN300-09867
+O=C(O)c1nccc2ccccc12,EN300-55949,isoquinoline-1-carboxylic acid,https://www.enaminestore.com/catalog/EN300-55949
+NNC(=O)c1ccc(Cl)c(S(N)(=O)=O)c1,EN300-06935,2-chloro-5-(hydrazinecarbonyl)benzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-06935
+COCCCNC(N)=O,EN300-09359,(3-methoxypropyl)urea,https://www.enaminestore.com/catalog/EN300-09359
+CS(=O)(=O)c1ccc(C(=O)O)cc1,EN300-10949,4-methanesulfonylbenzoic acid,https://www.enaminestore.com/catalog/EN300-10949
+CCS(=O)(=O)N1Cc2ccccc2CC1C(=O)O,EN300-04574,"2-(ethanesulfonyl)-1,2,3,4-tetrahydroisoquinoline-3-carboxylic acid",https://www.enaminestore.com/catalog/EN300-04574
+Clc1nc(-c2cccnc2)nc2ccccc12,EN300-08933,4-chloro-2-(pyridin-3-yl)quinazoline,https://www.enaminestore.com/catalog/EN300-08933
+CCN(CC)CCC(=O)NN,EN300-09537,3-(diethylamino)propanehydrazide,https://www.enaminestore.com/catalog/EN300-09537
+Fc1ccc(-c2csc(NCc3ccccc3)n2)cc1,EN300-06611,"N-benzyl-4-(4-fluorophenyl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-06611
+O=C(O)CCNS(=O)(=O)c1ccccc1C(F)(F)F,EN300-08412,3-[2-(trifluoromethyl)benzenesulfonamido]propanoic acid,https://www.enaminestore.com/catalog/EN300-08412
+CC(NS(=O)(=O)c1ccccc1)C(=O)O,EN300-08414,2-benzenesulfonamidopropanoic acid,https://www.enaminestore.com/catalog/EN300-08414
+COc1ccc(Nc2ncnc(N)n2)cc1,EN300-06847,"N2-(4-methoxyphenyl)-1,3,5-triazine-2,4-diamine",https://www.enaminestore.com/catalog/EN300-06847
+O=c1c2cc(Cl)cc(Cl)c2nc2n1CCC2,EN300-06850,"5,7-dichloro-1H,2H,3H,9H-pyrrolo[2,1-b]quinazolin-9-one",https://www.enaminestore.com/catalog/EN300-06850
+CC(=O)c1ccc(OCC(=O)N2CCCC2)cc1,EN300-07248,2-(4-acetylphenoxy)-1-(pyrrolidin-1-yl)ethan-1-one,https://www.enaminestore.com/catalog/EN300-07248
+CC(=O)Nc1ccc(S(=O)(=O)N(C)CC(=O)O)cc1,EN300-06154,2-(N-methyl-4-acetamidobenzenesulfonamido)acetic acid,https://www.enaminestore.com/catalog/EN300-06154
+Cc1ccc(S(=O)(=O)N2CCOCC2)cc1NC(=O)CNCc1ccccc1Cl.O=C(O)C(=O)O,EN300-06767,2-{[(2-chlorophenyl)methyl]amino}-N-[2-methyl-5-(morpholine-4-sulfonyl)phenyl]acetamide; oxalic acid,https://www.enaminestore.com/catalog/EN300-06767
+Cc1cccc2c1NC(=O)C2=NO,EN300-06919,"3-(hydroxyimino)-7-methyl-2,3-dihydro-1H-indol-2-one",https://www.enaminestore.com/catalog/EN300-06919
+Cc1csc(Sc2ccc(C(=O)O)cc2[N+](=O)[O-])n1,EN300-06150,"4-[(4-methyl-1,3-thiazol-2-yl)sulfanyl]-3-nitrobenzoic acid",https://www.enaminestore.com/catalog/EN300-06150
+O=C(c1ccc(Cl)cc1)N1CCCCC(Cl)C1=O,EN300-08949,3-chloro-1-(4-chlorobenzoyl)azepan-2-one,https://www.enaminestore.com/catalog/EN300-08949
+Cc1oncc1C(=O)Nc1ccc(C(=O)O)cc1,EN300-50014,"4-(5-methyl-1,2-oxazole-4-amido)benzoic acid",https://www.enaminestore.com/catalog/EN300-50014
+CCN(CC)C(=C(C#N)C(=O)CCl)c1ccc(F)cc1,EN300-09050,4-chloro-2-[(diethylamino)(4-fluorophenyl)methylidene]-3-oxobutanenitrile,https://www.enaminestore.com/catalog/EN300-09050
+CCOc1ccc(NC(=O)c2ccccc2NC(=O)CCl)cc1,EN300-05896,2-(2-chloroacetamido)-N-(4-ethoxyphenyl)benzamide,https://www.enaminestore.com/catalog/EN300-05896
+Cc1cc(C)c(-c2cc(NC(=O)CCl)n(-c3ccccc3)n2)cc1C,EN300-06118,"2-chloro-N-[1-phenyl-3-(2,4,5-trimethylphenyl)-1H-pyrazol-5-yl]acetamide",https://www.enaminestore.com/catalog/EN300-06118
+CC(C)CNC(=O)c1ccccc1N,EN300-09443,2-amino-N-(2-methylpropyl)benzamide,https://www.enaminestore.com/catalog/EN300-09443
+COc1ccc(C(C)=O)cc1CN1CCCCC1,EN300-09594,1-{4-methoxy-3-[(piperidin-1-yl)methyl]phenyl}ethan-1-one,https://www.enaminestore.com/catalog/EN300-09594
+CCc1ccc(Cl)c(CC)c1NC(=O)CCCCl,EN300-06675,"4-chloro-N-(3-chloro-2,6-diethylphenyl)butanamide",https://www.enaminestore.com/catalog/EN300-06675
+CSCC#N,EN300-64959,2-(methylsulfanyl)acetonitrile,https://www.enaminestore.com/catalog/EN300-64959
+Cc1ccc(N2C(=O)C(=Cc3ccc4c(c3)OCO4)NC2=S)cc1,EN300-04629,"5-[(1,3-dioxaindan-5-yl)methylidene]-3-(4-methylphenyl)-2-sulfanylideneimidazolidin-4-one",https://www.enaminestore.com/catalog/EN300-04629
+O=Cc1ccc(OC(F)(F)F)cc1,EN300-24307,4-(trifluoromethoxy)benzaldehyde,https://www.enaminestore.com/catalog/EN300-24307
+N#CCCn1cc(C=C(C#N)C(=O)O)c(-c2ccc(F)c(F)c2)n1,EN300-10666,"2-cyano-3-[1-(2-cyanoethyl)-3-(3,4-difluorophenyl)-1H-pyrazol-4-yl]prop-2-enoic acid",https://www.enaminestore.com/catalog/EN300-10666
+O=C(O)c1sccc1-n1cccc1,EN300-26647,3-(1H-pyrrol-1-yl)thiophene-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-26647
+Cc1cc(-c2cc(C(=O)O)c3cnn(C(C)C)c3n2)c(C)s1,EN300-25507,"6-(2,5-dimethylthiophen-3-yl)-1-(propan-2-yl)-1H-pyrazolo[3,4-b]pyridine-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-25507
+N#Cc1cccc(C=O)c1,EN300-25513,3-formylbenzonitrile,https://www.enaminestore.com/catalog/EN300-25513
+Cl.O=C(O)Cc1ccccn1,EN300-34537,2-(pyridin-2-yl)acetic acid hydrochloride,https://www.enaminestore.com/catalog/EN300-34537
+Cc1cc(CC(=O)NN)[nH]n1,EN300-24086,2-(3-methyl-1H-pyrazol-5-yl)acetohydrazide,https://www.enaminestore.com/catalog/EN300-24086
+ClCc1nc(-c2ccc(Cl)cc2)no1,EN300-12618,"5-(chloromethyl)-3-(4-chlorophenyl)-1,2,4-oxadiazole",https://www.enaminestore.com/catalog/EN300-12618
+O=C(O)c1cccc(S(=O)(=O)NCc2cccnc2)c1,EN300-07878,3-{[(pyridin-3-yl)methyl]sulfamoyl}benzoic acid,https://www.enaminestore.com/catalog/EN300-07878
+Nc1[nH]nc2ncccc12,EN300-26128,"2H-pyrazolo[3,4-b]pyridin-3-amine",https://www.enaminestore.com/catalog/EN300-26128
+C1CN(CC2CO2)CCO1,EN300-13559,4-[(oxiran-2-yl)methyl]morpholine,https://www.enaminestore.com/catalog/EN300-13559
+NCc1noc(-c2ccccc2)n1,EN300-24436,"1-(5-phenyl-1,2,4-oxadiazol-3-yl)methanamine",https://www.enaminestore.com/catalog/EN300-24436
+N#Cc1ccc(CCC(=O)O)cc1,EN300-24305,3-(4-cyanophenyl)propanoic acid,https://www.enaminestore.com/catalog/EN300-24305
+COc1ccc(C2(C)NC(=O)N(CC(=O)O)C2=O)cc1,EN300-10640,"2-[4-(4-methoxyphenyl)-4-methyl-2,5-dioxoimidazolidin-1-yl]acetic acid",https://www.enaminestore.com/catalog/EN300-10640
+NCc1ccc(N2CCOCC2)nc1,EN300-25732,1-[6-(morpholin-4-yl)pyridin-3-yl]methanamine,https://www.enaminestore.com/catalog/EN300-25732
+O=C(O)c1cccc(N2C(=O)c3ccccc3C2=O)c1,EN300-04042,"3-(1,3-dioxo-2,3-dihydro-1H-isoindol-2-yl)benzoic acid",https://www.enaminestore.com/catalog/EN300-04042
+Cc1nc2cc(F)ccc2cc1C(=O)O,EN300-07134,7-fluoro-2-methylquinoline-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-07134
+O=C(Nc1ccc(O)cc1)c1ccccc1,EN300-08969,N-(4-hydroxyphenyl)benzamide,https://www.enaminestore.com/catalog/EN300-08969
+N#Cc1ccc(C(=O)N2CCOCC2)cc1,EN300-26753,4-(morpholine-4-carbonyl)benzonitrile,https://www.enaminestore.com/catalog/EN300-26753
+Cc1cc2ncc([N+](=O)[O-])cn2n1,EN300-26796,"2-methyl-6-nitropyrazolo[1,5-a]pyrimidine",https://www.enaminestore.com/catalog/EN300-26796
+COc1cc(OC)c(NS(=O)(=O)c2cccc(C(=O)O)c2)cc1Cl,EN300-00480,"3-[(5-chloro-2,4-dimethoxyphenyl)sulfamoyl]benzoic acid",https://www.enaminestore.com/catalog/EN300-00480
+COc1ccc2nc(NCc3ccc(Cl)cc3Cl)sc2c1,EN300-12142,"N-[(2,4-dichlorophenyl)methyl]-6-methoxy-1,3-benzothiazol-2-amine",https://www.enaminestore.com/catalog/EN300-12142
+O=C1c2ccccc2C(=O)N1CCc1nn[nH]n1,EN300-13536,"2-[2-(2H-1,2,3,4-tetrazol-5-yl)ethyl]-2,3-dihydro-1H-isoindole-1,3-dione",https://www.enaminestore.com/catalog/EN300-13536
+O=[N+]([O-])c1ccc(C=CBr)o1,EN300-25762,2-(2-bromoethenyl)-5-nitrofuran,https://www.enaminestore.com/catalog/EN300-25762
+COc1ccnc(Cl)n1,EN300-15259,2-chloro-4-methoxypyrimidine,https://www.enaminestore.com/catalog/EN300-15259
+Nc1ccc(Cn2ccnc2)cc1,EN300-12445,4-[(1H-imidazol-1-yl)methyl]aniline,https://www.enaminestore.com/catalog/EN300-12445
+O=C(CCl)N(Cc1ccccc1)c1nc(-c2ccc(Cl)cc2)cs1,EN300-01878,"N-benzyl-2-chloro-N-[4-(4-chlorophenyl)-1,3-thiazol-2-yl]acetamide",https://www.enaminestore.com/catalog/EN300-01878
+CS(=O)(=O)c1nc2ccccc2s1,EN300-23757,"2-methanesulfonyl-1,3-benzothiazole",https://www.enaminestore.com/catalog/EN300-23757
+CC(SCC(=O)Nc1ccc(F)cc1)C(=O)O,EN300-10253,2-({[(4-fluorophenyl)carbamoyl]methyl}sulfanyl)propanoic acid,https://www.enaminestore.com/catalog/EN300-10253
+O=c1[nH]cnc2ccsc12,EN300-23988,"3H,4H-thieno[3,2-d]pyrimidin-4-one",https://www.enaminestore.com/catalog/EN300-23988
+Cl.FC(F)n1c(CCl)nc2ccccc21,EN300-26573,"2-(chloromethyl)-1-(difluoromethyl)-1H-1,3-benzodiazole hydrochloride",https://www.enaminestore.com/catalog/EN300-26573
+c1ccc(CN2CCNCC2)nc1,EN300-15440,1-[(pyridin-2-yl)methyl]piperazine,https://www.enaminestore.com/catalog/EN300-15440
+NC(=O)CCC(NS(=O)(=O)c1ccccc1C(F)(F)F)C(=O)O,EN300-10231,4-carbamoyl-2-[2-(trifluoromethyl)benzenesulfonamido]butanoic acid,https://www.enaminestore.com/catalog/EN300-10231
+O=C1NC(=S)NC(=O)C1C1CCS(=O)(=O)C1,EN300-15314,"5-(1,1-dioxo-1lambda6-thiolan-3-yl)-2-sulfanylidene-1,3-diazinane-4,6-dione",https://www.enaminestore.com/catalog/EN300-15314
+O=C(O)c1ccccc1NCCC1=CCCCC1,EN300-04724,2-{[2-(cyclohex-1-en-1-yl)ethyl]amino}benzoic acid,https://www.enaminestore.com/catalog/EN300-04724
+COCCn1c(C)cc(C(=O)CCl)c1C,EN300-08180,"2-chloro-1-[1-(2-methoxyethyl)-2,5-dimethyl-1H-pyrrol-3-yl]ethan-1-one",https://www.enaminestore.com/catalog/EN300-08180
+COc1cc(C(=O)O)cc2c1OC(C)C2,EN300-23857,"7-methoxy-2-methyl-2,3-dihydro-1-benzofuran-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-23857
+O=C1CCCCN1,EN300-24025,piperidin-2-one,https://www.enaminestore.com/catalog/EN300-24025
+CC(C)(C)OC(=O)NC(C)(C)C(=O)O,EN300-53415,2-{[(tert-butoxy)carbonyl]amino}-2-methylpropanoic acid,https://www.enaminestore.com/catalog/EN300-53415
+O=S(=O)(Cl)c1ccccc1-c1ccccc1,EN300-29809,"[1,1'-biphenyl]-2-sulfonyl chloride",https://www.enaminestore.com/catalog/EN300-29809
+O=C1COc2ccccc21,EN300-49168,"2,3-dihydro-1-benzofuran-3-one",https://www.enaminestore.com/catalog/EN300-49168
+Brc1cn[nH]c1,EN300-50991,4-bromo-1H-pyrazole,https://www.enaminestore.com/catalog/EN300-50991
+COc1ccc(C(C)N)cc1F,EN300-13892,1-(3-fluoro-4-methoxyphenyl)ethan-1-amine,https://www.enaminestore.com/catalog/EN300-13892
+Cc1ccc(C(=O)NCCN)cc1F,EN300-29601,N-(2-aminoethyl)-3-fluoro-4-methylbenzamide,https://www.enaminestore.com/catalog/EN300-29601
+Cl.O=c1nccc[nH]1,EN300-34914,"1,2-dihydropyrimidin-2-one hydrochloride",https://www.enaminestore.com/catalog/EN300-34914
+CC(NC(=O)OC(C)(C)C)C(=O)O,EN300-29800,2-{[(tert-butoxy)carbonyl]amino}propanoic acid,https://www.enaminestore.com/catalog/EN300-29800
+CCOC(=O)c1cccc(S(=O)(=O)Cl)c1,EN300-29869,ethyl 3-(chlorosulfonyl)benzoate,https://www.enaminestore.com/catalog/EN300-29869
+N#CCN1CCOCC1,EN300-43320,2-(morpholin-4-yl)acetonitrile,https://www.enaminestore.com/catalog/EN300-43320
+O=C(O)CSc1nnnn1C1CCCC1,EN300-25711,"2-[(1-cyclopentyl-1H-1,2,3,4-tetrazol-5-yl)sulfanyl]acetic acid",https://www.enaminestore.com/catalog/EN300-25711
+CNCC(=O)Nc1ccc(C)cc1.Cl,EN300-04373,2-(methylamino)-N-(4-methylphenyl)acetamide hydrochloride,https://www.enaminestore.com/catalog/EN300-04373
+O=S(=O)(Cl)c1cnc(Cl)s1,EN300-29708,"2-chloro-1,3-thiazole-5-sulfonyl chloride",https://www.enaminestore.com/catalog/EN300-29708
+Nc1cccc(C(F)(F)F)n1,EN300-61496,6-(trifluoromethyl)pyridin-2-amine,https://www.enaminestore.com/catalog/EN300-61496
+N#Cc1ccc(N)nc1,EN300-49194,6-aminopyridine-3-carbonitrile,https://www.enaminestore.com/catalog/EN300-49194
+Cn1nc(C(C)(C)C)cc1C(=O)O,EN300-41467,3-tert-butyl-1-methyl-1H-pyrazole-5-carboxylic acid,https://www.enaminestore.com/catalog/EN300-41467
+O=C(O)CC1CC1,EN300-35769,2-cyclopropylacetic acid,https://www.enaminestore.com/catalog/EN300-35769
+O=C(O)c1sc(-c2ccco2)nc1-c1ccccc1,EN300-29698,"2-(furan-2-yl)-4-phenyl-1,3-thiazole-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-29698
+N#Cc1ccccc1-c1ccc(Cn2cccn2)cc1,EN300-27218,"4'-[(1H-pyrazol-1-yl)methyl]-[1,1'-biphenyl]-2-carbonitrile",https://www.enaminestore.com/catalog/EN300-27218
+NCC1CC1,EN300-27211,1-cyclopropylmethanamine,https://www.enaminestore.com/catalog/EN300-27211
+Cc1ccc(S(=O)[O-])cc1.[Na+],EN300-30966,sodium 4-methylbenzene-1-sulfinate,https://www.enaminestore.com/catalog/EN300-30966
+O=S1(=O)C=Cc2ccccc21,EN300-42002,"1lambda6-benzothiophene-1,1-dione",https://www.enaminestore.com/catalog/EN300-42002
+Cc1nc(CCl)nc2ccccc12,EN300-29653,2-(chloromethyl)-4-methylquinazoline,https://www.enaminestore.com/catalog/EN300-29653
+CC(=O)c1c(C)cc(C)nc1C,EN300-26004,"1-(2,4,6-trimethylpyridin-3-yl)ethan-1-one",https://www.enaminestore.com/catalog/EN300-26004
+CN(Cc1c(F)cccc1Cl)S(=O)(=O)Cl,EN300-28270,N-[(2-chloro-6-fluorophenyl)methyl]-N-methylsulfamoyl chloride,https://www.enaminestore.com/catalog/EN300-28270
+Clc1ccc(C2=NCCN2)cc1,EN300-29599,"2-(4-chlorophenyl)-4,5-dihydro-1H-imidazole",https://www.enaminestore.com/catalog/EN300-29599
+O=C1c2ccccc2C(=O)N1CC1CO1,EN300-29534,"2-[(oxiran-2-yl)methyl]-2,3-dihydro-1H-isoindole-1,3-dione",https://www.enaminestore.com/catalog/EN300-29534
+NNc1ccc(S(=O)(=O)N2CCCCC2)cn1,EN300-09991,2-hydrazinyl-5-(piperidine-1-sulfonyl)pyridine,https://www.enaminestore.com/catalog/EN300-09991
+NNC(=O)c1cccc(S(=O)(=O)N2CCCCC2)c1,EN300-03576,3-(piperidine-1-sulfonyl)benzohydrazide,https://www.enaminestore.com/catalog/EN300-03576
+Brc1ccc2ncccc2c1,EN300-51894,6-bromoquinoline,https://www.enaminestore.com/catalog/EN300-51894
+COC(=O)CCC(=O)O,EN300-24949,4-methoxy-4-oxobutanoic acid,https://www.enaminestore.com/catalog/EN300-24949
+c1c[nH]nn1,EN300-27201,"1H-1,2,3-triazole",https://www.enaminestore.com/catalog/EN300-27201
+CC1(C)C2CCC1(C)C(N)C2.Cl,EN300-16950,"1,7,7-trimethylbicyclo[2.2.1]heptan-2-amine hydrochloride",https://www.enaminestore.com/catalog/EN300-16950
+Cc1cc([N+](=O)[O-])c(S(=O)(=O)[O-])cc1Cl.[Na+],EN300-26657,sodium 5-chloro-4-methyl-2-nitrobenzene-1-sulfonate,https://www.enaminestore.com/catalog/EN300-26657
+CN(C)c1nc(Cl)c(C=O)s1,EN300-24055,"4-chloro-2-(dimethylamino)-1,3-thiazole-5-carbaldehyde",https://www.enaminestore.com/catalog/EN300-24055
+CCN(CC)CCOc1ccccc1N,EN300-27472,2-[2-(diethylamino)ethoxy]aniline,https://www.enaminestore.com/catalog/EN300-27472
+NS(=O)(=O)c1cc(Cl)sc1Cl,EN300-27011,"2,5-dichlorothiophene-3-sulfonamide",https://www.enaminestore.com/catalog/EN300-27011
+O=S(=O)(Cl)c1cccc(S(=O)(=O)NC2CC2)c1,EN300-27178,3-(cyclopropylsulfamoyl)benzene-1-sulfonyl chloride,https://www.enaminestore.com/catalog/EN300-27178
+O=C(O)CC1Sc2ccc(Cl)cc2NC1=O,EN300-24700,"2-(6-chloro-3-oxo-3,4-dihydro-2H-1,4-benzothiazin-2-yl)acetic acid",https://www.enaminestore.com/catalog/EN300-24700
+COC(=O)c1ccc(N2CCCC2)c(N)c1,EN300-26843,methyl 3-amino-4-(pyrrolidin-1-yl)benzoate,https://www.enaminestore.com/catalog/EN300-26843
+CN(Cc1ccc(Br)cc1)C(=O)CCl,EN300-22355,N-[(4-bromophenyl)methyl]-2-chloro-N-methylacetamide,https://www.enaminestore.com/catalog/EN300-22355
+O=C(CBr)c1cc2cc(Cl)ccc2o1,EN300-14247,2-bromo-1-(5-chloro-1-benzofuran-2-yl)ethan-1-one,https://www.enaminestore.com/catalog/EN300-14247
+O=C(O)C1CC=CCC1c1nc2ccccc2s1,EN300-26963,"6-(1,3-benzothiazol-2-yl)cyclohex-3-ene-1-carboxylic acid",https://www.enaminestore.com/catalog/EN300-26963
+CC(C)(C)C(=O)NCCCC(=O)O,EN300-27463,"4-(2,2-dimethylpropanamido)butanoic acid",https://www.enaminestore.com/catalog/EN300-27463
+COc1ccc(C(NC(=O)CCl)C2CC2)cc1,EN300-28315,2-chloro-N-[cyclopropyl(4-methoxyphenyl)methyl]acetamide,https://www.enaminestore.com/catalog/EN300-28315
+COC(=O)C1CCN(S(N)(=O)=O)CC1,EN300-28923,methyl 1-sulfamoylpiperidine-4-carboxylate,https://www.enaminestore.com/catalog/EN300-28923
+Nc1cccc(OC(F)(F)F)c1,EN300-28930,3-(trifluoromethoxy)aniline,https://www.enaminestore.com/catalog/EN300-28930
+O=C(CCl)N1CCCC1c1cccs1,EN300-22653,2-chloro-1-[2-(thiophen-2-yl)pyrrolidin-1-yl]ethan-1-one,https://www.enaminestore.com/catalog/EN300-22653
+Nc1cnc2ccccc2c1,EN300-26923,quinolin-3-amine,https://www.enaminestore.com/catalog/EN300-26923
+O=C1CCCN1CCl,EN300-27821,1-(chloromethyl)pyrrolidin-2-one,https://www.enaminestore.com/catalog/EN300-27821
+Cc1cc(N)n(C)n1,EN300-14984,"1,3-dimethyl-1H-pyrazol-5-amine",https://www.enaminestore.com/catalog/EN300-14984
+NC1=C(c2nc3ccccc3[nH]2)C(=O)CN1N,EN300-02549,"1,5-diamino-4-(1H-1,3-benzodiazol-2-yl)-2,3-dihydro-1H-pyrrol-3-one",https://www.enaminestore.com/catalog/EN300-02549
+Cc1noc2ncc([N+](=O)[O-])cc12,EN300-27138,"3-methyl-5-nitro-[1,2]oxazolo[5,4-b]pyridine",https://www.enaminestore.com/catalog/EN300-27138
+CC(C)(C)OC(=O)N[C@H]1C[C@@H](O)C1,EN300-34774,"tert-butyl N-[(1s,3s)-3-hydroxycyclobutyl]carbamate",https://www.enaminestore.com/catalog/EN300-34774
+O=C(O)c1ccc(-n2cncn2)c([N+](=O)[O-])c1,EN300-12365,"3-nitro-4-(1H-1,2,4-triazol-1-yl)benzoic acid",https://www.enaminestore.com/catalog/EN300-12365
+Cc1cccc(B(O)O)c1,EN300-64373,(3-methylphenyl)boronic acid,https://www.enaminestore.com/catalog/EN300-64373
+Cc1ccc(B(O)O)cc1,EN300-33404,(4-methylphenyl)boronic acid,https://www.enaminestore.com/catalog/EN300-33404
+CC(C)N(C)S(=O)(=O)c1ccc(NC(=O)CCl)cc1,EN300-23201,2-chloro-N-{4-[methyl(propan-2-yl)sulfamoyl]phenyl}acetamide,https://www.enaminestore.com/catalog/EN300-23201
+O=[N+]([O-])c1cnc(Cl)nc1Cl,EN300-27449,"2,4-dichloro-5-nitropyrimidine",https://www.enaminestore.com/catalog/EN300-27449
+O=C(O)c1cc2cc(Cl)ccc2[nH]1,EN300-28911,5-chloro-1H-indole-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-28911
+O=C1NC(=O)N2CCCCC12,EN300-23887,"octahydroimidazo[1,5-a]pyridine-1,3-dione",https://www.enaminestore.com/catalog/EN300-23887
+Brc1cc[nH]c2nccc1-2,EN300-28960,"4-bromo-7H-pyrrolo[2,3-b]pyridine",https://www.enaminestore.com/catalog/EN300-28960
+NC(=O)CNc1ccccc1C(N)=O,EN300-27595,2-[(carbamoylmethyl)amino]benzamide,https://www.enaminestore.com/catalog/EN300-27595
+COC(=O)c1ccc([N+](=O)[O-])o1,EN300-49149,methyl 5-nitrofuran-2-carboxylate,https://www.enaminestore.com/catalog/EN300-49149
+COc1ccc(C(=O)O)cc1S(=O)(=O)NC1CC1,EN300-13135,3-(cyclopropylsulfamoyl)-4-methoxybenzoic acid,https://www.enaminestore.com/catalog/EN300-13135
+N#CCc1ccc2c(c1)OCO2,EN300-26831,"2-(1,3-dioxaindan-5-yl)acetonitrile",https://www.enaminestore.com/catalog/EN300-26831
+CN1CCCC1CO,EN300-51076,(1-methylpyrrolidin-2-yl)methanol,https://www.enaminestore.com/catalog/EN300-51076
+CC1(c2ccco2)NC(=O)NC1=O,EN300-15209,"5-(furan-2-yl)-5-methylimidazolidine-2,4-dione",https://www.enaminestore.com/catalog/EN300-15209
+O=C(O)CCC(=O)Nc1ccccc1O,EN300-11833,3-[(2-hydroxyphenyl)carbamoyl]propanoic acid,https://www.enaminestore.com/catalog/EN300-11833
+Cc1ccc(C2SCC(=O)N2C2CC2)cc1,EN300-14830,"3-cyclopropyl-2-(4-methylphenyl)-1,3-thiazolidin-4-one",https://www.enaminestore.com/catalog/EN300-14830
+COC(=O)CCCNC(=O)CCl,EN300-23133,methyl 4-(2-chloroacetamido)butanoate,https://www.enaminestore.com/catalog/EN300-23133
+COc1ccccc1NCc1ccccc1O,EN300-06554,2-{[(2-methoxyphenyl)amino]methyl}phenol,https://www.enaminestore.com/catalog/EN300-06554
+COc1ccc(-c2nc(C(=O)O)cs2)cc1OC,EN300-14940,"2-(3,4-dimethoxyphenyl)-1,3-thiazole-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-14940
+O=C(O)COCc1ccccc1,EN300-22993,2-(benzyloxy)acetic acid,https://www.enaminestore.com/catalog/EN300-22993
+CNS(=O)(=O)c1ccc(Cl)c(C(=O)O)c1,EN300-10855,2-chloro-5-(methylsulfamoyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-10855
+NC(=S)CC(=O)Nc1ccccc1,EN300-12984,2-carbamothioyl-N-phenylacetamide,https://www.enaminestore.com/catalog/EN300-12984
+CC(C)(C)NS(=O)(=O)c1cccc(N)c1,EN300-11771,3-amino-N-tert-butylbenzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-11771
+Cc1c(C#N)c(NC(=O)CCl)n(-c2cccc(F)c2)c1C,EN300-12871,"2-chloro-N-[3-cyano-1-(3-fluorophenyl)-4,5-dimethyl-1H-pyrrol-2-yl]acetamide",https://www.enaminestore.com/catalog/EN300-12871
+O=C(CCl)NC(=O)Nc1ccc2c(c1)OCCCO2,EN300-14283,"3-(2-chloroacetyl)-1-(3,4-dihydro-2H-1,5-benzodioxepin-7-yl)urea",https://www.enaminestore.com/catalog/EN300-14283
+Cc1ccsc1CN(C)C(=O)CCl,EN300-23053,2-chloro-N-methyl-N-[(3-methylthiophen-2-yl)methyl]acetamide,https://www.enaminestore.com/catalog/EN300-23053
+Cc1nn(-c2ccccc2)c(C)c1CCC(=O)O,EN300-12081,"3-(3,5-dimethyl-1-phenyl-1H-pyrazol-4-yl)propanoic acid",https://www.enaminestore.com/catalog/EN300-12081
+Cn1c(=O)c2ccccc2n2c(CCl)nnc12,EN300-12735,"1-(chloromethyl)-4-methyl-4H,5H-[1,2,4]triazolo[4,3-a]quinazolin-5-one",https://www.enaminestore.com/catalog/EN300-12735
+CNC(C)c1ccc(S(N)(=O)=O)cc1,EN300-12278,4-[1-(methylamino)ethyl]benzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-12278
+COC(=O)CCNC(=O)CCl,EN300-23110,methyl 3-(2-chloroacetamido)propanoate,https://www.enaminestore.com/catalog/EN300-23110
+Cc1nnc(SCC(=O)O)n1Cc1ccccc1,EN300-11631,"2-[(4-benzyl-5-methyl-4H-1,2,4-triazol-3-yl)sulfanyl]acetic acid",https://www.enaminestore.com/catalog/EN300-11631
+COc1ccc(CC(N)c2ccc(OC)cc2)cc1,EN300-13067,"1,2-bis(4-methoxyphenyl)ethan-1-amine",https://www.enaminestore.com/catalog/EN300-13067
+COC(=O)c1c(NC(=O)CCl)sc2c1CCCCC2,EN300-01868,"methyl 2-(2-chloroacetamido)-4H,5H,6H,7H,8H-cyclohepta[b]thiophene-3-carboxylate",https://www.enaminestore.com/catalog/EN300-01868
+Nc1c(F)cc(Br)cc1F,EN300-83060,"4-bromo-2,6-difluoroaniline",https://www.enaminestore.com/catalog/EN300-83060
+O=C(O)C(Cc1ccccc1)NS(=O)(=O)c1ccccc1F,EN300-10296,2-(2-fluorobenzenesulfonamido)-3-phenylpropanoic acid,https://www.enaminestore.com/catalog/EN300-10296
+Nc1nc(CCl)nc(Nc2ccccc2)n1,EN300-13366,"6-(chloromethyl)-N2-phenyl-1,3,5-triazine-2,4-diamine",https://www.enaminestore.com/catalog/EN300-13366
+O=C(O)CCN1C(=O)Cc2ccccc2C1=O,EN300-13611,"3-(1,3-dioxo-1,2,3,4-tetrahydroisoquinolin-2-yl)propanoic acid",https://www.enaminestore.com/catalog/EN300-13611
+CCc1ccc(-c2csc(N)n2)s1,EN300-13174,"4-(5-ethylthiophen-2-yl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-13174
+O=C(CCl)NCCc1nc2ccccc2s1,EN300-13719,"N-[2-(1,3-benzothiazol-2-yl)ethyl]-2-chloroacetamide",https://www.enaminestore.com/catalog/EN300-13719
+CCN(CC)S(=O)(=O)c1ccc(NCCO)c(C(=O)O)c1,EN300-13104,5-(diethylsulfamoyl)-2-[(2-hydroxyethyl)amino]benzoic acid,https://www.enaminestore.com/catalog/EN300-13104
+CN(C)Cc1ccc(C#N)cc1,EN300-13446,4-[(dimethylamino)methyl]benzonitrile,https://www.enaminestore.com/catalog/EN300-13446
+CCOc1cc([N+](=O)[O-])c(C(=O)O)cc1OC,EN300-14299,4-ethoxy-5-methoxy-2-nitrobenzoic acid,https://www.enaminestore.com/catalog/EN300-14299
+Nc1ccc(CN2CCCC2)cc1,EN300-34352,4-[(pyrrolidin-1-yl)methyl]aniline,https://www.enaminestore.com/catalog/EN300-34352
+CNC(C)c1ccc(-n2cncn2)cc1,EN300-13173,"methyl({1-[4-(1H-1,2,4-triazol-1-yl)phenyl]ethyl})amine",https://www.enaminestore.com/catalog/EN300-13173
+COc1ccc(S(=O)(=O)N2CCN(C(=O)CCl)CC2)cc1,EN300-23038,2-chloro-1-[4-(4-methoxybenzenesulfonyl)piperazin-1-yl]ethan-1-one,https://www.enaminestore.com/catalog/EN300-23038
+Clc1ncnc2ccccc12,EN300-13896,4-chloroquinazoline,https://www.enaminestore.com/catalog/EN300-13896
+NNc1ncnc2cc(-c3ccc(Br)cc3)sc12,EN300-13970,"6-(4-bromophenyl)-4-hydrazinylthieno[3,2-d]pyrimidine",https://www.enaminestore.com/catalog/EN300-13970
+Cc1ccc(C)c(-n2ccnc2SCC(=O)O)c1,EN300-12058,"2-{[1-(2,5-dimethylphenyl)-1H-imidazol-2-yl]sulfanyl}acetic acid",https://www.enaminestore.com/catalog/EN300-12058
+NCCN1CCN(c2cccc(C(F)(F)F)c2)CC1,EN300-35691,2-{4-[3-(trifluoromethyl)phenyl]piperazin-1-yl}ethan-1-amine,https://www.enaminestore.com/catalog/EN300-35691
+CCN(C(=O)CCl)c1nc2ccccc2s1,EN300-12855,"N-(1,3-benzothiazol-2-yl)-2-chloro-N-ethylacetamide",https://www.enaminestore.com/catalog/EN300-12855
+O=C(CCl)NCCSCc1ccc(Cl)cc1,EN300-13197,2-chloro-N-(2-{[(4-chlorophenyl)methyl]sulfanyl}ethyl)acetamide,https://www.enaminestore.com/catalog/EN300-13197
+O=S(=O)(Nc1nc2cc3c(cc2nc1Cl)OCCO3)c1ccccc1,EN300-08610,"N-{8-chloro-2H,3H-[1,4]dioxino[2,3-g]quinoxalin-7-yl}benzenesulfonamide",https://www.enaminestore.com/catalog/EN300-08610
+COc1cc(C=O)ccc1OCC(=O)c1ccc(C)c(C)c1,EN300-04916,"4-[2-(3,4-dimethylphenyl)-2-oxoethoxy]-3-methoxybenzaldehyde",https://www.enaminestore.com/catalog/EN300-04916
+COc1ccc(C(=O)O)cc1S(=O)(=O)Nc1ccc(Cl)c(S(=O)(=O)N2CCOCC2)c1,EN300-06898,3-{[4-chloro-3-(morpholine-4-sulfonyl)phenyl]sulfamoyl}-4-methoxybenzoic acid,https://www.enaminestore.com/catalog/EN300-06898
+O=C(O)c1cc(N2CCOCC2)ccn1,EN300-12115,4-(morpholin-4-yl)pyridine-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-12115
+Cc1ccc(CN)c(C)c1,EN300-33146,"1-(2,4-dimethylphenyl)methanamine",https://www.enaminestore.com/catalog/EN300-33146
+COc1ccc(CN)c(OC)c1OC,EN300-33148,"1-(2,3,4-trimethoxyphenyl)methanamine",https://www.enaminestore.com/catalog/EN300-33148
+NCc1ccnc(OC2CCCC2)c1,EN300-39115,1-[2-(cyclopentyloxy)pyridin-4-yl]methanamine,https://www.enaminestore.com/catalog/EN300-39115
+O=C(O)c1cnc2ccccc2n1,EN300-12790,quinoxaline-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-12790
+O=C(O)c1ccc(Oc2cccc(Br)c2)nc1,EN300-40236,6-(3-bromophenoxy)pyridine-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-40236
+N#Cc1c(N2CCCC2)n[nH]c1N,EN300-13871,5-amino-3-(pyrrolidin-1-yl)-1H-pyrazole-4-carbonitrile,https://www.enaminestore.com/catalog/EN300-13871
+CCN(CC)CCOc1ccc(CN)cc1,EN300-40327,1-{4-[2-(diethylamino)ethoxy]phenyl}methanamine,https://www.enaminestore.com/catalog/EN300-40327
+Cc1c(C(=O)O)cnn1-c1ccccn1,EN300-35723,5-methyl-1-(pyridin-2-yl)-1H-pyrazole-4-carboxylic acid,https://www.enaminestore.com/catalog/EN300-35723
+O=c1[nH]c(CSc2ccccc2)nc2sc3c(c12)CCC3,EN300-30390,"10-[(phenylsulfanyl)methyl]-7-thia-9,11-diazatricyclo[6.4.0.0,2,6]dodeca-1(8),2(6),9-trien-12-one",https://www.enaminestore.com/catalog/EN300-30390
+O=C(O)c1cccc(OCc2cccnc2)c1,EN300-43605,3-[(pyridin-3-yl)methoxy]benzoic acid,https://www.enaminestore.com/catalog/EN300-43605
+O=Cc1sc(Oc2ccccc2)nc1Cl,EN300-30527,"4-chloro-2-phenoxy-1,3-thiazole-5-carbaldehyde",https://www.enaminestore.com/catalog/EN300-30527
+Cc1cc(C)nc(Sc2ccc(N)cc2)n1,EN300-26499,"4-[(4,6-dimethylpyrimidin-2-yl)sulfanyl]aniline",https://www.enaminestore.com/catalog/EN300-26499
+COc1cc(N)c(C(=O)N2CCCCC2)cc1OC,EN300-36583,"4,5-dimethoxy-2-(piperidine-1-carbonyl)aniline",https://www.enaminestore.com/catalog/EN300-36583
+CC1CCCN(Cc2ccc(N)cc2)C1,EN300-40423,4-[(3-methylpiperidin-1-yl)methyl]aniline,https://www.enaminestore.com/catalog/EN300-40423
+NS(=O)(=O)c1ccc(C(=O)O)cc1,EN300-16248,4-sulfamoylbenzoic acid,https://www.enaminestore.com/catalog/EN300-16248
+O=C1NC(=O)N(C2CC2)C1=O,EN300-14452,"1-cyclopropylimidazolidine-2,4,5-trione",https://www.enaminestore.com/catalog/EN300-14452
+O=C(O)C1CC(=O)N(c2ccc(Cl)cc2)C1,EN300-49659,1-(4-chlorophenyl)-5-oxopyrrolidine-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-49659
+CC1CCCC(N2CC(C(=O)O)CC2=O)C1C,EN300-11780,"1-(2,3-dimethylcyclohexyl)-5-oxopyrrolidine-3-carboxylic acid",https://www.enaminestore.com/catalog/EN300-11780
+O=C(O)c1cccc(S(=O)(=O)NC2CCCC2)c1,EN300-31352,3-(cyclopentylsulfamoyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-31352
+O=C(O)C1CCN(C(=O)c2ccoc2)CC1,EN300-30714,1-(furan-3-carbonyl)piperidine-4-carboxylic acid,https://www.enaminestore.com/catalog/EN300-30714
+O=C(CCl)Nc1ccccc1N1CCCC1=O,EN300-24591,2-chloro-N-[2-(2-oxopyrrolidin-1-yl)phenyl]acetamide,https://www.enaminestore.com/catalog/EN300-24591
+O=C(O)C1CC(=O)N(c2ccc(Br)cc2)C1,EN300-28557,1-(4-bromophenyl)-5-oxopyrrolidine-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-28557
+COc1ccc(C(C)=O)cc1Br,EN300-11310,1-(3-bromo-4-methoxyphenyl)ethan-1-one,https://www.enaminestore.com/catalog/EN300-11310
+CC(=NO)c1ccc(-n2ccnc2)cc1,EN300-28762,N-{1-[4-(1H-imidazol-1-yl)phenyl]ethylidene}hydroxylamine,https://www.enaminestore.com/catalog/EN300-28762
+O=C(O)CNS(=O)(=O)c1c(Cl)cc(Br)cc1Cl,EN300-07282,"2-(4-bromo-2,6-dichlorobenzenesulfonamido)acetic acid",https://www.enaminestore.com/catalog/EN300-07282
+O=C(O)Cc1ccc(NS(=O)(=O)c2cccs2)cc1,EN300-31350,2-[4-(thiophene-2-sulfonamido)phenyl]acetic acid,https://www.enaminestore.com/catalog/EN300-31350
+COCCN1CC(C(=O)O)CC1=O,EN300-31845,1-(2-methoxyethyl)-5-oxopyrrolidine-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-31845
+CCOC(=O)c1c(N)n(CCO)c2nc3ccccc3nc12,EN300-08910,"ethyl 2-amino-1-(2-hydroxyethyl)-1H-pyrrolo[2,3-b]quinoxaline-3-carboxylate",https://www.enaminestore.com/catalog/EN300-08910
+CS(=O)(=O)CCC(NS(=O)(=O)c1ccccc1)C(=O)O,EN300-14262,2-benzenesulfonamido-4-methanesulfonylbutanoic acid,https://www.enaminestore.com/catalog/EN300-14262
+NCc1cccnc1Oc1cccc(F)c1,EN300-39419,1-[2-(3-fluorophenoxy)pyridin-3-yl]methanamine,https://www.enaminestore.com/catalog/EN300-39419
+N#CCCn1cc(C=O)c(-c2ccc(Br)cc2)n1,EN300-10333,3-[3-(4-bromophenyl)-4-formyl-1H-pyrazol-1-yl]propanenitrile,https://www.enaminestore.com/catalog/EN300-10333
+O=C(CC1(C(=O)O)CCCC1)N1CCOCC1,EN300-12199,1-[2-(morpholin-4-yl)-2-oxoethyl]cyclopentane-1-carboxylic acid,https://www.enaminestore.com/catalog/EN300-12199
+O=C(O)c1ccccc1Nc1ccc(OC(F)F)cc1,EN300-13997,2-{[4-(difluoromethoxy)phenyl]amino}benzoic acid,https://www.enaminestore.com/catalog/EN300-13997
+CNC(=O)CCCl,EN300-33615,3-chloro-N-methylpropanamide,https://www.enaminestore.com/catalog/EN300-33615
+O=C(NCc1ccco1)OCC(F)(F)F,EN300-15350,"2,2,2-trifluoroethyl N-[(furan-2-yl)methyl]carbamate",https://www.enaminestore.com/catalog/EN300-15350
+O=C(CCl)Nc1cccc(S(=O)(=O)N2CCCC2)c1,EN300-01859,2-chloro-N-[3-(pyrrolidine-1-sulfonyl)phenyl]acetamide,https://www.enaminestore.com/catalog/EN300-01859
+O=C(Nc1cc(F)ccc1C(=O)O)c1cccc(Br)c1,EN300-39798,2-(3-bromobenzamido)-4-fluorobenzoic acid,https://www.enaminestore.com/catalog/EN300-39798
+NCC1CCOC1,EN300-31754,1-(oxolan-3-yl)methanamine,https://www.enaminestore.com/catalog/EN300-31754
+O=C(O)CNS(=O)(=O)c1c(F)cccc1F,EN300-07234,"2-(2,6-difluorobenzenesulfonamido)acetic acid",https://www.enaminestore.com/catalog/EN300-07234
+O=C(O)CC1=CCCCC1,EN300-71277,2-(cyclohex-1-en-1-yl)acetic acid,https://www.enaminestore.com/catalog/EN300-71277
+COc1ccc(C=O)cn1,EN300-88128,6-methoxypyridine-3-carbaldehyde,https://www.enaminestore.com/catalog/EN300-88128
+OB(O)c1ccccc1OCC1CC1,EN300-49611,[2-(cyclopropylmethoxy)phenyl]boronic acid,https://www.enaminestore.com/catalog/EN300-49611
+CC(C)CNS(=O)(=O)c1ccc(Br)c(C(=O)O)c1,EN300-11028,2-bromo-5-[(2-methylpropyl)sulfamoyl]benzoic acid,https://www.enaminestore.com/catalog/EN300-11028
+CC(=O)NCCCc1ccc(C(=O)CCl)cc1,EN300-13071,N-{3-[4-(2-chloroacetyl)phenyl]propyl}acetamide,https://www.enaminestore.com/catalog/EN300-13071
+CCN(C(=O)CCl)c1ccc(F)cc1,EN300-13096,2-chloro-N-ethyl-N-(4-fluorophenyl)acetamide,https://www.enaminestore.com/catalog/EN300-13096
+Nc1ccc(F)cc1O,EN300-72159,2-amino-5-fluorophenol,https://www.enaminestore.com/catalog/EN300-72159
+NNc1ncnc2cc(-c3ccc(F)cc3)sc12,EN300-10012,"6-(4-fluorophenyl)-4-hydrazinylthieno[3,2-d]pyrimidine",https://www.enaminestore.com/catalog/EN300-10012
+O=C(CCl)Nc1cc2c(cc1Br)OCCO2,EN300-24575,"N-(7-bromo-2,3-dihydro-1,4-benzodioxin-6-yl)-2-chloroacetamide",https://www.enaminestore.com/catalog/EN300-24575
+Br.Nc1nncn1N,EN300-12360,"4H-1,2,4-triazole-3,4-diamine hydrobromide",https://www.enaminestore.com/catalog/EN300-12360
+Cc1cc2[nH]c(=O)c3ccccc3n2n1,EN300-14846,"2-methyl-4H,5H-pyrazolo[1,5-a]quinazolin-5-one",https://www.enaminestore.com/catalog/EN300-14846
+CC(C)C(=O)Nc1cccc(N)c1,EN300-33512,N-(3-aminophenyl)-2-methylpropanamide,https://www.enaminestore.com/catalog/EN300-33512
+O=Cc1ccc2c(c1)CCO2,EN300-43407,"2,3-dihydro-1-benzofuran-5-carbaldehyde",https://www.enaminestore.com/catalog/EN300-43407
+COc1cc(OC)c(OC)cc1C#N,EN300-12330,"2,4,5-trimethoxybenzonitrile",https://www.enaminestore.com/catalog/EN300-12330
+Cl.OCc1cnc[nH]1,EN300-75984,(1H-imidazol-5-yl)methanol hydrochloride,https://www.enaminestore.com/catalog/EN300-75984
+CN(Cc1ccc(Cl)cc1)C(=O)CCl,EN300-12527,2-chloro-N-[(4-chlorophenyl)methyl]-N-methylacetamide,https://www.enaminestore.com/catalog/EN300-12527
+COc1cccc(CCN)c1,EN300-41636,2-(3-methoxyphenyl)ethan-1-amine,https://www.enaminestore.com/catalog/EN300-41636
+CCOc1cccc(C(N)=S)c1,EN300-09494,3-ethoxybenzene-1-carbothioamide,https://www.enaminestore.com/catalog/EN300-09494
+O=C(O)c1ccc(-c2ccccc2)s1,EN300-11192,5-phenylthiophene-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-11192
+O=C(O)c1cc([N+](=O)[O-])ccc1Sc1ccccc1,EN300-04775,5-nitro-2-(phenylsulfanyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-04775
+Cc1csc(=O)n1CCBr,EN300-13762,"3-(2-bromoethyl)-4-methyl-2,3-dihydro-1,3-thiazol-2-one",https://www.enaminestore.com/catalog/EN300-13762
+NS(=O)(=O)c1ccc2c(c1)OCCCO2,EN300-27012,"3,4-dihydro-2H-1,5-benzodioxepine-7-sulfonamide",https://www.enaminestore.com/catalog/EN300-27012
+CC(=O)Nc1cccc(C(C)N)c1,EN300-31179,N-[3-(1-aminoethyl)phenyl]acetamide,https://www.enaminestore.com/catalog/EN300-31179
+O=C=NCCCCl,EN300-55635,1-chloro-3-isocyanatopropane,https://www.enaminestore.com/catalog/EN300-55635
+CC(=O)c1oc2ccccc2c1N,EN300-10527,1-(3-amino-1-benzofuran-2-yl)ethan-1-one,https://www.enaminestore.com/catalog/EN300-10527
+O=C(O)Cc1ccc(NS(=O)(=O)c2cccc(C(F)(F)F)c2)cc1,EN300-08675,2-{4-[3-(trifluoromethyl)benzenesulfonamido]phenyl}acetic acid,https://www.enaminestore.com/catalog/EN300-08675
+Nc1cccc(NC(=O)C2CC2)c1,EN300-30601,N-(3-aminophenyl)cyclopropanecarboxamide,https://www.enaminestore.com/catalog/EN300-30601
+CCC(C)CCCCNc1nc2ccccc2s1,EN300-02753,"N-(5-methylheptyl)-1,3-benzothiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02753
+CC(C)NC(=O)C(=O)NN,EN300-13515,1-(hydrazinecarbonyl)-N-(propan-2-yl)formamide,https://www.enaminestore.com/catalog/EN300-13515
+CC1CCN(S(=O)(=O)c2ccc(Cl)c([N+](=O)[O-])c2)CC1,EN300-10141,1-(4-chloro-3-nitrobenzenesulfonyl)-4-methylpiperidine,https://www.enaminestore.com/catalog/EN300-10141
+O=C1Cc2cc([N+](=O)[O-])ccc2N1,EN300-31275,"5-nitro-2,3-dihydro-1H-indol-2-one",https://www.enaminestore.com/catalog/EN300-31275
+CCOC(=O)c1[nH]c(CBr)c(C(=O)OCC)c1C,EN300-04119,"2,4-diethyl 5-(bromomethyl)-3-methyl-1H-pyrrole-2,4-dicarboxylate",https://www.enaminestore.com/catalog/EN300-04119
+O=C1Cc2cc(Br)ccc2N1,EN300-75149,"5-bromo-2,3-dihydro-1H-indol-2-one",https://www.enaminestore.com/catalog/EN300-75149
+CCNc1ccc(C(=O)NN)cc1[N+](=O)[O-],EN300-03822,4-(ethylamino)-3-nitrobenzohydrazide,https://www.enaminestore.com/catalog/EN300-03822
+O=C(O)c1cc(S(=O)(=O)Nc2ccc(F)cc2)ccc1Cl,EN300-00441,2-chloro-5-[(4-fluorophenyl)sulfamoyl]benzoic acid,https://www.enaminestore.com/catalog/EN300-00441
+CN(c1ccccc1)S(=O)(=O)c1cccc(C(=O)O)c1,EN300-00526,3-[methyl(phenyl)sulfamoyl]benzoic acid,https://www.enaminestore.com/catalog/EN300-00526
+Brc1nc2ccccc2s1,EN300-68964,"2-bromo-1,3-benzothiazole",https://www.enaminestore.com/catalog/EN300-68964
+N#Cc1cccc(N2C(=O)CCC2=O)c1,EN300-31370,"3-(2,5-dioxopyrrolidin-1-yl)benzonitrile",https://www.enaminestore.com/catalog/EN300-31370
+N#CCCSc1ccccc1N,EN300-72785,3-[(2-aminophenyl)sulfanyl]propanenitrile,https://www.enaminestore.com/catalog/EN300-72785
+O=C(O)c1cccc(N2C(=O)CSC2=S)c1,EN300-00269,"3-(4-oxo-2-sulfanylidene-1,3-thiazolidin-3-yl)benzoic acid",https://www.enaminestore.com/catalog/EN300-00269
+NNC(=O)c1nn(Cc2ccccc2)c(=O)c2ccccc12,EN300-03854,"3-benzyl-4-oxo-3,4-dihydrophthalazine-1-carbohydrazide",https://www.enaminestore.com/catalog/EN300-03854
+Nc1cccc2[nH]ccc12,EN300-61787,1H-indol-4-amine,https://www.enaminestore.com/catalog/EN300-61787
+Nc1cccc(CN2CCCC2)c1,EN300-36137,3-[(pyrrolidin-1-yl)methyl]aniline,https://www.enaminestore.com/catalog/EN300-36137
+NCC1CCOCC1,EN300-57193,1-(oxan-4-yl)methanamine,https://www.enaminestore.com/catalog/EN300-57193
+COC(=O)c1noc(C)c1C(C)=O,EN300-62264,"methyl 4-acetyl-5-methyl-1,2-oxazole-3-carboxylate",https://www.enaminestore.com/catalog/EN300-62264
+CS(=O)(=O)CCC(=O)O,EN300-31387,3-methanesulfonylpropanoic acid,https://www.enaminestore.com/catalog/EN300-31387
+CN(CC(=O)O)C(=O)OC(C)(C)C,EN300-30941,2-{[(tert-butoxy)carbonyl](methyl)amino}acetic acid,https://www.enaminestore.com/catalog/EN300-30941
+CC(=NO)c1ccc(NC(=O)C2CC2)cc1,EN300-30761,N-{4-[1-(hydroxyimino)ethyl]phenyl}cyclopropanecarboxamide,https://www.enaminestore.com/catalog/EN300-30761
+CCC(N)c1ccccc1OCC(=O)NC,EN300-45282,2-[2-(1-aminopropyl)phenoxy]-N-methylacetamide,https://www.enaminestore.com/catalog/EN300-45282
+NC1=NC(=O)c2ccccc21,EN300-43093,3-amino-1H-isoindol-1-one,https://www.enaminestore.com/catalog/EN300-43093
+CN1CCC(C(=O)O)CC1.Cl,EN300-51886,1-methylpiperidine-4-carboxylic acid hydrochloride,https://www.enaminestore.com/catalog/EN300-51886
+NNC(=O)c1ccc2ccccc2n1,EN300-08028,quinoline-2-carbohydrazide,https://www.enaminestore.com/catalog/EN300-08028
+NC(=O)c1cccc(C(=O)O)c1,EN300-30464,3-carbamoylbenzoic acid,https://www.enaminestore.com/catalog/EN300-30464
+Cc1nc(C(=O)O)cs1,EN300-56552,"2-methyl-1,3-thiazole-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-56552
+CC(C)(C)OC(=O)N1CCC(NC2CC2)CC1,EN300-53052,tert-butyl 4-(cyclopropylamino)piperidine-1-carboxylate,https://www.enaminestore.com/catalog/EN300-53052
+O=[N+]([O-])c1ccn[nH]1,EN300-43788,5-nitro-1H-pyrazole,https://www.enaminestore.com/catalog/EN300-43788
+Cc1nn(C)c(N2CCOCC2)c1C=O,EN300-63789,"1,3-dimethyl-5-(morpholin-4-yl)-1H-pyrazole-4-carbaldehyde",https://www.enaminestore.com/catalog/EN300-63789
+COc1ccccc1C(=O)Nc1ccc(O)cc1,EN300-09882,N-(4-hydroxyphenyl)-2-methoxybenzamide,https://www.enaminestore.com/catalog/EN300-09882
+CCC(=O)c1cc(F)ccc1F,EN300-67087,"1-(2,5-difluorophenyl)propan-1-one",https://www.enaminestore.com/catalog/EN300-67087
+COc1ccc(OC(C)CN)cc1,EN300-93053,2-(4-methoxyphenoxy)propan-1-amine,https://www.enaminestore.com/catalog/EN300-93053
+CC(C)(C)OC(=O)N1CCC(N)CC1,EN300-39611,tert-butyl 4-aminopiperidine-1-carboxylate,https://www.enaminestore.com/catalog/EN300-39611
+CC(C)Oc1ccc(C#N)cc1,EN300-39841,4-(propan-2-yloxy)benzonitrile,https://www.enaminestore.com/catalog/EN300-39841
+CC(C)NCc1cccc(Cl)c1,EN300-32127,[(3-chlorophenyl)methyl](propan-2-yl)amine,https://www.enaminestore.com/catalog/EN300-32127
+N#Cc1ccnc(N)c1,EN300-50615,2-aminopyridine-4-carbonitrile,https://www.enaminestore.com/catalog/EN300-50615
+N#Cc1ccccc1CN1CCCC1=O,EN300-30682,2-[(2-oxopyrrolidin-1-yl)methyl]benzonitrile,https://www.enaminestore.com/catalog/EN300-30682
+NS(=O)(=O)c1ccc(O)cc1,EN300-36615,4-hydroxybenzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-36615
+NNC(=O)COc1ccccc1Cc1ccccc1,EN300-03773,2-(2-benzylphenoxy)acetohydrazide,https://www.enaminestore.com/catalog/EN300-03773
+CN(N)c1cnn(C)c(=O)c1Cl,EN300-50650,"4-chloro-2-methyl-5-(1-methylhydrazin-1-yl)-2,3-dihydropyridazin-3-one",https://www.enaminestore.com/catalog/EN300-50650
+Clc1nc2ccccc2[nH]1,EN300-31231,"2-chloro-1H-1,3-benzodiazole",https://www.enaminestore.com/catalog/EN300-31231
+O=C(O)c1cccc(Br)n1,EN300-40905,6-bromopyridine-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-40905
+NC(=S)CCN1CCCCC1,EN300-37498,3-(piperidin-1-yl)propanethioamide,https://www.enaminestore.com/catalog/EN300-37498
+Nc1ccc(-n2cnc3ccccc32)cc1,EN300-14992,"4-(1H-1,3-benzodiazol-1-yl)aniline",https://www.enaminestore.com/catalog/EN300-14992
+Fc1ccc2c(c1)CCCN2,EN300-36072,"6-fluoro-1,2,3,4-tetrahydroquinoline",https://www.enaminestore.com/catalog/EN300-36072
+Cc1cc(C)c(C)c(OCCC#N)c1,EN300-37112,"3-(2,3,5-trimethylphenoxy)propanenitrile",https://www.enaminestore.com/catalog/EN300-37112
+COC(=O)Cc1ccc(N)cc1,EN300-55739,methyl 2-(4-aminophenyl)acetate,https://www.enaminestore.com/catalog/EN300-55739
+Nc1cc(-c2nnc3n2CCCCC3)ccc1F,EN300-27719,"2-fluoro-5-{5H,6H,7H,8H,9H-[1,2,4]triazolo[4,3-a]azepin-3-yl}aniline",https://www.enaminestore.com/catalog/EN300-27719
+N#CC1(N)CCCCCC1,EN300-31796,1-aminocycloheptane-1-carbonitrile,https://www.enaminestore.com/catalog/EN300-31796
+Cc1cc(Oc2ncccc2C#N)ccc1N,EN300-37476,2-(4-amino-3-methylphenoxy)pyridine-3-carbonitrile,https://www.enaminestore.com/catalog/EN300-37476
+O=C(O)CCS(=O)(=O)c1ccc2c(c1)CCC2,EN300-39642,"3-(2,3-dihydro-1H-indene-5-sulfonyl)propanoic acid",https://www.enaminestore.com/catalog/EN300-39642
+CN(C)S(=O)(=O)c1ccc(I)c(C(=O)O)c1,EN300-43753,5-(dimethylsulfamoyl)-2-iodobenzoic acid,https://www.enaminestore.com/catalog/EN300-43753
+O=C(O)c1cnc2ccccn2c1=O,EN300-35781,"4-oxo-4H-pyrido[1,2-a]pyrimidine-3-carboxylic acid",https://www.enaminestore.com/catalog/EN300-35781
+Cc1cc(Br)ccc1NC(=O)CN(C)C(=O)CCl,EN300-22621,N-{[(4-bromo-2-methylphenyl)carbamoyl]methyl}-2-chloro-N-methylacetamide,https://www.enaminestore.com/catalog/EN300-22621
+O=Cc1cccc(-c2ccccc2)c1,EN300-50981,"[1,1'-biphenyl]-3-carbaldehyde",https://www.enaminestore.com/catalog/EN300-50981
+COc1cc(Br)c(S(N)(=O)=O)cc1OC,EN300-13686,"2-bromo-4,5-dimethoxybenzene-1-sulfonamide",https://www.enaminestore.com/catalog/EN300-13686
+Cc1ccc(Cl)c(OC(C)C(=O)O)c1,EN300-44867,2-(2-chloro-5-methylphenoxy)propanoic acid,https://www.enaminestore.com/catalog/EN300-44867
+Cn1ccnc1C=O,EN300-61999,1-methyl-1H-imidazole-2-carbaldehyde,https://www.enaminestore.com/catalog/EN300-61999
+O=C(O)C1(c2cccc(Cl)c2)CC1,EN300-30526,1-(3-chlorophenyl)cyclopropane-1-carboxylic acid,https://www.enaminestore.com/catalog/EN300-30526
+Cl.NC1CCOCC1,EN300-49115,oxan-4-amine hydrochloride,https://www.enaminestore.com/catalog/EN300-49115
+O=C(CCl)NOCc1ccccc1,EN300-22557,N-(benzyloxy)-2-chloroacetamide,https://www.enaminestore.com/catalog/EN300-22557
+COc1cc(CN)cc(OC)c1,EN300-35206,"1-(3,5-dimethoxyphenyl)methanamine",https://www.enaminestore.com/catalog/EN300-35206
+NCCCN1CCc2ccccc2C1,EN300-33580,"3-(1,2,3,4-tetrahydroisoquinolin-2-yl)propan-1-amine",https://www.enaminestore.com/catalog/EN300-33580
+CS(=O)(=O)c1ccc(C(=O)NN)cc1,EN300-37429,4-methanesulfonylbenzohydrazide,https://www.enaminestore.com/catalog/EN300-37429
+CN(C)c1cc(CN)ccn1,EN300-36671,"4-(aminomethyl)-N,N-dimethylpyridin-2-amine",https://www.enaminestore.com/catalog/EN300-36671
+Cl.O[C@H]1CCNC1,EN300-69312,(3S)-pyrrolidin-3-ol hydrochloride,https://www.enaminestore.com/catalog/EN300-69312
+Nc1nc2ccc(OCC(F)(F)F)cc2s1,EN300-37431,"6-(2,2,2-trifluoroethoxy)-1,3-benzothiazol-2-amine",https://www.enaminestore.com/catalog/EN300-37431
+NNc1ccc(S(=O)(=O)N2CCC(Cc3ccccc3)CC2)cn1,EN300-35835,5-[(4-benzylpiperidin-1-yl)sulfonyl]-2-hydrazinylpyridine,https://www.enaminestore.com/catalog/EN300-35835
+CN(C)C(=O)c1ccccc1N,EN300-35807,"2-amino-N,N-dimethylbenzamide",https://www.enaminestore.com/catalog/EN300-35807
+c1cnc(N2CCNCC2)cn1,EN300-31751,2-(piperazin-1-yl)pyrazine,https://www.enaminestore.com/catalog/EN300-31751
+CN(C)C(=O)c1cc(N)ccc1Cl,EN300-37553,"5-amino-2-chloro-N,N-dimethylbenzamide",https://www.enaminestore.com/catalog/EN300-37553
+NCc1cccc(F)c1,EN300-33064,1-(3-fluorophenyl)methanamine,https://www.enaminestore.com/catalog/EN300-33064
+O=C(O)c1cccc2c1OCCO2,EN300-43357,"2,3-dihydro-1,4-benzodioxine-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-43357
+NCCCc1nc2ccccc2[nH]1,EN300-40744,"3-(1H-1,3-benzodiazol-2-yl)propan-1-amine",https://www.enaminestore.com/catalog/EN300-40744
+O=C(c1cccc(Cl)c1Cl)N1CCNCC1,EN300-42265,"1-(2,3-dichlorobenzoyl)piperazine",https://www.enaminestore.com/catalog/EN300-42265
+COC(=O)c1cc2ccc(OCc3ccccc3)cc2[nH]1,EN300-44171,methyl 6-(benzyloxy)-1H-indole-2-carboxylate,https://www.enaminestore.com/catalog/EN300-44171
+NC(=O)c1c(N)sc2c1CCN(Cc1ccccc1)C2,EN300-31586,"2-amino-6-benzyl-4H,5H,6H,7H-thieno[2,3-c]pyridine-3-carboxamide",https://www.enaminestore.com/catalog/EN300-31586
+COc1cc(OC)nc(Cl)n1,EN300-82936,"2-chloro-4,6-dimethoxypyrimidine",https://www.enaminestore.com/catalog/EN300-82936
+Cc1ccc(S(=O)(=O)n2ccc(C(=O)O)c2)cc1,EN300-73409,1-(4-methylbenzenesulfonyl)-1H-pyrrole-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-73409
+COc1ccccc1C(=O)NCCC(=O)O,EN300-08319,3-[(2-methoxyphenyl)formamido]propanoic acid,https://www.enaminestore.com/catalog/EN300-08319
+O=c1cccn[nH]1,EN300-53981,"2,3-dihydropyridazin-3-one",https://www.enaminestore.com/catalog/EN300-53981
+Cc1ccc(C)c(N2C(=O)C=CC2=O)c1,EN300-03884,"1-(2,5-dimethylphenyl)-2,5-dihydro-1H-pyrrole-2,5-dione",https://www.enaminestore.com/catalog/EN300-03884
+O=C(O)CCc1nc2cc(C(F)(F)F)ccc2n(Cc2ccccc2)c1=O,EN300-04074,"3-[4-benzyl-3-oxo-7-(trifluoromethyl)-3,4-dihydroquinoxalin-2-yl]propanoic acid",https://www.enaminestore.com/catalog/EN300-04074
+Cc1ccc(-c2csc(NCCCC(=O)O)n2)s1,EN300-14769,"4-{[4-(5-methylthiophen-2-yl)-1,3-thiazol-2-yl]amino}butanoic acid",https://www.enaminestore.com/catalog/EN300-14769
+COCCOC(=O)c1c(C)[nH]c(C(=O)O)c1C,EN300-40508,"4-[(2-methoxyethoxy)carbonyl]-3,5-dimethyl-1H-pyrrole-2-carboxylic acid",https://www.enaminestore.com/catalog/EN300-40508
+CCCNC(=O)C(C)NC(=O)CCl,EN300-23214,2-(2-chloroacetamido)-N-propylpropanamide,https://www.enaminestore.com/catalog/EN300-23214
+CC1CC(C)CN(S(=O)(=O)c2ccc(NC(=O)CCl)cc2)C1,EN300-23227,"2-chloro-N-{4-[(3,5-dimethylpiperidin-1-yl)sulfonyl]phenyl}acetamide",https://www.enaminestore.com/catalog/EN300-23227
+COc1ccc(S(=O)(=O)NCCC(=O)O)cc1,EN300-09894,3-(4-methoxybenzenesulfonamido)propanoic acid,https://www.enaminestore.com/catalog/EN300-09894
+COc1ccccc1Nc1nc(N)nc(CCl)n1,EN300-15071,"6-(chloromethyl)-N2-(2-methoxyphenyl)-1,3,5-triazine-2,4-diamine",https://www.enaminestore.com/catalog/EN300-15071
+Cc1ccc(-n2cnnc2SCC(=O)O)cc1C,EN300-26332,"2-{[4-(3,4-dimethylphenyl)-4H-1,2,4-triazol-3-yl]sulfanyl}acetic acid",https://www.enaminestore.com/catalog/EN300-26332
+O=C(O)C1CCOC1,EN300-53423,oxolane-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-53423
+CC(=O)N(c1nc(CCl)cs1)c1ccc(F)cc1F,EN300-10907,"N-[4-(chloromethyl)-1,3-thiazol-2-yl]-N-(2,4-difluorophenyl)acetamide",https://www.enaminestore.com/catalog/EN300-10907
+CCOC(=O)c1cc(C)n(CC(=O)O)c1C,EN300-14332,"2-[3-(ethoxycarbonyl)-2,5-dimethyl-1H-pyrrol-1-yl]acetic acid",https://www.enaminestore.com/catalog/EN300-14332
+CC(C)CCOc1ccc(S(=O)(=O)Cl)cc1,EN300-41383,4-(3-methylbutoxy)benzene-1-sulfonyl chloride,https://www.enaminestore.com/catalog/EN300-41383
+CC(=O)c1ccc(-c2ccc(Cl)c(Cl)c2)cc1,EN300-30504,"1-{3',4'-dichloro-[1,1'-biphenyl]-4-yl}ethan-1-one",https://www.enaminestore.com/catalog/EN300-30504
+Cc1ccc(Cn2ccccc2=N)cc1.Cl,EN300-13674,"1-[(4-methylphenyl)methyl]-1,2-dihydropyridin-2-imine hydrochloride",https://www.enaminestore.com/catalog/EN300-13674
+O=C(O)CSc1nnc(-c2ccc(Cl)cc2)n1Cc1ccco1,EN300-25641,"2-{[5-(4-chlorophenyl)-4-[(furan-2-yl)methyl]-4H-1,2,4-triazol-3-yl]sulfanyl}acetic acid",https://www.enaminestore.com/catalog/EN300-25641
+N#Cc1ccccc1CN1CCOCC1,EN300-24267,2-[(morpholin-4-yl)methyl]benzonitrile,https://www.enaminestore.com/catalog/EN300-24267
+CN(C)c1nc(CC#N)cs1,EN300-27273,"2-[2-(dimethylamino)-1,3-thiazol-4-yl]acetonitrile",https://www.enaminestore.com/catalog/EN300-27273
+COc1ccc(-c2noc(CCCC(=O)O)n2)cc1,EN300-23631,"4-[3-(4-methoxyphenyl)-1,2,4-oxadiazol-5-yl]butanoic acid",https://www.enaminestore.com/catalog/EN300-23631
+COc1cc(CC#N)ccc1C,EN300-24069,2-(3-methoxy-4-methylphenyl)acetonitrile,https://www.enaminestore.com/catalog/EN300-24069
+Nc1nc(CCCl)nc2sc3c(c12)CCCC3,EN300-24085,"5-(2-chloroethyl)-8-thia-4,6-diazatricyclo[7.4.0.0,2,7]trideca-1(9),2,4,6-tetraen-3-amine",https://www.enaminestore.com/catalog/EN300-24085
+O=C(O)CCc1nc(-c2cccs2)no1,EN300-14716,"3-[3-(thiophen-2-yl)-1,2,4-oxadiazol-5-yl]propanoic acid",https://www.enaminestore.com/catalog/EN300-14716
+Cn1c(Cl)c(C=O)c2cc(C=O)ccc21,EN300-07126,"2-chloro-1-methyl-1H-indole-3,5-dicarbaldehyde",https://www.enaminestore.com/catalog/EN300-07126
+O=C(O)CNC(=O)c1ccc(NS(=O)(=O)c2ccc(Cl)cc2F)cc1,EN300-13788,2-{[4-(4-chloro-2-fluorobenzenesulfonamido)phenyl]formamido}acetic acid,https://www.enaminestore.com/catalog/EN300-13788
+O=C(O)CN1C(=O)Cc2ccccc21,EN300-41631,"2-(2-oxo-2,3-dihydro-1H-indol-1-yl)acetic acid",https://www.enaminestore.com/catalog/EN300-41631
+C=CCNC(=O)NC(=O)C(C)Cl,EN300-29336,3-(2-chloropropanoyl)-1-(prop-2-en-1-yl)urea,https://www.enaminestore.com/catalog/EN300-29336
+CCOc1cc(Br)c(CCl)cc1OCC,EN300-13336,"1-bromo-2-(chloromethyl)-4,5-diethoxybenzene",https://www.enaminestore.com/catalog/EN300-13336
+OCc1cccc(Cl)c1,EN300-25627,(3-chlorophenyl)methanol,https://www.enaminestore.com/catalog/EN300-25627
+Nc1ccc(Br)cc1C(F)(F)F,EN300-45196,4-bromo-2-(trifluoromethyl)aniline,https://www.enaminestore.com/catalog/EN300-45196
+COc1ccc(-c2csc(N)n2)cc1Cl,EN300-13237,"4-(3-chloro-4-methoxyphenyl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-13237
+O=C(O)CCC(F)(F)F,EN300-75982,"4,4,4-trifluorobutanoic acid",https://www.enaminestore.com/catalog/EN300-75982
+O=C(O)c1cc2ccccc2cc1NC(=O)C1CC1,EN300-18572,3-cyclopropaneamidonaphthalene-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-18572
+O=c1[nH]cnc2cc(N3CCOCC3)c([N+](=O)[O-])cc12,EN300-23848,"7-(morpholin-4-yl)-6-nitro-3,4-dihydroquinazolin-4-one",https://www.enaminestore.com/catalog/EN300-23848
+Cc1cc(C=C(C#N)C(=O)O)c(C)n1CC1CCCO1,EN300-07269,"2-cyano-3-{2,5-dimethyl-1-[(oxolan-2-yl)methyl]-1H-pyrrol-3-yl}prop-2-enoic acid",https://www.enaminestore.com/catalog/EN300-07269
+NC(=O)Cn1c(CCl)nc2ccccc2c1=O,EN300-13988,"2-[2-(chloromethyl)-4-oxo-3,4-dihydroquinazolin-3-yl]acetamide",https://www.enaminestore.com/catalog/EN300-13988
+CNc1ccccc1F,EN300-59274,2-fluoro-N-methylaniline,https://www.enaminestore.com/catalog/EN300-59274
+Clc1nc(CSc2ccccc2)nc2sc3c(c12)CCCC3,EN300-07392,"3-chloro-5-[(phenylsulfanyl)methyl]-8-thia-4,6-diazatricyclo[7.4.0.0,2,7]trideca-1(9),2,4,6-tetraene",https://www.enaminestore.com/catalog/EN300-07392
+COC(=O)Cc1c(C(=O)OC)sc2nc(CCl)[nH]c(=O)c12,EN300-13528,"methyl 2-(chloromethyl)-5-(2-methoxy-2-oxoethyl)-4-oxo-3H,4H-thieno[2,3-d]pyrimidine-6-carboxylate",https://www.enaminestore.com/catalog/EN300-13528
+COc1ccc(CN(C(=O)CCl)C(C)Cc2cccs2)cc1,EN300-22905,2-chloro-N-[(4-methoxyphenyl)methyl]-N-[1-(thiophen-2-yl)propan-2-yl]acetamide,https://www.enaminestore.com/catalog/EN300-22905
+Cl.O=C(CCl)N1CCN(CC(=O)N2CCOCC2)CC1,EN300-14744,2-chloro-1-{4-[2-(morpholin-4-yl)-2-oxoethyl]piperazin-1-yl}ethan-1-one hydrochloride,https://www.enaminestore.com/catalog/EN300-14744
+OB(O)c1cccc(F)c1,EN300-73570,(3-fluorophenyl)boronic acid,https://www.enaminestore.com/catalog/EN300-73570
+O=C(O)CCCCc1nc2ccccc2s1,EN300-12786,"5-(1,3-benzothiazol-2-yl)pentanoic acid",https://www.enaminestore.com/catalog/EN300-12786
+Cc1c(C(=O)O)oc2ccc(Br)cc12,EN300-05039,5-bromo-3-methyl-1-benzofuran-2-carboxylic acid,https://www.enaminestore.com/catalog/EN300-05039
+COc1ccc(S(=O)(=O)N(C)c2ccc(O)cc2)cc1,EN300-05088,N-(4-hydroxyphenyl)-4-methoxy-N-methylbenzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-05088
+CC(=O)c1ccc(S(=O)(=O)NCc2ccc(C(=O)O)cc2)cc1,EN300-11414,4-[(4-acetylbenzenesulfonamido)methyl]benzoic acid,https://www.enaminestore.com/catalog/EN300-11414
+O=C(O)CC1Oc2ccccc2NC1=O,EN300-12102,"2-(3-oxo-3,4-dihydro-2H-1,4-benzoxazin-2-yl)acetic acid",https://www.enaminestore.com/catalog/EN300-12102
+Cc1ccc(NC(=O)CCl)cc1S(=O)(=O)N1CCCCC1,EN300-01651,2-chloro-N-[4-methyl-3-(piperidine-1-sulfonyl)phenyl]acetamide,https://www.enaminestore.com/catalog/EN300-01651
+COc1ccccc1B(O)O,EN300-79099,(2-methoxyphenyl)boronic acid,https://www.enaminestore.com/catalog/EN300-79099
+CS(=O)(=O)c1ccc(N)cc1,EN300-14448,4-methanesulfonylaniline,https://www.enaminestore.com/catalog/EN300-14448
+CNC1(C#N)CCCCC1,EN300-10023,1-(methylamino)cyclohexane-1-carbonitrile,https://www.enaminestore.com/catalog/EN300-10023
+COc1ccc(NS(=O)(=O)c2ccc(C)c(C(=O)O)c2)cc1,EN300-00484,5-[(4-methoxyphenyl)sulfamoyl]-2-methylbenzoic acid,https://www.enaminestore.com/catalog/EN300-00484
+COC(=O)CCCN.Cl,EN300-09346,methyl 4-aminobutanoate hydrochloride,https://www.enaminestore.com/catalog/EN300-09346
+O=C(O)c1ccc(NC2CC2)c([N+](=O)[O-])c1,EN300-09361,4-(cyclopropylamino)-3-nitrobenzoic acid,https://www.enaminestore.com/catalog/EN300-09361
+CCCCCn1nc(C(=O)NN)c2ccccc2c1=O,EN300-06380,"4-oxo-3-pentyl-3,4-dihydrophthalazine-1-carbohydrazide",https://www.enaminestore.com/catalog/EN300-06380
+CC(C)(C)NS(=O)(=O)c1ccc(Br)c(C(=O)O)c1,EN300-10568,2-bromo-5-(tert-butylsulfamoyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-10568
+CN(C(=O)C=CC(=O)O)C1CCCCC1,EN300-09908,3-[cyclohexyl(methyl)carbamoyl]prop-2-enoic acid,https://www.enaminestore.com/catalog/EN300-09908
+CN(C)S(=O)(=O)c1ccc(Cl)c(NC(=O)CCCl)c1,EN300-07736,3-chloro-N-[2-chloro-5-(dimethylsulfamoyl)phenyl]propanamide,https://www.enaminestore.com/catalog/EN300-07736
+O=C(COc1ccc(C(=O)O)cc1)Nc1cccc(C(F)(F)F)c1,EN300-00161,4-({[3-(trifluoromethyl)phenyl]carbamoyl}methoxy)benzoic acid,https://www.enaminestore.com/catalog/EN300-00161
+CCn1c(SCC(=O)O)nnc1-c1ccco1,EN300-07862,"2-{[4-ethyl-5-(furan-2-yl)-4H-1,2,4-triazol-3-yl]sulfanyl}acetic acid",https://www.enaminestore.com/catalog/EN300-07862
+CCCCc1ccc(N2C(=O)C=CC2=O)cc1,EN300-03888,"1-(4-butylphenyl)-2,5-dihydro-1H-pyrrole-2,5-dione",https://www.enaminestore.com/catalog/EN300-03888
+O=C(O)Cn1c(=O)c2c(ncn2Cc2ccccc2)n(Cc2ccccc2)c1=O,EN300-07625,"2-(3,7-dibenzyl-2,6-dioxo-2,3,6,7-tetrahydro-1H-purin-1-yl)acetic acid",https://www.enaminestore.com/catalog/EN300-07625
+Cl.Nc1ccc(O)c2ccccc12,EN300-14794,4-aminonaphthalen-1-ol hydrochloride,https://www.enaminestore.com/catalog/EN300-14794
+CSCCC1Nc2ccc(S(=O)(=O)N3CCOCC3)cc2NC1=O,EN300-06862,"3-[2-(methylsulfanyl)ethyl]-7-(morpholine-4-sulfonyl)-1,2,3,4-tetrahydroquinoxalin-2-one",https://www.enaminestore.com/catalog/EN300-06862
+CC(C)C(NC(=O)OCC1c2ccccc2-c2ccccc21)C(=O)O,EN300-17213,2-({[(9H-fluoren-9-yl)methoxy]carbonyl}amino)-3-methylbutanoic acid,https://www.enaminestore.com/catalog/EN300-17213
+NC(=O)c1cc(-c2ccccc2)sc1NC(=O)CCl,EN300-04849,2-(2-chloroacetamido)-5-phenylthiophene-3-carboxamide,https://www.enaminestore.com/catalog/EN300-04849
+Cc1ccc(S(=O)(=O)c2ccc(NN)cc2)cc1,EN300-04815,[4-(4-methylbenzenesulfonyl)phenyl]hydrazine,https://www.enaminestore.com/catalog/EN300-04815
+CCN(CC)c1ccc(S(N)(=O)=O)cc1N,EN300-10785,3-amino-4-(diethylamino)benzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-10785
+CCOC(=O)c1c(C)oc2nc(CCl)nc(N)c12,EN300-11564,"ethyl 4-amino-2-(chloromethyl)-6-methylfuro[2,3-d]pyrimidine-5-carboxylate",https://www.enaminestore.com/catalog/EN300-11564
+Cc1cc(C)cc(Nc2nc(-c3ccc(F)cc3)cs2)c1,EN300-06789,"N-(3,5-dimethylphenyl)-4-(4-fluorophenyl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-06789
+COC(=O)CCCCCNC(N)=S,EN300-13396,methyl 6-(carbamothioylamino)hexanoate,https://www.enaminestore.com/catalog/EN300-13396
+Cc1nn(Cc2ccc(F)cc2)c2sc(C(=O)O)cc12,EN300-05565,"1-[(4-fluorophenyl)methyl]-3-methyl-1H-thieno[2,3-c]pyrazole-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-05565
+O=C(O)CCCNC(=O)c1ccc(F)cc1F,EN300-18568,"4-[(2,4-difluorophenyl)formamido]butanoic acid",https://www.enaminestore.com/catalog/EN300-18568
+CC1=NN(c2cc(C)ccc2C)C(=O)C1,EN300-07939,"1-(2,5-dimethylphenyl)-3-methyl-4,5-dihydro-1H-pyrazol-5-one",https://www.enaminestore.com/catalog/EN300-07939
+NC(=O)c1ccc(F)c(F)c1,EN300-23888,"3,4-difluorobenzamide",https://www.enaminestore.com/catalog/EN300-23888
+Cc1occc1-c1nnc(SCC(=O)O)n1-c1ccccc1,EN300-09865,"2-{[5-(2-methylfuran-3-yl)-4-phenyl-4H-1,2,4-triazol-3-yl]sulfanyl}acetic acid",https://www.enaminestore.com/catalog/EN300-09865
+CSCCC(NS(=O)(=O)c1cc(C(F)(F)F)ccc1Cl)C(=O)O,EN300-10037,2-[2-chloro-5-(trifluoromethyl)benzenesulfonamido]-4-(methylsulfanyl)butanoic acid,https://www.enaminestore.com/catalog/EN300-10037
+Fc1ccc(-c2csc3nc(Cc4ccc(Cl)cc4)nc(Cl)c23)cc1,EN300-08941,"4-chloro-2-[(4-chlorophenyl)methyl]-5-(4-fluorophenyl)thieno[2,3-d]pyrimidine",https://www.enaminestore.com/catalog/EN300-08941
+O=C(O)c1cc(NS(=O)(=O)c2ccccc2C(F)(F)F)cc(C(=O)O)c1,EN300-11677,"5-[2-(trifluoromethyl)benzenesulfonamido]benzene-1,3-dicarboxylic acid",https://www.enaminestore.com/catalog/EN300-11677
+O=C(O)CCNS(=O)(=O)c1ccc(Cl)c([N+](=O)[O-])c1,EN300-05192,3-(4-chloro-3-nitrobenzenesulfonamido)propanoic acid,https://www.enaminestore.com/catalog/EN300-05192
+CCOc1ccc(OC(C)C(=O)NN)cc1,EN300-06988,2-(4-ethoxyphenoxy)propanehydrazide,https://www.enaminestore.com/catalog/EN300-06988
+NC(C(=O)O)c1ccccc1F,EN300-70283,2-amino-2-(2-fluorophenyl)acetic acid,https://www.enaminestore.com/catalog/EN300-70283
+NC1=NC(=O)C(CC(=O)Nc2ccc(C(=O)O)cc2)S1,EN300-09585,"4-[2-(2-amino-4-oxo-4,5-dihydro-1,3-thiazol-5-yl)acetamido]benzoic acid",https://www.enaminestore.com/catalog/EN300-09585
+CCCN(CCC)S(=O)(=O)c1cccc(C(=O)O)c1,EN300-09453,3-(dipropylsulfamoyl)benzoic acid,https://www.enaminestore.com/catalog/EN300-09453
+O=[N+]([O-])c1ccc2c(c1)nnn2O,EN300-06003,"5-nitro-1H-1,2,3-benzotriazol-1-ol",https://www.enaminestore.com/catalog/EN300-06003
+O=C(O)c1cccc(NC(=O)c2cccs2)c1,EN300-13022,3-(thiophene-2-amido)benzoic acid,https://www.enaminestore.com/catalog/EN300-13022
+CCN(CC)S(=O)(=O)c1ccc(NCCOC)c(C(=O)O)c1,EN300-13595,5-(diethylsulfamoyl)-2-[(2-methoxyethyl)amino]benzoic acid,https://www.enaminestore.com/catalog/EN300-13595
+CNS(=O)(=O)c1ccc(C)c(N)c1,EN300-41479,"3-amino-N,4-dimethylbenzene-1-sulfonamide",https://www.enaminestore.com/catalog/EN300-41479
+Cc1ccc2[nH]nc(C(=O)O)c2c1,EN300-35587,5-methyl-1H-indazole-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-35587
+Cc1cc(C=O)cc(C)c1OCc1ccccn1,EN300-36541,"3,5-dimethyl-4-[(pyridin-2-yl)methoxy]benzaldehyde",https://www.enaminestore.com/catalog/EN300-36541
+C=CCNCc1ccccc1,EN300-33342,benzyl(prop-2-en-1-yl)amine,https://www.enaminestore.com/catalog/EN300-33342
+Cn1cc(CNc2ccccc2C(F)(F)F)cn1,EN300-45552,N-[(1-methyl-1H-pyrazol-4-yl)methyl]-2-(trifluoromethyl)aniline,https://www.enaminestore.com/catalog/EN300-45552
+CNCc1ccccn1,EN300-42931,methyl[(pyridin-2-yl)methyl]amine,https://www.enaminestore.com/catalog/EN300-42931
+CC(C)Cn1c(=O)[nH]c(=O)c2c(C(=O)O)cc(C(C)C)nc21,EN300-31169,"1-(2-methylpropyl)-2,4-dioxo-7-(propan-2-yl)-1H,2H,3H,4H-pyrido[2,3-d]pyrimidine-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-31169
+N#Cc1nc(-c2ccco2)oc1N1CCC(C(=O)O)CC1,EN300-31933,"1-[4-cyano-2-(furan-2-yl)-1,3-oxazol-5-yl]piperidine-4-carboxylic acid",https://www.enaminestore.com/catalog/EN300-31933
+O=C(Cl)OCC(F)(F)F,EN300-31105,"2,2,2-trifluoroethyl carbonochloridate",https://www.enaminestore.com/catalog/EN300-31105
+Cl.ON=C1CCCCC1N1CCCC1,EN300-32036,N-[2-(pyrrolidin-1-yl)cyclohexylidene]hydroxylamine hydrochloride,https://www.enaminestore.com/catalog/EN300-32036
+O=Cc1ccc(OCc2ccccn2)cc1,EN300-40462,4-[(pyridin-2-yl)methoxy]benzaldehyde,https://www.enaminestore.com/catalog/EN300-40462
+CCOC(=O)c1ccc2c(c1)[nH]c(=O)n2CC,EN300-31014,"ethyl 1-ethyl-2-oxo-2,3-dihydro-1H-1,3-benzodiazole-5-carboxylate",https://www.enaminestore.com/catalog/EN300-31014
+Cl.NCc1ccc(N2CCCC2=O)cc1,EN300-31343,1-[4-(aminomethyl)phenyl]pyrrolidin-2-one hydrochloride,https://www.enaminestore.com/catalog/EN300-31343
+Cc1cc(F)ccc1NCc1ccc(C#N)cc1,EN300-33002,4-{[(4-fluoro-2-methylphenyl)amino]methyl}benzonitrile,https://www.enaminestore.com/catalog/EN300-33002
+COc1ccc(COCC(=O)O)cc1,EN300-44251,2-[(4-methoxyphenyl)methoxy]acetic acid,https://www.enaminestore.com/catalog/EN300-44251
+Cn1cc(S(=O)(=O)Cl)cn1,EN300-37095,1-methyl-1H-pyrazole-4-sulfonyl chloride,https://www.enaminestore.com/catalog/EN300-37095
+CC(NCc1ccccc1)c1cccs1,EN300-32626,benzyl[1-(thiophen-2-yl)ethyl]amine,https://www.enaminestore.com/catalog/EN300-32626
+CC1COC(C)CN1,EN300-31518,"2,5-dimethylmorpholine",https://www.enaminestore.com/catalog/EN300-31518
+Nc1cccc(COc2ccc3c(c2)OCO3)c1,EN300-43606,"3-[(1,3-dioxaindan-5-yloxy)methyl]aniline",https://www.enaminestore.com/catalog/EN300-43606
+COCCC(C)=O,EN300-49430,4-methoxybutan-2-one,https://www.enaminestore.com/catalog/EN300-49430
+Cn1c(Cl)nnc1-c1ccc(Cl)cc1,EN300-31004,"3-chloro-5-(4-chlorophenyl)-4-methyl-4H-1,2,4-triazole",https://www.enaminestore.com/catalog/EN300-31004
+O=C(O)C12CC3CC(C1)CC(C(F)(F)C(F)C(F)(F)F)(C3)C2,EN300-54566,"3-(1,1,2,3,3,3-hexafluoropropyl)adamantane-1-carboxylic acid",https://www.enaminestore.com/catalog/EN300-54566
+O=C(O)c1ccc(-c2ccc3c(c2)OCCO3)s1,EN300-11130,"5-(2,3-dihydro-1,4-benzodioxin-6-yl)thiophene-2-carboxylic acid",https://www.enaminestore.com/catalog/EN300-11130
+CCCOc1ccc(Br)cc1C=O,EN300-16121,5-bromo-2-propoxybenzaldehyde,https://www.enaminestore.com/catalog/EN300-16121
+CCC1CSC(Nc2ccccc2C)=N1,EN300-02453,"4-ethyl-N-(2-methylphenyl)-4,5-dihydro-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02453
+O=C(O)CSCc1coc(-c2ccccc2)n1,EN300-43133,"2-{[(2-phenyl-1,3-oxazol-4-yl)methyl]sulfanyl}acetic acid",https://www.enaminestore.com/catalog/EN300-43133
+CCS(=O)(=O)N(C)CCCN,EN300-40774,N-(3-aminopropyl)-N-methylethane-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-40774
+CC(C)CNCC(N)=O.Cl,EN300-31326,2-[(2-methylpropyl)amino]acetamide hydrochloride,https://www.enaminestore.com/catalog/EN300-31326
+NC(=S)c1ccoc1,EN300-69665,furan-3-carbothioamide,https://www.enaminestore.com/catalog/EN300-69665
+Nc1cccc(S(=O)(=O)Nc2ccccc2)c1,EN300-39177,3-amino-N-phenylbenzene-1-sulfonamide,https://www.enaminestore.com/catalog/EN300-39177
+CCCCC(CC)C(=O)O,EN300-20410,2-ethylhexanoic acid,https://www.enaminestore.com/catalog/EN300-20410
+Cc1cc(N)on1,EN300-21774,"3-methyl-1,2-oxazol-5-amine",https://www.enaminestore.com/catalog/EN300-21774
+O=c1cc(CO)nc2sccn12,EN300-44274,"7-(hydroxymethyl)-5H-[1,3]thiazolo[3,2-a]pyrimidin-5-one",https://www.enaminestore.com/catalog/EN300-44274
+COc1ccc(-c2csc(N)n2)cc1Br,EN300-11203,"4-(3-bromo-4-methoxyphenyl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-11203
+Cc1c(F)cc(C(=O)O)cc1S(=O)(=O)Cl,EN300-42272,3-(chlorosulfonyl)-5-fluoro-4-methylbenzoic acid,https://www.enaminestore.com/catalog/EN300-42272
+O=Cc1sc(N2CCOCC2)nc1-c1ccccc1,EN300-01034,"2-(morpholin-4-yl)-4-phenyl-1,3-thiazole-5-carbaldehyde",https://www.enaminestore.com/catalog/EN300-01034
+NNCc1cc(F)ccc1F,EN300-43522,"[(2,5-difluorophenyl)methyl]hydrazine",https://www.enaminestore.com/catalog/EN300-43522
+Cc1cccc(N2CCNCC2)c1,EN300-23498,1-(3-methylphenyl)piperazine,https://www.enaminestore.com/catalog/EN300-23498
+O=C(c1cc(Cl)c[nH]1)C(Cl)(Cl)Cl,EN300-14339,"2,2,2-trichloro-1-(4-chloro-1H-pyrrol-2-yl)ethan-1-one",https://www.enaminestore.com/catalog/EN300-14339
+N#Cc1nc(-c2ccco2)oc1N1CCNCC1,EN300-30792,"2-(furan-2-yl)-5-(piperazin-1-yl)-1,3-oxazole-4-carbonitrile",https://www.enaminestore.com/catalog/EN300-30792
+CNC(C)c1cc(F)ccc1F,EN300-33249,"[1-(2,5-difluorophenyl)ethyl](methyl)amine",https://www.enaminestore.com/catalog/EN300-33249
+Nc1ccc(-n2ccnc2)cc1,EN300-28522,4-(1H-imidazol-1-yl)aniline,https://www.enaminestore.com/catalog/EN300-28522
+Cc1ccccc1OCCCC(=O)Nc1ccc(CN)cc1,EN300-41867,N-[4-(aminomethyl)phenyl]-4-(2-methylphenoxy)butanamide,https://www.enaminestore.com/catalog/EN300-41867
+CCCNC1CCc2ccccc21,EN300-32210,"N-propyl-2,3-dihydro-1H-inden-1-amine",https://www.enaminestore.com/catalog/EN300-32210
+COc1cccc(C=C(C#N)C(=O)O)c1,EN300-06607,2-cyano-3-(3-methoxyphenyl)prop-2-enoic acid,https://www.enaminestore.com/catalog/EN300-06607
+O=C1OCCc2cnc3ncnn3c21,EN300-30835,"12-oxa-2,3,5,7-tetraazatricyclo[7.4.0.0,2,6]trideca-1(9),3,5,7-tetraen-13-one",https://www.enaminestore.com/catalog/EN300-30835
+O=C(O)Cc1csc(-c2cccs2)n1,EN300-13575,"2-[2-(thiophen-2-yl)-1,3-thiazol-4-yl]acetic acid",https://www.enaminestore.com/catalog/EN300-13575
+COc1ccc(C(C)O)cc1F,EN300-25962,1-(3-fluoro-4-methoxyphenyl)ethan-1-ol,https://www.enaminestore.com/catalog/EN300-25962
+O=c1[nH]c(N2CCOCC2)cc2ccccc12,EN300-30816,"3-(morpholin-4-yl)-1,2-dihydroisoquinolin-1-one",https://www.enaminestore.com/catalog/EN300-30816
+CC(C)C(C)NC1CC1.Cl,EN300-31205,N-(3-methylbutan-2-yl)cyclopropanamine hydrochloride,https://www.enaminestore.com/catalog/EN300-31205
+COc1cc(C(=O)O)c([N+](=O)[O-])cc1OC(F)F,EN300-24789,4-(difluoromethoxy)-5-methoxy-2-nitrobenzoic acid,https://www.enaminestore.com/catalog/EN300-24789
+Cc1ccc(-c2csc(N)n2)cc1,EN300-02255,"4-(4-methylphenyl)-1,3-thiazol-2-amine",https://www.enaminestore.com/catalog/EN300-02255
+O=C(CCl)Nc1cccc(S(=O)(=O)N2CCCCCC2)c1,EN300-02014,N-[3-(azepane-1-sulfonyl)phenyl]-2-chloroacetamide,https://www.enaminestore.com/catalog/EN300-02014
+Cn1ncc(C(=O)O)c1-n1cccc1,EN300-28232,1-methyl-5-(1H-pyrrol-1-yl)-1H-pyrazole-4-carboxylic acid,https://www.enaminestore.com/catalog/EN300-28232
+O=C(O)C1CC(=O)N(Cc2cccc(C(F)(F)F)c2)C1,EN300-42465,5-oxo-1-{[3-(trifluoromethyl)phenyl]methyl}pyrrolidine-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-42465
+CCC1CCC(NC2CC2)CC1.Cl,EN300-39077,N-cyclopropyl-4-ethylcyclohexan-1-amine hydrochloride,https://www.enaminestore.com/catalog/EN300-39077
+CC(C)(C)OC(=O)N1CC2(CC2)C[C@H]1C(=O)O,EN300-39139,(6S)-5-[(tert-butoxy)carbonyl]-5-azaspiro[2.4]heptane-6-carboxylic acid,https://www.enaminestore.com/catalog/EN300-39139
+CN(C)c1c(N)cccc1Cl.Cl,EN300-39759,"6-chloro-N1,N1-dimethylbenzene-1,2-diamine hydrochloride",https://www.enaminestore.com/catalog/EN300-39759
+CC(C)N1CC2CCCC(C1)C2O,EN300-39823,3-(propan-2-yl)-3-azabicyclo[3.3.1]nonan-9-ol,https://www.enaminestore.com/catalog/EN300-39823
+CC(CN)CN1CCN(C)CC1,EN300-44908,2-methyl-3-(4-methylpiperazin-1-yl)propan-1-amine,https://www.enaminestore.com/catalog/EN300-44908
+O=Cc1cc([N+](=O)[O-])c(F)cc1F,EN300-40940,"2,4-difluoro-5-nitrobenzaldehyde",https://www.enaminestore.com/catalog/EN300-40940
+CC(C)(C)OC(=O)N1CCC(C(=O)O)C1,EN300-66305,1-[(tert-butoxy)carbonyl]pyrrolidine-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-66305
+CC(C)(C)OC(=O)N1CCC(N)C1,EN300-48597,tert-butyl 3-aminopyrrolidine-1-carboxylate,https://www.enaminestore.com/catalog/EN300-48597
+CC(C)(C)OC(=O)N1CC(=O)C1,EN300-59151,tert-butyl 3-oxoazetidine-1-carboxylate,https://www.enaminestore.com/catalog/EN300-59151
+CCOC(=O)c1nnn[nH]1,EN300-90227,"ethyl 1H-1,2,3,4-tetrazole-5-carboxylate",https://www.enaminestore.com/catalog/EN300-90227
+CNCC(N)=O.Cl,EN300-40153,2-(methylamino)acetamide hydrochloride,https://www.enaminestore.com/catalog/EN300-40153
+Brc1cnc2[nH]ccc2c1,EN300-86175,"5-bromo-1H-pyrrolo[2,3-b]pyridine",https://www.enaminestore.com/catalog/EN300-86175
+O=C(O)CCCc1nnc(-c2ccccc2)o1,EN300-39373,"4-(5-phenyl-1,3,4-oxadiazol-2-yl)butanoic acid",https://www.enaminestore.com/catalog/EN300-39373
+Cc1nnc(-c2ccccc2N)o1,EN300-40037,"2-(5-methyl-1,3,4-oxadiazol-2-yl)aniline",https://www.enaminestore.com/catalog/EN300-40037
+c1cnc2[nH]cc(C3CCNCC3)c2c1,EN300-49533,"4-{1H-pyrrolo[2,3-b]pyridin-3-yl}piperidine",https://www.enaminestore.com/catalog/EN300-49533
+N#Cc1cccc(NC(=O)OCC(F)(F)F)c1,EN300-41092,"2,2,2-trifluoroethyl N-(3-cyanophenyl)carbamate",https://www.enaminestore.com/catalog/EN300-41092
+O=S1(=O)CCN1,EN300-41338,"1lambda6,2-thiazetidine-1,1-dione",https://www.enaminestore.com/catalog/EN300-41338
+CC(=O)C1CCN(C)CC1,EN300-40482,1-(1-methylpiperidin-4-yl)ethan-1-one,https://www.enaminestore.com/catalog/EN300-40482
+CNCCCC(=O)OC.Cl,EN300-39276,methyl 4-(methylamino)butanoate hydrochloride,https://www.enaminestore.com/catalog/EN300-39276
+CC(C)NCC(F)(F)F.Cl,EN300-40498,"(propan-2-yl)(2,2,2-trifluoroethyl)amine hydrochloride",https://www.enaminestore.com/catalog/EN300-40498
+ClCCCOCCc1ccccc1,EN300-43878,[2-(3-chloropropoxy)ethyl]benzene,https://www.enaminestore.com/catalog/EN300-43878
+COc1cc(C)c(S(=O)(=O)Cl)c(C)c1,EN300-36589,"4-methoxy-2,6-dimethylbenzene-1-sulfonyl chloride",https://www.enaminestore.com/catalog/EN300-36589
+CC1(C)CC(=NO)c2cnc(N)nc2C1,EN300-35584,"5-(hydroxyimino)-7,7-dimethyl-5,6,7,8-tetrahydroquinazolin-2-amine",https://www.enaminestore.com/catalog/EN300-35584
+COc1ccc([N+](=O)[O-])cc1N.Cl,EN300-35941,2-methoxy-5-nitroaniline hydrochloride,https://www.enaminestore.com/catalog/EN300-35941
+COc1ccc(Br)cc1C#N,EN300-49579,5-bromo-2-methoxybenzonitrile,https://www.enaminestore.com/catalog/EN300-49579
+Cc1ccc2[nH]c(C(C)O)nc2c1,EN300-36565,"1-(5-methyl-1H-1,3-benzodiazol-2-yl)ethan-1-ol",https://www.enaminestore.com/catalog/EN300-36565
+Cc1n[nH]c(N)c1I,EN300-35871,4-iodo-3-methyl-1H-pyrazol-5-amine,https://www.enaminestore.com/catalog/EN300-35871
+Cc1[nH]c(C(F)(F)F)cc1C(=O)O,EN300-38888,2-methyl-5-(trifluoromethyl)-1H-pyrrole-3-carboxylic acid,https://www.enaminestore.com/catalog/EN300-38888
+CC(C)(C)OC(=O)N1CCc2cc(C(=O)O)ccc21,EN300-37432,"1-[(tert-butoxy)carbonyl]-2,3-dihydro-1H-indole-5-carboxylic acid",https://www.enaminestore.com/catalog/EN300-37432
+O=C1OCCN1c1ccc(O)cc1,EN300-42350,"3-(4-hydroxyphenyl)-1,3-oxazolidin-2-one",https://www.enaminestore.com/catalog/EN300-42350
+CN(C)C(=O)Cc1nc(CCl)cs1.Cl,EN300-36721,"2-[4-(chloromethyl)-1,3-thiazol-2-yl]-N,N-dimethylacetamide hydrochloride",https://www.enaminestore.com/catalog/EN300-36721
