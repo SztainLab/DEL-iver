@@ -591,8 +591,9 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
     # --- Construct SMILES from chemical_id columns ---
     # e.g. buildingblock1_smiles_chemical_id, buildingblock2_smiles_chemical_id
     bb_chemical_cols = sorted([
-        c for c in top_n.schema.names
-        if c.startswith("buildingblock") and c.endswith("_chemical_id")
+        f"{bb}_chemical_id"
+        for bb in ddr.building_blocks
+        if f"{bb}_chemical_id" in top_n.schema.names
     ])
 
     reconstructed_smiles = []

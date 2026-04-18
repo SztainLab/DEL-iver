@@ -35,7 +35,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
 def plot_disynthons(ddr, 
-                    mode="both", 
+                    mode="pbind", 
                     min_occurrences=3,
                     log_scale=False, 
                     elev=30, 
@@ -550,6 +550,7 @@ def draw_disynthons(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions
     largest_fragment_chooser = rdMolStandardize.LargestFragmentChooser() if remove_ions else None
 
     rows = top_n.to_pylist() if hasattr(top_n, "to_pylist") else top_n
+
     for row in rows:
         metric_val = row.get(metric, 0.0)
         raw_smiles = row.get("smiles", "")
@@ -568,7 +569,11 @@ def draw_disynthons(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions
 
         clean_smiles = ".".join(clean_fragments)
 
-        bb_chemical_cols = sorted([k for k in row.keys() if k.startswith("buildingblock") and k.endswith("_chemical_id")])
+        bb_chemical_cols = sorted([
+            f"{bb}_chemical_id"
+            for bb in ddr.building_blocks
+            if f"{bb}_chemical_id" in row
+        ])
         bb_labels = []
         for col in bb_chemical_cols:
             if row[col] is not None:
