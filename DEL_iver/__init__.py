@@ -9,6 +9,7 @@ from .molecules.ECFP4calculator import gen_fingerprints
 from .analysis.compute import compute_pbind_and_enrichment
 from .analysis.compute import find_best_bb
 from .analysis.compute import find_best_disynthon
+from .analysis.compute import data_set_statistics
 from .analysis.plotting import draw_disynthons
 from .analysis.plotting import draw_bb
 from .analysis.plotting import plot_disynthons

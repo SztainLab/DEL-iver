@@ -12,7 +12,7 @@ from rdkit.Chem import Descriptors, rdMolDescriptors, GraphDescriptors, QED
 from rdkit.Chem.rdMolDescriptors import CalcTPSA
 from rdkit.Chem.MolStandardize import rdMolStandardize
 
-def _load_tables(ddr, building_blocks,split_col=None): #!april7 correct
+def _load_tables(ddr, building_blocks,split_col=None): 
     bb_table = ddr.cache.get_path(
         CacheNames.BB_DICTIONARIES,
         filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
@@ -620,3 +620,80 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
         )
 
     return top_n
+
+
+
+def data_set_statistics(ddr):
+    """
+    Prints a summary of the full enrichment table:
+      - Global hit/non-hit counts and overall hit rate
+      - Per-origin hit rates (all building block positions + all disynthon combos)
+      - Distribution statistics (pbind, nhits, ntotal) for BB and disynthon rows
+    """
+    stats_path = ddr.cache.get_path(
+        CacheNames.COMPUTE,
+        filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
+    )
+    if not stats_path.exists():
+        raise FileNotFoundError(
+            f"Enrichment table not found at {stats_path}. "
+            "Run compute_pbind_and_enrichment() first."
+        )
+
+    stats = pq.read_table(stats_path)
+    df    = stats.to_pandas()
+
+
+# --- Distribution stats by type (building_block vs disynthon) ---
+    print("\n" + "-" * 70)
+    print("DISTRIBUTION STATISTICS BY TYPE AND ORIGIN")
+    print("-" * 70)
+
+    for entity_type in ["building_block", "disynthon"]:
+        # Get all unique origins for this type
+        type_subset = df[df["type"] == entity_type]
+        if type_subset.empty:
+            print(f"\n  [{entity_type.upper()}] No data found.")
+            continue
+
+        unique_origins = sorted(type_subset["origin"].dropna().unique())
+        if len(unique_origins) == 0:
+            unique_origins = [None]  # Handle missing origin values
+
+        for origin in unique_origins:
+            if origin is None:
+                subset = type_subset[type_subset["origin"].isna()]
+                label = f"{entity_type.upper()} | origin=<null>"
+            else:
+                subset = type_subset[type_subset["origin"] == origin]
+                label = f"{entity_type.upper()} | origin={origin}"
+
+            if subset.empty:
+                continue
+
+            print(f"\n  [{label}]  n={len(subset):,} rows")
+            metrics = ["pbind", "enrichment", "nhits", "ntotal"]
+            col_w   = 12
+
+            print(f"  {'Metric':<12} {'Mean':>{col_w}} {'Median':>{col_w}} {'p90':>{col_w}} {'p99':>{col_w}} {'Max':>{col_w}}")
+            print("  " + "-" * (12 + 5 * (col_w + 1)))
+
+            for m in metrics:
+                if m not in subset.columns:
+                    continue
+                col = subset[m].dropna()
+                if col.empty:
+                    continue
+                is_int = m in ("nhits", "ntotal")
+                fmt    = "{:>{w},.0f}" if is_int else "{:>{w}.4f}"
+                print(
+                    f"  {m:<12} "
+                    + fmt.format(col.mean(),   w=col_w) + " "
+                    + fmt.format(col.median(), w=col_w) + " "
+                    + fmt.format(col.quantile(0.90), w=col_w) + " "
+                    + fmt.format(col.quantile(0.99), w=col_w) + " "
+                    + fmt.format(col.max(),    w=col_w)
+                )
+
+
+    print("\n" + "=" * 70 + "\n")
