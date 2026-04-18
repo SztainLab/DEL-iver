@@ -47,7 +47,6 @@ def plot_disynthons(ddr,
     # 1. Setup Plot Parameters
     params = {
         'font.family': 'sans-serif',
-        'font.sans-serif': [font_name, 'sans-serif'],
         'legend.fontsize': 16, 
         'figure.figsize': (16, 8),
         'axes.labelsize': 16,
@@ -62,7 +61,7 @@ def plot_disynthons(ddr,
         filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
     )
 
-    print(f"Reading data from: {input_path}")
+    #print(f"Reading data from: {input_path}")
     df = pd.read_parquet(input_path)
 
     if "ntotal" in df.columns:
@@ -159,18 +158,13 @@ def plot_disynthons(ddr,
         plt.show()
 
 
-
-
 def plot_bb(ddr, 
             min_occurrences=3,
-            font_name='Arial',
             exclude_bb1=False,
             output_path: str = None):
             
-    # Apply plot parameters temporarily using context manager
     params = {
         'font.family': 'sans-serif',
-        'font.sans-serif': [font_name, 'sans-serif'],
         'legend.fontsize': 24,
         'figure.figsize': (16, 8),
         'axes.labelsize': 24,
@@ -185,133 +179,7 @@ def plot_bb(ddr,
             CacheNames.COMPUTE,
             filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
         )
-        print(f"Reading data from: {input_path}")
-        df = pd.read_parquet(input_path)
-
-        # 2. Filter Data
-        mask = df["type"] == "building_block"
-        df = df[mask]
-        
-        if "ntotal" in df.columns:
-            df = df[df["ntotal"] >= min_occurrences].copy()
-
-        if df.empty:
-            print("No building_block data left after filtering.")
-            return
-
-        # 3. Setup Labels & Mappings
-        bb_positional_id_cols = [f"{bb}_positional_id" for bb in ddr.building_blocks]
-        bb_labels = {col: f"BB{i + 1}" for i, col in enumerate(bb_positional_id_cols)}
-        
-        # Identify the unique origins
-        origins = sorted(df['origin'].unique())
-        
-        # Exclude BB1 if requested
-        if exclude_bb1:
-            origins = [origin for origin in origins if bb_labels.get(origin, origin) != "BB1"]
-
-        n_cols = len(origins)
-        if n_cols == 0:
-            print("No origin categories found (or all were excluded).")
-            return
-
-        # 4. Plot Setup
-        # Determine if we should merge the visual elements (unified y-axis and colorbar)
-        merge_plots = exclude_bb1 and n_cols > 1
-        
-        fig_width = max(16, 8 * n_cols) 
-        # sharey=True unifies the y-axis across all subplots
-        fig, axes = plt.subplots(1, n_cols, figsize=(fig_width, 8), sharey=merge_plots)
-        
-        if n_cols == 1:
-            axes = [axes]
-            
-        colormap = LinearSegmentedColormap.from_list("magenta_cyan", ["magenta", "cyan"])
-
-        # Find global min and max for ntotal so the shared colorbar scales correctly across all data
-        global_vmin = df[df["origin"].isin(origins)]['ntotal'].min() if merge_plots else None
-        global_vmax = df[df["origin"].isin(origins)]['ntotal'].max() if merge_plots else None
-
-        # 5. Iterate and Plot
-        for i, origin in enumerate(origins):
-            ax = axes[i]
-            df_sub = df[df["origin"] == origin]
-            
-            if df_sub.empty:
-                continue
-                
-            x_label = bb_labels.get(origin, origin) 
-
-            scatter = ax.scatter(
-                df_sub['positional_id'], 
-                df_sub['pbind'], 
-                c=df_sub['ntotal'], 
-                cmap=colormap, 
-                alpha=0.7,
-                linewidth=0,
-                s=45,
-                vmin=global_vmin, # Applies global scaling if merging
-                vmax=global_vmax
-            )
-
-            ax.grid(False)
-            ax.set_xlabel(f'{x_label} ID')
-            
-            # Only set the Y-label for the first plot to avoid clutter on the unified axis
-            if i == 0 or not merge_plots:
-                ax.set_ylabel('pBind')
-
-            # Configure individual Colorbars if NOT merging
-            if not merge_plots:
-                cbar = fig.colorbar(scatter, ax=ax)
-                cbar.set_label('Count', rotation=270, labelpad=25)
-                cbar.formatter = ticker.ScalarFormatter(useMathText=True)
-                cbar.formatter.set_powerlimits((0, 0)) 
-                cbar.update_ticks()
-
-        # 6. Add a Single Shared Colorbar if merging
-        if merge_plots:
-            # Passing the list of axes maps the colorbar to the height of the entire subplot group
-            cbar = fig.colorbar(scatter, ax=axes)
-            cbar.set_label('Count', rotation=270, labelpad=25)
-            cbar.formatter = ticker.ScalarFormatter(useMathText=True)
-            cbar.formatter.set_powerlimits((0, 0)) 
-            cbar.update_ticks()
-
-        # tight_layout has trouble sometimes when assigning colorbars to multiple axes, 
-        # so using bbox_inches='tight' on save is usually safer.
-        
-        if output_path:
-            plt.savefig(output_path, dpi=300, bbox_inches='tight')
-            print(f"Saved plot to {output_path}")
-            
-        plt.show()
-
-
-def plot_bb(ddr, 
-            min_occurrences=3,
-            font_name='Arial',
-            exclude_bb1=False,
-            output_path: str = None):
-            
-    params = {
-        'font.family': 'sans-serif',
-        'font.sans-serif': [font_name, 'sans-serif'],
-        'legend.fontsize': 24,
-        'figure.figsize': (16, 8),
-        'axes.labelsize': 24,
-        'axes.titlesize': 24,
-        'xtick.labelsize': 24,
-        'ytick.labelsize': 24
-    }
-    
-    with plt.rc_context(params):
-        # 1. Load Data
-        input_path = ddr.cache.get_path(
-            CacheNames.COMPUTE,
-            filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
-        )
-        print(f"Reading data from: {input_path}")
+        #print(f"Reading data from: {input_path}")
         df = pd.read_parquet(input_path)
 
         # 2. Filter Data
@@ -454,6 +322,8 @@ def plot_bb(ddr,
                         # Create labels divided by the magnitude (e.g., "2.0")
                         # Using :.1f to keep one decimal point like 0.5, 1.0, 1.5, 2.0
                         new_labels = [f'{t/10**exp:.1f}' for t in ticks]
+                        ticks = cbar.get_ticks()
+                        cbar.set_ticks(ticks)  # lock tick positions
                         cbar.ax.set_yticklabels(new_labels)
                         
                         label_text = f'Count ($10^{{{exp}}}$)'
@@ -473,7 +343,7 @@ def plot_bb(ddr,
         plt.show()
 
 def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, save_svg_path=None, save_png_path=None):
-    print("\n[DEBUG] Starting draw_bb")
+
 
     mols = []
     legends = []
@@ -482,12 +352,12 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         f"{bb}_positional_id": f"BB{i+1}"
         for i, bb in enumerate(ddr.building_blocks)
     }
-    print(f"[DEBUG] origin_to_label: {origin_to_label}")
+
 
     largest_fragment_chooser = rdMolStandardize.LargestFragmentChooser() if remove_ions else None
 
     rows = top_n.to_pylist() if hasattr(top_n, "to_pylist") else top_n
-    print(f"[DEBUG] Rows: {len(rows)}")
+
 
     grouped = {}
 
@@ -499,18 +369,18 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         chem_id = int(chem_id)
         grouped.setdefault(chem_id, []).append(row)
 
-    print(f"[DEBUG] Unique chemical groups: {len(grouped)}")
+
 
     for chem_id, chem_rows in grouped.items():
         smiles = chem_rows[0].get("smiles")
 
         if not smiles:
-            print(f"[DEBUG] Skipping chem_id={chem_id} (no smiles)")
+
             continue
 
         mol = Chem.MolFromSmiles(smiles)
         if not mol:
-            print(f"[DEBUG] RDKit failed for chem_id={chem_id}, smiles={smiles}")
+
             continue
 
         if remove_ions:
@@ -521,7 +391,7 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         positions = []
         scores = []
 
-        print(f"\n[DEBUG] --- CHEM_ID {chem_id} ---")
+
 
         for row in chem_rows:
             origin_val = row.get("origin")
@@ -532,24 +402,20 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
             scores.append(f"{metric_val:.2f}")
 
 
-            print(
-                f"[DEBUG] chem_id={chem_id} | "
-                f"origin={origin_val} → label={bb_label} | "
-                f"{metric}={metric_val:.4f}"
-            )
+
 
         pos_str = ", ".join(positions)
         score_str = ", ".join(scores)
 
         legend = f"ID: {chem_id} | Position: {pos_str} | {metric}: {score_str}"
-        print(f"[DEBUG] FINAL LEGEND: {legend}")
+
 
         legends.append(legend)
 
-    print(f"\n[DEBUG] Final molecule count: {len(mols)}")
+
 
     if not mols:
-        print("[DEBUG] No valid molecules to draw.")
+
         return
 
     img = Draw.MolsToGridImage(
@@ -564,20 +430,20 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         svg_string = Draw.MolsToGridImage(mols, molsPerRow=mols_per_row, subImgSize=(400, 400), legends=legends, useSVG=True)
         with open(save_svg_path, "w") as f:
             f.write(svg_string)
-        print(f"Saved SVG to: {save_svg_path}")
+        print(f"Saved SVG with top {len(top_n)} building blocks to: {save_svg_path}")
 
     if save_png_path:
         img = Draw.MolsToGridImage(mols, molsPerRow=mols_per_row, subImgSize=(400, 400), legends=legends, useSVG=False)
         img.save(save_png_path)
         print(f"Saved PNG to: {save_png_path}")
 
-    print("[DEBUG] draw_bb complete\n")
+
     return img
 
 
 
 def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, save_svg_path=None, save_png_path=None):
-    print("\n[DEBUG] Starting draw_bb")
+
 
     mols = []
     legends = []
@@ -586,12 +452,12 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         f"{bb}_positional_id": f"BB{i+1}"
         for i, bb in enumerate(ddr.building_blocks)
     }
-    print(f"[DEBUG] origin_to_label: {origin_to_label}")
+
 
     largest_fragment_chooser = rdMolStandardize.LargestFragmentChooser() if remove_ions else None
 
     rows = top_n.to_pylist() if hasattr(top_n, "to_pylist") else top_n
-    print(f"[DEBUG] Rows: {len(rows)}")
+
 
     grouped = {}
 
@@ -603,18 +469,18 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         chem_id = int(chem_id)
         grouped.setdefault(chem_id, []).append(row)
 
-    print(f"[DEBUG] Unique chemical groups: {len(grouped)}")
+
 
     for chem_id, chem_rows in grouped.items():
         smiles = chem_rows[0].get("smiles")
 
         if not smiles:
-            print(f"[DEBUG] Skipping chem_id={chem_id} (no smiles)")
+
             continue
 
         mol = Chem.MolFromSmiles(smiles)
         if not mol:
-            print(f"[DEBUG] RDKit failed for chem_id={chem_id}, smiles={smiles}")
+
             continue
 
         if remove_ions:
@@ -625,7 +491,7 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         positions = []
         scores = []
 
-        print(f"\n[DEBUG] --- CHEM_ID {chem_id} ---")
+
 
         for row in chem_rows:
             origin_val = row.get("origin")
@@ -636,24 +502,20 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
             scores.append(f"{metric_val:.2f}")
 
 
-            print(
-                f"[DEBUG] chem_id={chem_id} | "
-                f"origin={origin_val} → label={bb_label} | "
-                f"{metric}={metric_val:.4f}"
-            )
+
 
         pos_str = ", ".join(positions)
         score_str = ", ".join(scores)
 
         legend = f"ID: {chem_id} | Position: {pos_str} | {metric}: {score_str}"
-        print(f"[DEBUG] FINAL LEGEND: {legend}")
+
 
         legends.append(legend)
 
-    print(f"\n[DEBUG] Final molecule count: {len(mols)}")
+
 
     if not mols:
-        print("[DEBUG] No valid molecules to draw.")
+
         return
 
     img = Draw.MolsToGridImage(
@@ -675,7 +537,7 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         img.save(save_png_path)
         print(f"Saved PNG to: {save_png_path}")
 
-    print("[DEBUG] draw_bb complete\n")
+
     return img
 
 def draw_disynthons(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, save_svg_path=None, save_png_path=None):

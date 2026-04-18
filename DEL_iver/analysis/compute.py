@@ -177,7 +177,7 @@ def _write_output(ddr, table):
         filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
     )
     pq.write_table(table, output_path)
-    print(f"Written to {output_path}")
+    #print(f"Written to {output_path}")
 
 
 def compute_pbind_and_enrichment(ddr, method='laplace', min_occurrences=0,ignore_position: bool =False,draw: bool = False):
@@ -502,26 +502,35 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
             raise KeyError(f"chemical_id {i} not found in id_to_smile — dictionary may be out of sync.")
         smiles_list.append(id_to_smile[int(i)])
 
-    top_n = top_n.append_column("smiles", pa.array(smiles_list))
-
+    # --- Print ---
+    print(f"\n--- Top {n} Building blocks sorted by {sort_by} (Min Occurrences: {min_occurrences}) ---")
+    header = f"{'ID':<8} | {'origin':<22}   | {'pbind':<8} | {'enrich':<8} | {'nhits':<6} | {'ntotal':<7} |"
+    print(header)
+    print("-" * len(header))
     for row in top_n.to_pylist():
         origin  = row.get("origin", "Pooled")
-        smile   = row.get("smiles")
+        smile   = row.get("smiles", "")
         score   = row.get(sort_by, 0.0)
-        pos_id  = row["positional_id"]
-        chem_id = row["chemical_id"]
-        print(f"positional_id: {pos_id} | chemical_id: {chem_id} | Origin: {origin} | {sort_by}: {score:.4f} | SMILES: {smile}")
+        pos_id  = row.get("positional_id", "N/A")
 
+        # disynthons usually don't have a single chemical_id, so this may be missing
+        chem_id = row.get("chemical_id", "N/A")
+
+        print(
+            f"{str(row.get('positional_id', 'N/A')):<8} | "
+            f"{str(row.get('origin', 'unknown')):<22} | "
+            f"{row.get('pbind', 0.0):<8.4f} | "
+            f"{row.get('enrichment', 0.0):<8.4f} | "
+            f"{row.get('nhits', 0):<6} | "
+            f"{row.get('ntotal', 0):<7} | "
+        )
     return top_n
-
-
 
 import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.parquet as pq
 
 
-#TODO: FIX ONLY FIRST DISINTHON GETTING WHITE BACKGROUND EITHER ALL OR NONE
 def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None):
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
@@ -605,7 +614,7 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
 
     # --- Print ---
     print(f"\n--- Top {n} Disynthons sorted by {sort_by} (Min Occurrences: {min_occurrences}) ---")
-    header = f"{'pos_id':<8} | {'origin':<22} | {'pbind':<8} | {'enrich':<8} | {'nhits':<6} | {'ntotal':<7} | {'SMILES'}"
+    header = f"{'ID':<8} | {'origin':<22} | {'pbind':<8} | {'enrich':<8} | {'nhits':<6} | {'ntotal':<7} |"
     print(header)
     print("-" * len(header))
     for row in top_n.to_pylist():
@@ -616,7 +625,6 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
             f"{row.get('enrichment', 0.0):<8.4f} | "
             f"{row.get('nhits', 0):<6} | "
             f"{row.get('ntotal', 0):<7} | "
-            f"{row.get('smiles', '')}"
         )
 
     return top_n
@@ -671,7 +679,7 @@ def data_set_statistics(ddr):
             if subset.empty:
                 continue
 
-            print(f"\n  [{label}]  n={len(subset):,} rows")
+            print(f"\n  [{label}]  n={len(subset):,}")
             metrics = ["pbind", "enrichment", "nhits", "ntotal"]
             col_w   = 12
 
@@ -696,4 +704,3 @@ def data_set_statistics(ddr):
                 )
 
 
-    print("\n" + "=" * 70 + "\n")
