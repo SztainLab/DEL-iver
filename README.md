@@ -120,10 +120,15 @@ What this script does:
 3. Enumerates all building blocks and disynthon combinations possible within the data. 
 4. Computes pbind.
 5. Filters to find the top molecules per pbind.
-6. Generates ECFP4 embeddings for each building block
-7. Trains models on the fingerprints
-8. Generates plots at several steps along the process for visualization
+6. Generates figures of building block and disynthon distributions
 
+
+It outputs: 
+1) Building block (BB) distribution plots (bbs.png)
+2) Disynthon distribution plots (disynthons.png)
+3) Top 10 BB and structures from data (bb_structures.png)
+4) Top 10 disynthon and structures from data(disynthon_structures.png)
+5) Table of disynthon statistics 
 
 ## Troubleshooting 
 TBD
