@@ -38,7 +38,8 @@ def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, rem
     
     Example:
     --------
-    >>> df = gen_fingerprints(
+    >>> gen_fingerprints(
+            ddr,
     ...     output_prefix="experiment1",
     ...     chunk_size=1000000,
     ...     ecfp4_size=2048

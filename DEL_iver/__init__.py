@@ -15,6 +15,7 @@ from .analysis.plotting import plot_disynthons
 from .analysis.compute import compute_chemical_descriptors
 from .analysis.plotting import plot_bb
 from .models.trainmodels import train_model
+from .models.inference_test import inference
 
 
 
