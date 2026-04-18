@@ -19,6 +19,7 @@ class CacheNames(Enum):
     MODELS = "models"
     SMILESEMBEDDING = "smiles_embedding"
     MLPERFORMANCE = 'ml_performance'
+    ANALOGS = 'analog_analysis'
     
 
 
