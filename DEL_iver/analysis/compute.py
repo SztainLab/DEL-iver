@@ -10,6 +10,7 @@ from rdkit import Chem
 from rdkit.Chem import Descriptors, rdMolDescriptors, QED
 from rdkit.Chem.rdMolDescriptors import CalcTPSA
 from rdkit.Chem.MolStandardize import rdMolStandardize
+import os
 
 def _load_tables(ddr, building_blocks,split_col=None): 
     bb_table = ddr.cache.get_path(
@@ -17,7 +18,7 @@ def _load_tables(ddr, building_blocks,split_col=None):
         filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
     )
     if not ddr.cache.is_cached(bb_table):
-        raise RuntimeError("BB dictionaries not found. Run generate_bb_dictionaries(ddr) first.")
+        raise RuntimeError("BB dictionaries not found. Run generate_bb_dictionaries() first.")
 
     columns = building_blocks + [ddr.label]
 
@@ -179,7 +180,7 @@ def _write_output(ddr, table):
     #print(f"Written to {output_path}")
 
 
-def compute_pbind_and_enrichment(ddr, method='laplace', min_occurrences=0,ignore_position: bool =False,draw: bool = False):
+def compute_enrichment(ddr, method='laplace', min_occurrences=0,ignore_position: bool =False,draw: bool = False):
 
     building_blocks = ddr.building_blocks 
     source_table, bb_table = _load_tables(ddr, building_blocks)
@@ -430,11 +431,25 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
 
+
+
+
+
     enrichment_path = ddr.cache.get_path(
         CacheNames.COMPUTE,
         filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
     )
+
+    #TODO: Clean up message text here
+    if not ddr.cache.is_cached(enrichment_path):
+        raise FileNotFoundError(
+            f"Required enrichment cache not found: {enrichment_path}. "
+            "Run enrichment computation before BB enumeration.")
+
+
     enrichment = pq.read_table(enrichment_path)
+
+
 
     id_to_smile_path = ddr.cache.get_path(
         CacheNames.BB_DICTIONARIES,
@@ -637,7 +652,7 @@ def data_set_statistics(ddr):
     if not stats_path.exists():
         raise FileNotFoundError(
             f"Enrichment table not found at {stats_path}. "
-            "Run compute_pbind_and_enrichment() first."
+            "Run compute_enrichment() first."
         )
 
     stats = pq.read_table(stats_path)
