@@ -12,14 +12,13 @@ from rdkit.Chem.rdMolDescriptors import CalcTPSA
 from rdkit.Chem.MolStandardize import rdMolStandardize
 import os
 
-def _load_tables(ddr, building_blocks,split_col=None): 
-    bb_table = ddr.cache.get_path(
-        CacheNames.BB_DICTIONARIES,
-        filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
-    )
-    if not ddr.cache.is_cached(bb_table):
-        raise RuntimeError("BB dictionaries not found. Run generate_bb_dictionaries() first.")
 
+def _load_tables(ddr,split_col=None):
+    bb_table = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main")
+    if not ddr.cache.is_cached(bb_table):
+        raise RuntimeError("BB dictionaries not found. Run enumerate_building_blocks() first.")
+
+    building_blocks=ddr.building_blocks
     columns = building_blocks + [ddr.label]
 
     if split_col is not None:
@@ -157,7 +156,7 @@ def _count_hits_and_total_disynthon(table, dis_col, bb_positional_id_cols, bb_ch
     return result
 
 
-def _compute_bb_enrichment(source_table, bb_id_cols, building_blocks, label_col, total_hits, total_nonhits, method, min_occurrences, ignore_position):
+def _compute_bb_enrichment(source_table, bb_id_cols, building_blocks, label_col, total_hits, total_nonhits, method, min_occurrences):
     
 
     counts = _aggregate_bb_counts_across_positions(source_table, bb_id_cols, building_blocks, label_col)
@@ -171,44 +170,36 @@ def _compute_disynthon_enrichment(source_table, dis_col, relevant_bb_positional_
     stats  = stats.append_column("type", pa.array(["disynthon"] * len(stats)))
     return stats
 
-def _write_output(ddr, table):
-    output_path = ddr.cache.get_path(
-        CacheNames.COMPUTE,
-        filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
-    )
-    pq.write_table(table, output_path)
-    #print(f"Written to {output_path}")
+def _write_output(ddr, bb_table, disynthon_table):
+    pq.write_table(bb_table,        ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment"))
+    pq.write_table(disynthon_table, ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
 
 
-def compute_enrichment(ddr, method='laplace', min_occurrences=0,ignore_position: bool =False,draw: bool = False):
 
-    building_blocks = ddr.building_blocks 
-    source_table, bb_table = _load_tables(ddr, building_blocks)
-    disynthon_cols = ddr.disynthons 
-    bb_id_cols = [f"{bb}_positional_id" for bb in building_blocks]
+def compute_enrichment(ddr, method='laplace', min_occurrences=0,draw: bool = False):
 
 
-    total_hits, total_nonhits = _get_global_totals(source_table, ddr.label) 
+
+
+    source_table, bb_table = _load_tables(ddr)
+    total_hits, total_nonhits = _get_global_totals(source_table, ddr.label)
+    building_blocks=ddr.building_blocks
+    bb_positional_id_cols = [f"{bb}_positional_id" for bb in building_blocks]
+    bb_chemical_id_cols = [f"{bb}_chemical_id" for bb in building_blocks]
+
     bb_stats = _compute_bb_enrichment( 
         source_table, 
-        bb_id_cols, 
+        bb_positional_id_cols, 
         building_blocks,
         ddr.label, 
         total_hits, 
         total_nonhits, 
         method, 
         min_occurrences,
-        ignore_position
     )
 
-
-
-
-    bb_positional_id_cols = [f"{bb}_positional_id" for bb in building_blocks]
-    bb_chemical_id_cols = [f"{bb}_chemical_id" for bb in building_blocks]
-
     disynthon_stats = {}
-    for dis_col in tqdm(ddr.disynthons, desc="Computing Enrichment and Pbind"):
+    for dis_col in tqdm(ddr.disynthons, desc="Computing Enrichment"):
         combo_indices               = [int(i) - 1 for i in dis_col.replace("disynthon_", "").replace("_id", "").split("_")]
         relevant_bb_positional_cols = [bb_positional_id_cols[i] for i in combo_indices]
         relevant_bb_chemical_cols   = [bb_chemical_id_cols[i]   for i in combo_indices]
@@ -224,12 +215,11 @@ def compute_enrichment(ddr, method='laplace', min_occurrences=0,ignore_position:
             min_occurrences
         )
 
-    final_table = pa.concat_tables([bb_stats] + list(disynthon_stats.values()), promote_options="default")
+    disynthon_table = pa.concat_tables(list(disynthon_stats.values()), promote_options="default")
+
+    _write_output(ddr, bb_stats, disynthon_table)
 
 
-    _write_output(ddr, final_table)
-
-    return bb_stats, disynthon_stats
 
 
 
@@ -357,13 +347,8 @@ def compute_chemical_descriptors(ddr,
                        Default False — single threaded is fast enough for typical
                        BB dictionaries and avoids shared memory issues on clusters.
     """
-    bb_dict_path = ddr.cache.get_path(
-        CacheNames.BB_DICTIONARIES,
-        filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
-    )
-    id_to_smiles_path = bb_dict_path.with_name(
-        bb_dict_path.stem + "_id_to_smiles.parquet"
-    )
+    bb_dict_path      = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main")
+    id_to_smiles_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
 
     if not id_to_smiles_path.exists():
         raise FileNotFoundError(f"id_to_smiles parquet not found at: {id_to_smiles_path}")
@@ -415,10 +400,7 @@ def compute_chemical_descriptors(ddr,
     print(f"Done. {len(table) - invalid_count:,} valid / {invalid_count:,} invalid "
           f"out of {len(smiles):,} total.")
 
-    #TODO CHANGE TO COMPUTE PATH
-    output_path = bb_dict_path.with_name(
-        bb_dict_path.stem + "_descriptors.parquet"
-    )
+    output_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "descriptors")
     pq.write_table(table, output_path)
     print(f"Saved descriptors to: {output_path}")
     print(table)
@@ -435,26 +417,15 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
 
 
 
-    enrichment_path = ddr.cache.get_path(
-        CacheNames.COMPUTE,
-        filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
-    )
-
-    #TODO: Clean up message text here
+    enrichment_path = ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
     if not ddr.cache.is_cached(enrichment_path):
         raise FileNotFoundError(
             f"Required enrichment cache not found: {enrichment_path}. "
-            "Run enrichment computation before BB enumeration.")
-
+            "Run compute_enrichment() first.")
 
     enrichment = pq.read_table(enrichment_path)
 
-
-
-    id_to_smile_path = ddr.cache.get_path(
-        CacheNames.BB_DICTIONARIES,
-        filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}_id_to_smiles.parquet"
-    )
+    id_to_smile_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
     id_to_smile_table = pq.read_table(id_to_smile_path)
     id_to_smile = {
         int(row["id"]): row["smiles"]
@@ -556,17 +527,10 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
             mapped_exclude.append(str(item))
 
     # --- Load enrichment table ---
-    enrichment_path = ddr.cache.get_path(
-        CacheNames.COMPUTE,
-        filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
-    )
-    enrichment = pq.read_table(enrichment_path)
+    enrichment = pq.read_table(ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
 
     # --- Load id-to-smiles dictionary ---
-    id_to_smile_path = ddr.cache.get_path(
-        CacheNames.BB_DICTIONARIES,
-        filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}_id_to_smiles.parquet"
-    )
+    id_to_smile_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
     id_to_smile_table = pq.read_table(id_to_smile_path)
     id_to_smile = {int(r["id"]): r["smiles"] for r in id_to_smile_table.to_pylist()}
 
@@ -645,17 +609,13 @@ def data_set_statistics(ddr):
       - Per-origin hit rates (all building block positions + all disynthon combos)
       - Distribution statistics (pbind, nhits, ntotal) for BB and disynthon rows
     """
-    stats_path = ddr.cache.get_path(
-        CacheNames.COMPUTE,
-        filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
-    )
-    if not stats_path.exists():
-        raise FileNotFoundError(
-            f"Enrichment table not found at {stats_path}. "
-            "Run compute_enrichment() first."
-        )
+    bb_path  = ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
+    dis_path = ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
+    if not bb_path.exists() or not dis_path.exists():
+        raise FileNotFoundError("Enrichment tables not found. Run compute_enrichment() first.")
 
-    stats = pq.read_table(stats_path)
+    import pyarrow as pa
+    stats = pa.concat_tables([pq.read_table(bb_path), pq.read_table(dis_path)])
     df    = stats.to_pandas()
 
 

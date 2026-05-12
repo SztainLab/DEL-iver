@@ -30,13 +30,7 @@ def plot_disynthons(ddr,
     }
 
     # 2. Load and Filter Data
-    input_path = ddr.cache.get_path(
-        CacheNames.COMPUTE,
-        filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
-    )
-
-    #print(f"Reading data from: {input_path}")
-    df = pd.read_parquet(input_path)
+    df = pd.read_parquet(ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
 
     if "ntotal" in df.columns:
         df = df[df["ntotal"] >= min_occurrences].copy()
@@ -149,12 +143,7 @@ def plot_bb(ddr,
     
     with plt.rc_context(params):
         # 1. Load Data
-        input_path = ddr.cache.get_path(
-            CacheNames.COMPUTE,
-            filename=f"{CacheNames.COMPUTE.value}.{ddr.source_file.stem}.parquet"
-        )
-        #print(f"Reading data from: {input_path}")
-        df = pd.read_parquet(input_path)
+        df = pd.read_parquet(ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment"))
 
         # 2. Filter Data
         mask = df["type"] == "building_block"

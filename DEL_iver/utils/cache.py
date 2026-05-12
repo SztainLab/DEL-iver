@@ -12,14 +12,43 @@ from tqdm import tqdm
     #TODO: check if building_blocks list is in the column od source_file if not raise error, this should be handle by cache_manager when instantiating the data reader
 
 class CacheNames(Enum):
-    ROOT = Path(user_cache_dir("DEL_iver"))
-    BB_DICTIONARIES = "bb_dictionaries"
-    SPLITS = "splits"
-    COMPUTE= "analysis"
-    MODELS = "models"
-    SMILESEMBEDDING = "smiles_embedding"
-    MLPERFORMANCE = 'ml_performance'
-    ANALOGS = 'analog_analysis'
+    ROOT            = (Path(user_cache_dir("DEL_iver")), {})
+    BB_DICTIONARIES = ("bb_dictionaries", {
+        "main":         "{stem}",
+        "id_to_smiles": "{stem}_id_to_smiles",
+        "descriptors":  "{stem}_descriptors",
+    })
+    SPLITS          = ("splits", {})
+    COMPUTE         = ("analysis", {
+        "bb_enrichment":        "bb_enrichment.{stem}",
+        "disynthon_enrichment": "disynthon_enrichment.{stem}",
+    })
+    MODELS          = ("models", {
+        "trainset":        "{prefix}_trainset",
+        "testset":         "{prefix}_testset",
+        "predictions":     "{prefix}_testset_predictions",
+        "model_default":   "{prefix}_trained_defaulttmodel",
+        "model_invariant": "{prefix}_trained_invariantmodel",
+        "model":           "{prefix}_trained_model",
+        "auroc_plot":      "{prefix}_AUROC_plot",
+        "pr_plot":         "{prefix}_PR_plot",
+    })
+    SMILESEMBEDDING = ("smiles_embedding", {
+        "fingerprints_bb1": "{prefix}_bb1_fingerprints",
+        "fingerprints_bb2": "{prefix}_bb2_fingerprints",
+        "fingerprints_bb3": "{prefix}_bb3_fingerprints",
+    })
+    MLPERFORMANCE   = ("ml_performance", {})
+    ANALOGS         = ("analog_analysis", {
+        "fingerprints": "{prefix}_enaminefingerprints",
+        "umap":         "{prefix}_UMAP",
+        "similar":      "{prefix}_similar_analogs",
+        "predictions":  "{prefix}_analog_predictions",
+    })
+
+    def __init__(self, dir_name, artifacts):
+        self.dir_name = dir_name
+        self.artifacts = artifacts
     
 
 
@@ -27,8 +56,8 @@ class CacheNames(Enum):
 class CacheManager:
     def __init__(self, source_file: Path, output_dir: Path = None):
         self.source_file = Path(source_file)
-        self.root = Path(output_dir) if output_dir else CacheNames.ROOT.value / self.source_file.stem
-        self.dirs = {d: self.root / d.value for d in CacheNames if d != CacheNames.ROOT}
+        self.root = Path(output_dir) if output_dir else CacheNames.ROOT.dir_name / self.source_file.stem
+        self.dirs = {d: self.root / d.dir_name for d in CacheNames if d != CacheNames.ROOT}
 
     def _ensure_dirs(self):
         for path in self.dirs.values():
@@ -37,6 +66,12 @@ class CacheManager:
     def get_parquet_path(self) -> Path:
         self.root.mkdir(parents=True, exist_ok=True)
         return self.root / (self.source_file.stem + ".parquet")
+
+    def get_output_path(self, cache_name: CacheNames, artifact: str, ext: str = ".parquet", prefix: str = None) -> Path:
+        self._ensure_dirs()
+        template = cache_name.artifacts[artifact]
+        name = template.format(stem=self.source_file.stem, prefix=prefix) + ext
+        return self.dirs[cache_name] / name
 
     def get_path(self, cache_name: CacheNames, filename: str = None, ext: str = ".parquet") -> Path:
         self._ensure_dirs()
@@ -55,8 +90,6 @@ class CacheManager:
                 return False
         return path.stat().st_size > 0
 
-    def write_to_cache():
-        return NotImplementedError
 
     def needs_conversion(self) -> bool:
         """Returns True if CSV->Parquet conversion is needed, False if already cached."""
@@ -106,4 +139,4 @@ class CacheManager:
     @staticmethod
     def clear_all():
         """Clear the entire DEL_iver cache."""
-        shutil.rmtree(CacheNames.ROOT.value, ignore_errors=True)
+        shutil.rmtree(CacheNames.ROOT.dir_name, ignore_errors=True)

@@ -42,18 +42,11 @@ def inference_analog_moles(ddr, output_prefix):
 
     print(f'Output prefix: {output_prefix}')
 
-    input_in = ddr.cache.get_path(
-        CacheNames.ANALOGS,
-        filename=f"{output_prefix}_similar_analogs.parquet"
-    )
+    input_in = ddr.cache.get_output_path(CacheNames.ANALOGS, "similar", prefix=output_prefix)
     parquet_ans = pq.ParquetFile(input_in)
     testdf = parquet_ans.read().to_pandas()
 
-    # get the bb fingerprint parquets
-    bbs_to_fings = ddr.cache.get_path(
-        CacheNames.ANALOGS,
-        filename=f"{output_prefix}_enaminefingerprints.parquet"
-    )
+    bbs_to_fings = ddr.cache.get_output_path(CacheNames.ANALOGS, "fingerprints", prefix=output_prefix)
 
     # generate the building block dictionaries
     parquet_bb = pq.ParquetFile(bbs_to_fings)
@@ -67,10 +60,7 @@ def inference_analog_moles(ddr, output_prefix):
 
     target_test_indices = target_test[['bb1_analog', 'bb2_analog', 'bb3_analog']].to_numpy()
 
-    model_path = ddr.cache.get_path(
-        CacheNames.MODELS,
-        filename=f"{output_prefix}_trained_model.pth"
-    )
+    model_path = ddr.cache.get_output_path(CacheNames.MODELS, "model", prefix=output_prefix, ext=".pth")
 
     target_model = torch.load(model_path, weights_only=False)
     target_model.to(device)
@@ -113,12 +103,7 @@ def inference_analog_moles(ddr, output_prefix):
     del target_model
     torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
-    output_out = ddr.cache.get_path(
-        CacheNames.ANALOGS,
-        filename=f"{output_prefix}_analog_predictions.parquet"
-    )
-    table = pa.Table.from_pandas(target_test)
-    pq.write_table(table, output_out)
+    pq.write_table(pa.Table.from_pandas(target_test), ddr.cache.get_output_path(CacheNames.ANALOGS, "predictions", prefix=output_prefix))
 
     print(f'wrote analog predictions to {output_out}')
 

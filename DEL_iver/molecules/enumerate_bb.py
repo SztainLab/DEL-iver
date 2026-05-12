@@ -130,10 +130,7 @@ def enumerate_building_blocks(ddr):
     source_file=ddr.source_file
     building_blocks=ddr.building_blocks
 
-    output_path = ddr.cache.get_path(
-        CacheNames.BB_DICTIONARIES,
-        filename=f"{CacheNames.BB_DICTIONARIES.value}.{ddr.source_file.stem}.parquet"
-    )
+    output_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main")
 
     if os.path.exists(output_path):
         warnings.warn(f"BB enumaration found in cache no further work needed",UserWarning)
@@ -146,10 +143,9 @@ def enumerate_building_blocks(ddr):
             "smiles": list(id_to_smile.values())
         })
 
-        #TODO: FIND standarized way to write output files like this
         pq.write_table(
             id_to_smile_table,
-            output_path.with_name(output_path.stem + "_id_to_smiles.parquet")
+            ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
         )
 
         table=_assign_id_per_row(source_file,building_blocks,smile_to_id)
