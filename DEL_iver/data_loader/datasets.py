@@ -1,9 +1,6 @@
 import torch
 from torch.utils.data import Dataset
-from rdkit import Chem
 import numpy as np
-
-from utils import retrieve_mol_fp
 
 # A dataset that is built using array of BB indices (e.g., [[0, 0, 1], [0, 0, 24], etc) and 3 dictionary of building blocks FPs
 class TrainBBFPDataset_v1(Dataset):

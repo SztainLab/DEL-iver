@@ -2,18 +2,11 @@
 
 import pandas as pd
 import numpy as np
-from joblib import Parallel, delayed
 import multiprocessing
 import pyarrow as pa
 import pyarrow.parquet as pq
-from tqdm import tqdm
-import sys 
-import pickle
-import os
-from itertools import combinations
-import itertools
-from DEL_iver.utils.utils import *
-from DEL_iver.utils.cache import CacheManager, CacheNames
+from DEL_iver.utils.utils import retrieve_mol_fp
+from DEL_iver.utils.cache import CacheNames
 import umap
 import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
@@ -25,8 +18,7 @@ params = {'font.family': 'sans-serif',
          'xtick.labelsize': '24',
          'ytick.labelsize': '24'}
 pylab.rcParams.update(params)
-from rdkit import Chem, DataStructs
-from rdkit.Chem import AllChem
+from rdkit import DataStructs
 
 def compute_labeled_similarity(ecfp4_list1, ecfp4_list2, smiles_list1, smiles_list2, labels1=None, labels2=None):
     """

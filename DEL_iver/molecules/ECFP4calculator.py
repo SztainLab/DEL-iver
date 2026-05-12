@@ -2,18 +2,12 @@
 
 import pandas as pd
 import numpy as np
-from joblib import Parallel, delayed
 import multiprocessing
 import pyarrow as pa
 import pyarrow.parquet as pq
 from tqdm import tqdm
-import sys 
-import pickle
-import os
-from itertools import combinations
-import itertools
-from DEL_iver.utils.utils import *
-from DEL_iver.utils.cache import CacheManager, CacheNames
+from DEL_iver.utils.utils import replace_Dy, retrieve_mol_fp
+from DEL_iver.utils.cache import CacheNames
 
 def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, remove_dy=False):
     """

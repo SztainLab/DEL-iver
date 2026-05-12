@@ -2,37 +2,11 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
-from DEL_iver.utils.cache import CacheManager, CacheNames
-
-import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
-import numpy as np
-import pandas as pd
-
+from DEL_iver.utils.cache import CacheNames
 from rdkit import Chem
 from rdkit.Chem import Draw
-import random
-import matplotlib.colors as mcolors
 from rdkit.Chem.MolStandardize import rdMolStandardize
-
-from IPython.display import display, SVG
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.ticker as ticker
-
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
 
 def plot_disynthons(ddr, 
                     mode="pbind", 

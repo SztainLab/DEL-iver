@@ -2,13 +2,12 @@ from pathlib import Path
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pyarrow.compute as pc
-from DEL_iver.utils.cache import CacheManager, CacheNames
+from DEL_iver.utils.cache import CacheNames
 from tqdm import tqdm
 from multiprocessing import Pool, cpu_count
-import os
 import pandas as pd
 from rdkit import Chem
-from rdkit.Chem import Descriptors, rdMolDescriptors, GraphDescriptors, QED
+from rdkit.Chem import Descriptors, rdMolDescriptors, QED
 from rdkit.Chem.rdMolDescriptors import CalcTPSA
 from rdkit.Chem.MolStandardize import rdMolStandardize
 
@@ -427,10 +426,6 @@ def compute_chemical_descriptors(ddr,
 
 
 
-import pyarrow as pa
-import pyarrow.compute as pc
-import pyarrow.parquet as pq
-
 def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = None):
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
@@ -525,10 +520,6 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
             f"{row.get('ntotal', 0):<7} | "
         )
     return top_n
-
-import pyarrow as pa
-import pyarrow.compute as pc
-import pyarrow.parquet as pq
 
 
 def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None):

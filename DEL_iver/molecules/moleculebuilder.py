@@ -1,11 +1,6 @@
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from rdkit import rdBase
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from rdkit.Chem import Draw
-from rdkit.Chem import rdMolDescriptors
 import argparse
 
 class HelpAction(argparse.Action):

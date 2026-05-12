@@ -2,44 +2,10 @@
 
 import pandas as pd
 import numpy as np
-from joblib import Parallel, delayed
-import multiprocessing
 import pyarrow as pa
 import pyarrow.parquet as pq
-from tqdm import tqdm
-import sys 
-import pickle
-import os
 import torch
-from torch.utils.data import Dataset
-from torch.utils.data import DataLoader
-import torch.nn as nn
-import torch.nn.functional as F
-import random
-from itertools import combinations
-import itertools
-from DEL_iver.utils.utils import *
-from DEL_iver.utils.cache import CacheManager, CacheNames
-import pandas as pd
-import numpy as np
-from rdkit import Chem
-from rdkit.Chem import AllChem, Draw
-import torch
-from torch.utils.data import DataLoader
-import random
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import matplotlib.pylab as pylab
-params = {'font.family': 'sans-serif',
-         'legend.fontsize': '12',
-         'figure.figsize': (12,12),
-         'axes.labelsize': '24',
-         'axes.titlesize': '24',
-         'xtick.labelsize': '24',
-         'ytick.labelsize': '24'}
-pylab.rcParams.update(params)
-from sklearn.metrics import roc_curve, roc_auc_score
-from sklearn.metrics import average_precision_score, precision_recall_curve
+from DEL_iver.utils.cache import CacheNames
 
 def inference_analog_moles(ddr, output_prefix):
     """
