@@ -10,7 +10,7 @@ label="binds"
 metric="pbind"
 
 
-ddr = deliv.DataReader.from_csv(input,building_blocks=bb_cols,output_path=output,label=label)
+ddr = deliv.DataReader.from_csv(input,building_blocks=bb_cols,output_dir=output,label=label)
 table, id_to_smile = deliv.generate_bb_dictionaries(ddr)
 
 #Chemical Analysis
