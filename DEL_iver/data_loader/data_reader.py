@@ -76,10 +76,10 @@ class DataReader:
         if overwrite:
             self.cache.clear()
 
-        if self.cache.needs_conversion():
-            self.cache.convert_csv_to_parquet(memory_per_chunk_mb)
+        if self.cache._needs_conversion():
+            self.cache._convert_csv_to_parquet(memory_per_chunk_mb)
 
-        parquet_path = self.cache.get_parquet_path()
+        parquet_path = self.cache._get_parquet_path()
         self.source_file = parquet_path
         return self
 

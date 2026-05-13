@@ -59,13 +59,13 @@ def inference(ddr, output_prefix):
     print(f'Output prefix: {output_prefix}')
 
     # load data to test on
-    testf = ddr.cache.get_output_path(CacheNames.MODELS, "testset", prefix=output_prefix)
+    testf = ddr.cache._get_output_path(CacheNames.MODELS, "testset", prefix=output_prefix)
     testparq = pq.ParquetFile(testf)
     testdf = testparq.read().to_pandas()
 
-    bb1s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
-    bb2s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
-    bb3s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb3", prefix=output_prefix)
+    bb1s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
+    bb2s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
+    bb3s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb3", prefix=output_prefix)
 
     # generate the building block dictionaries
     parquet_bb1 = pq.ParquetFile(bb1s)
@@ -89,7 +89,7 @@ def inference(ddr, output_prefix):
 
     target_test_indices = target_test[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']].to_numpy()
 
-    model_path = ddr.cache.get_output_path(CacheNames.MODELS, "model", prefix=output_prefix, ext=".pth")
+    model_path = ddr.cache._get_output_path(CacheNames.MODELS, "model", prefix=output_prefix, ext=".pth")
 
     target_model = torch.load(model_path, weights_only=False)
     target_model.to(device)
@@ -132,7 +132,7 @@ def inference(ddr, output_prefix):
     del target_model
     torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
-    output_out = ddr.cache.get_output_path(CacheNames.MODELS, "predictions", prefix=output_prefix)
+    output_out = ddr.cache._get_output_path(CacheNames.MODELS, "predictions", prefix=output_prefix)
     pq.write_table(pa.Table.from_pandas(predictions_df), output_out)
 
     print(f'wrote predictions to {output_out}')
@@ -147,8 +147,8 @@ def inference(ddr, output_prefix):
     ap = average_precision_score(y_true, y_scores)
     ap_baseline = sum(y_true)/len(y_true)
 
-    auroc_out = ddr.cache.get_output_path(CacheNames.MODELS, "auroc_plot", prefix=output_prefix, ext=".png")
-    pr_out    = ddr.cache.get_output_path(CacheNames.MODELS, "pr_plot",    prefix=output_prefix, ext=".png")
+    auroc_out = ddr.cache._get_output_path(CacheNames.MODELS, "auroc_plot", prefix=output_prefix, ext=".png")
+    pr_out    = ddr.cache._get_output_path(CacheNames.MODELS, "pr_plot",    prefix=output_prefix, ext=".png")
 
     plt.figure()
     plt.plot([0, 1], [0, 1], color='gray', lw=5, linestyle='--', label=f'random AUROC 0.5')

@@ -46,8 +46,8 @@ def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, rem
     print(f'ECFP4 size: {ecfp4_size}')
     print(f'Remove Dy: {remove_dy}')
     
-    filename     = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
-    filename_map = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main")
+    filename     = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
+    filename_map = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
 
     # print(filename)
     # Read parquet file in batches
@@ -94,7 +94,7 @@ def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, rem
 
     for bname, df in zip(['bb1', 'bb2', 'bb3'], [bb1_df, bb2_df, bb3_df]):
         # Save to parquet file
-        output_out = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, f"fingerprints_{bname}", prefix=output_prefix)
+        output_out = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, f"fingerprints_{bname}", prefix=output_prefix)
     
         # Convert to PyArrow Table and save as Parquet
         table = pa.Table.from_pandas(df)

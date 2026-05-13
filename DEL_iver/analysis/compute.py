@@ -14,8 +14,8 @@ import warnings
 
 
 def _load_tables(ddr,split_col=None):
-    bb_table = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main")
-    if not ddr.cache.is_cached(bb_table):
+    bb_table = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
+    if not ddr.cache._is_cached(bb_table):
         raise RuntimeError("BB dictionaries not found. Run enumerate_building_blocks() first.")
 
     building_blocks=ddr.building_blocks
@@ -171,8 +171,8 @@ def _compute_disynthon_enrichment(source_table, dis_col, relevant_bb_positional_
     return stats
 
 def _write_output(ddr, bb_table, disynthon_table):
-    pq.write_table(bb_table,        ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment"))
-    pq.write_table(disynthon_table, ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
+    pq.write_table(bb_table,        ddr.cache._get_output_path(CacheNames.COMPUTE, "bb_enrichment"))
+    pq.write_table(disynthon_table, ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
 
 
 
@@ -200,10 +200,10 @@ def compute_enrichment(ddr, method='laplace', min_occurrences=0, draw: bool = Fa
 
 
 
-    out1=ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
-    out2=ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
+    out1=ddr.cache._get_output_path(CacheNames.COMPUTE, "bb_enrichment")
+    out2=ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
 
-    if ddr.cache.is_cached(out1) and ddr.cache.is_cached(out2):
+    if ddr.cache._is_cached(out1) and ddr.cache._is_cached(out2):
         warnings.warn(f"Enrichment metrics found in cache no further work needed",UserWarning)
     else:
         source_table, bb_table = _load_tables(ddr)
@@ -372,8 +372,8 @@ def compute_chemical_descriptors(ddr,
                        Default False — single threaded is fast enough for typical
                        BB dictionaries and avoids shared memory issues on clusters.
     """
-    bb_dict_path      = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main")
-    id_to_smiles_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
+    bb_dict_path      = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
+    id_to_smiles_path = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
 
     if not id_to_smiles_path.exists():
         raise FileNotFoundError(f"id_to_smiles parquet not found at: {id_to_smiles_path}")
@@ -425,7 +425,7 @@ def compute_chemical_descriptors(ddr,
     print(f"Done. {len(table) - invalid_count:,} valid / {invalid_count:,} invalid "
           f"out of {len(smiles):,} total.")
 
-    output_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "descriptors")
+    output_path = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "descriptors")
     pq.write_table(table, output_path)
     print(f"Saved descriptors to: {output_path}")
     print(table)
@@ -468,13 +468,13 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
 
-    enrichment_path = ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
-    if not ddr.cache.is_cached(enrichment_path):
+    enrichment_path = ddr.cache._get_output_path(CacheNames.COMPUTE, "bb_enrichment")
+    if not ddr.cache._is_cached(enrichment_path):
         raise FileNotFoundError(
             f"Required enrichment cache not found: {enrichment_path}. "
             "Run compute_enrichment() first.")
     
-    id_to_smile_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
+    id_to_smile_path = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
 
     bb_stats = pq.read_table(enrichment_path)
     id_to_smile_table = pq.read_table(id_to_smile_path)
@@ -529,6 +529,8 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
         if int(i) not in id_to_smile:
             raise KeyError(f"chemical_id {i} not found in id_to_smile  dictionary may be out of sync.")
         smiles_list.append(id_to_smile[int(i)])
+
+    top_n = top_n.append_column("smiles", pa.array(smiles_list, type=pa.string()))
 
     if print_output:
         # --- Print ---
@@ -611,7 +613,7 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
     #++++++++++++++++ Exclude logic
 
     # --- Load enrichment table ---
-    dis_stats = pq.read_table(ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
+    dis_stats = pq.read_table(ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
 
     # --- Apply exclude filter by origin ---
     if mapped_exclude and dis_stats.num_rows > 0:
@@ -619,7 +621,7 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
         dis_stats = dis_stats.filter(keep_mask)
 
     # --- Load id-to-smiles dictionary ---
-    id_to_smile_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
+    id_to_smile_path = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
     id_to_smile_table = pq.read_table(id_to_smile_path)
     id_to_smile = {int(r["id"]): r["smiles"] for r in id_to_smile_table.to_pylist()}
 
@@ -695,8 +697,8 @@ def data_set_statistics(ddr, print_output: bool = False, write_output: str = Non
     write_output : str, optional
         If provided, write the summary as CSV to this path.
     """
-    bb_path  = ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
-    dis_path = ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
+    bb_path  = ddr.cache._get_output_path(CacheNames.COMPUTE, "bb_enrichment")
+    dis_path = ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
     if not bb_path.exists() or not dis_path.exists():
         raise FileNotFoundError("Enrichment tables not found. Run compute_enrichment() first.")
     stats = pa.concat_tables(

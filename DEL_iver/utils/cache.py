@@ -19,7 +19,7 @@ class CacheNames(Enum):
     under the cache root. artifacts maps artifact keys to filename templates where {stem}
     is replaced with the source file stem and {prefix} with a caller-supplied prefix.
 
-    Use CacheManager.get_output_path(CacheNames.MEMBER, "artifact_key") to resolve
+    Use CacheManager._get_output_path(CacheNames.MEMBER, "artifact_key") to resolve
     a full path without constructing filenames manually.
     """
     ROOT            = (Path(user_cache_dir("DEL_iver")), {})
@@ -89,22 +89,22 @@ class CacheManager:
         for path in self.dirs.values():
             path.mkdir(parents=True, exist_ok=True)
 
-    def get_parquet_path(self) -> Path:
+    def _get_parquet_path(self) -> Path:
         self.root.mkdir(parents=True, exist_ok=True)
         return self.root / (self.source_file.stem + ".parquet")
 
-    def get_output_path(self, cache_name: CacheNames, artifact: str, ext: str = ".parquet", prefix: str = None) -> Path:
+    def _get_output_path(self, cache_name: CacheNames, artifact: str, ext: str = ".parquet", prefix: str = None) -> Path:
         self._ensure_dirs()
         template = cache_name.artifacts[artifact]
         name = template.format(stem=self.source_file.stem, prefix=prefix) + ext
         return self.dirs[cache_name] / name
 
-    def get_path(self, cache_name: CacheNames, filename: str = None, ext: str = ".parquet") -> Path:
+    def _get_path(self, cache_name: CacheNames, filename: str = None, ext: str = ".parquet") -> Path:
         self._ensure_dirs()
         directory = self.dirs[cache_name]
         return directory / (filename or (self.source_file.stem + ext))
 
-    def is_cached(self, path: Path) -> bool:
+    def _is_cached(self, path: Path) -> bool:
         if not path.exists():
             return False
         if path.suffix == ".parquet":
@@ -117,10 +117,10 @@ class CacheManager:
         return path.stat().st_size > 0
 
 
-    def needs_conversion(self) -> bool:
+    def _needs_conversion(self) -> bool:
         """Returns True if CSV->Parquet conversion is needed, False if already cached."""
-        parquet_path = self.get_parquet_path()
-        if self.is_cached(parquet_path):
+        parquet_path = self._get_parquet_path()
+        if self._is_cached(parquet_path):
             warnings.warn(
                 f"Loading {parquet_path} from cache. "
                 f"To remove run clear_cache({parquet_path})",
@@ -132,8 +132,8 @@ class CacheManager:
         return True
 
 #TODO: Before conversion run a quick schema check across all chunks
-    def convert_csv_to_parquet(self, memory_per_chunk_mb: int) -> Path:
-        parquet_path = self.get_parquet_path()
+    def _convert_csv_to_parquet(self, memory_per_chunk_mb: int) -> Path:
+        parquet_path = self._get_parquet_path()
         tmp_path = parquet_path.with_suffix(".tmp.parquet")
         block_size_bytes = memory_per_chunk_mb * 1024 * 1024
         read_options = pv.ReadOptions(block_size=block_size_bytes)
@@ -173,9 +173,5 @@ class CacheManager:
             for f in files:
                 size_kb = f.stat().st_size / 1024
                 print(f"    {f.name}  ({size_kb:.1f} KB)")
-        
 
 
-    def clear_all():
-        """Clear the entire DEL_iver cache."""
-        shutil.rmtree(CacheNames.ROOT.dir_name, ignore_errors=True)

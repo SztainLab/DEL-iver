@@ -163,9 +163,9 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     # print(len(df_source))
     
     # load the bb1,bb2,bb3 DEL ecfp4 dicts
-    bb1s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
-    bb2s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
-    bb3s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb3", prefix=output_prefix)
+    bb1s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
+    bb2s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
+    bb3s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb3", prefix=output_prefix)
 
     parquet_bb1 = pq.ParquetFile(bb1s)
     df_bb1 = parquet_bb1.read().to_pandas()
@@ -183,7 +183,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     del df_bb3
     
     # load the positional ids of building blocks
-    parquet_alldata = pq.ParquetFile(ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main"))
+    parquet_alldata = pq.ParquetFile(ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main"))
     all_data_df = parquet_alldata.read().to_pandas()
 
     all_data_df = all_data_df[all_data_df['buildingblock1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
@@ -191,7 +191,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     all_data_df = all_data_df[all_data_df['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
     # load the dict that has ids to smiles
-    filename = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
+    filename = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
     
     parquet_sm = pq.ParquetFile(filename)
     df_id2smile = parquet_sm.read().to_pandas()
@@ -209,7 +209,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     enamine_df = pd.DataFrame({'SMILES': enamine_smiles2ecfp4_dict.keys(), 'ECFP4s': enamine_smiles2ecfp4_dict.values()})
     
     # write enamine ecfp4 fingerprints to file
-    pq.write_table(pa.Table.from_pandas(enamine_df), ddr.cache.get_output_path(CacheNames.ANALOGS, "fingerprints", prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(enamine_df), ddr.cache._get_output_path(CacheNames.ANALOGS, "fingerprints", prefix=output_prefix))
     print(f"Enamine fingerprints saved to: {output_out}")
     
     bb1_dict = {id2smile[k]: v for k, v in bb1_dict.items()}
@@ -245,7 +245,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     to_umap['UMAP1'] = embedding[:, 0]
     to_umap['UMAP2'] = embedding[:, 1]
 
-    pq.write_table(pa.Table.from_pandas(to_umap), ddr.cache.get_output_path(CacheNames.ANALOGS, "umap", prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(to_umap), ddr.cache._get_output_path(CacheNames.ANALOGS, "umap", prefix=output_prefix))
 
     print(f'wrote UMAP to {output_out}')
 
@@ -257,7 +257,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
         'analog': 'lightgray'
     }
 
-    umap_out = ddr.cache.get_output_path(CacheNames.ANALOGS, "umap", prefix=output_prefix, ext=".png")
+    umap_out = ddr.cache._get_output_path(CacheNames.ANALOGS, "umap", prefix=output_prefix, ext=".png")
     
     fig, ax = plt.subplots()
 
@@ -324,7 +324,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     # then filter by any that have na values (need to create a map where na is written if smiles not in df)
     df_filtered = df_source.dropna()
     
-    pq.write_table(pa.Table.from_pandas(df_filtered), ddr.cache.get_output_path(CacheNames.ANALOGS, "similar", prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(df_filtered), ddr.cache._get_output_path(CacheNames.ANALOGS, "similar", prefix=output_prefix))
 
     print(f'wrote predictions to {output_out}')
 

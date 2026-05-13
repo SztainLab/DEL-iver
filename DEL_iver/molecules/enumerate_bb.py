@@ -138,10 +138,10 @@ def enumerate_building_blocks(ddr):
     source_file=ddr.source_file
     building_blocks=ddr.building_blocks
 
-    output_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main")
+    output_path = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
 
 
-    if ddr.cache.is_cached(output_path):
+    if ddr.cache._is_cached(output_path):
         warnings.warn(f"BB enumaration found in cache no further work needed",UserWarning)
 
     else:
@@ -154,7 +154,7 @@ def enumerate_building_blocks(ddr):
 
         pq.write_table(
             id_to_smile_table,
-            ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
+            ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
         )
 
         table=_assign_id_per_row(source_file,building_blocks,smile_to_id)

@@ -8,6 +8,15 @@ from rdkit.Chem import Draw
 from rdkit.Chem.MolStandardize import rdMolStandardize
 import matplotlib.ticker as ticker
 
+_PLOT_PARAMS = {
+    'font.family':      'sans-serif',
+    'legend.fontsize':  16,
+    'figure.figsize':   (16, 8),
+    'axes.labelsize':   16,
+    'axes.titlesize':   16,
+    'xtick.labelsize':  16,
+    'ytick.labelsize':  16,
+}
 
 def plot_disynthons(ddr,
                     mode="pbind",
@@ -45,17 +54,6 @@ def plot_disynthons(ddr,
         If provided, save the figure to this path at 300 dpi.
     """
 
-    # 1. Setup Plot Parameters
-    params = {
-        'font.family': 'sans-serif',
-        'legend.fontsize': 16, 
-        'figure.figsize': (16, 8),
-        'axes.labelsize': 16,
-        'axes.titlesize': 16,
-        'xtick.labelsize': 16,
-        'ytick.labelsize': 16
-    }
-
     # 2. Load and Filter Data
     df = pd.read_parquet(ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
 
@@ -78,7 +76,7 @@ def plot_disynthons(ddr,
     bb_labels = {col: f"BB{i + 1}" for i, col in enumerate(bb_positional_id_cols)}
     
     # 3. Apply Plot Parameters and Draw
-    with plt.rc_context(params):
+    with plt.rc_context(_PLOT_PARAMS):
         # Increased base height slightly to accommodate the larger padding
         fig = plt.figure(figsize=(12 * n_cols, 10 * n_rows)) 
         colormap = LinearSegmentedColormap.from_list("magenta_cyan", ["magenta", "cyan"])
@@ -178,17 +176,7 @@ def plot_bb(ddr,
         If provided, save the figure to this path at 300 dpi.
     """
 
-    params = {
-        'font.family': 'sans-serif',
-        'legend.fontsize': 24,
-        'figure.figsize': (16, 8),
-        'axes.labelsize': 24,
-        'axes.titlesize': 24,
-        'xtick.labelsize': 24,
-        'ytick.labelsize': 24
-    }
-    
-    with plt.rc_context(params):
+    with plt.rc_context(_PLOT_PARAMS):
         # 1. Load Data
         df = pd.read_parquet(ddr.cache._get_output_path(CacheNames.COMPUTE, "bb_enrichment"))
 

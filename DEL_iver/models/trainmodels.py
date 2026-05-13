@@ -155,9 +155,9 @@ def train_default(ddr, output_prefix):
     bindlabels = list(df_source[ddr.label])
     del df_source
 
-    bb1s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
-    bb2s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
-    bb3s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb3", prefix=output_prefix)
+    bb1s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
+    bb2s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
+    bb3s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb3", prefix=output_prefix)
 
     parquet_bb1 = pq.ParquetFile(bb1s)
     df_bb1 = parquet_bb1.read().to_pandas()
@@ -175,7 +175,7 @@ def train_default(ddr, output_prefix):
     del df_bb3
 
     # read in the bb positional df as well
-    parquet_alldata = pq.ParquetFile(ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main"))
+    parquet_alldata = pq.ParquetFile(ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main"))
     all_data_df = parquet_alldata.read().to_pandas()
 
     all_data_df = all_data_df[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']]
@@ -194,8 +194,8 @@ def train_default(ddr, output_prefix):
     testx = testx[testx['buildingblock2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
     testx = testx[testx['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
-    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache.get_output_path(CacheNames.MODELS, "trainset", prefix=output_prefix))
-    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache.get_output_path(CacheNames.MODELS, "testset",  prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, "trainset", prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, "testset",  prefix=output_prefix))
 
     print(f'wrote train and test sets to: {output_out} and {output_out2}')
 
@@ -251,7 +251,7 @@ def train_default(ddr, output_prefix):
         # Print loss after each epoch
         print(f'Epoch [{epoch+1}/{num_epochs}] completed, Loss: {running_loss / len(target_dataloader)}')
 
-    output_out = ddr.cache.get_output_path(CacheNames.MODELS, "model_default", prefix=output_prefix, ext=".pth")
+    output_out = ddr.cache._get_output_path(CacheNames.MODELS, "model_default", prefix=output_prefix, ext=".pth")
     torch.save(model, output_out)
     print(f'wrote model to {output_out}')
 
@@ -302,9 +302,9 @@ def train_invariant(ddr, output_prefix):
     bindlabels = list(df_source[ddr.label])
     del df_source
 
-    bb1s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
-    bb2s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
-    bb3s = ddr.cache.get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb3", prefix=output_prefix)
+    bb1s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
+    bb2s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
+    bb3s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb3", prefix=output_prefix)
 
     parquet_bb1 = pq.ParquetFile(bb1s)
     df_bb1 = parquet_bb1.read().to_pandas()
@@ -322,7 +322,7 @@ def train_invariant(ddr, output_prefix):
     del df_bb3
 
     # read in the bb positional df as well
-    parquet_alldata = pq.ParquetFile(ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main"))
+    parquet_alldata = pq.ParquetFile(ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main"))
     all_data_df = parquet_alldata.read().to_pandas()
 
     all_data_df = all_data_df[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']]
@@ -341,8 +341,8 @@ def train_invariant(ddr, output_prefix):
     testx = testx[testx['buildingblock2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
     testx = testx[testx['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
-    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache.get_output_path(CacheNames.MODELS, "trainset", prefix=output_prefix))
-    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache.get_output_path(CacheNames.MODELS, "testset",  prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, "trainset", prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, "testset",  prefix=output_prefix))
 
     print(f'wrote train and test sets to: {output_out} and {output_out2}')
 
@@ -398,7 +398,7 @@ def train_invariant(ddr, output_prefix):
         # Print loss after each epoch
         print(f'Epoch [{epoch+1}/{num_epochs}] completed, Loss: {running_loss / len(target_dataloader)}')
 
-    output_out = ddr.cache.get_output_path(CacheNames.MODELS, "model_invariant", prefix=output_prefix, ext=".pth")
+    output_out = ddr.cache._get_output_path(CacheNames.MODELS, "model_invariant", prefix=output_prefix, ext=".pth")
     torch.save(model, output_out)
     print(f'wrote model to {output_out}')
     
