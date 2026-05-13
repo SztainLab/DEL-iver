@@ -3,10 +3,11 @@ from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
 from DEL_iver.utils.cache import CacheNames
-from rdkit import Chem
+from rdkit import Chem, RDLogger
 from rdkit.Chem import Draw
 from rdkit.Chem.MolStandardize import rdMolStandardize
 import matplotlib.ticker as ticker
+
 
 def plot_disynthons(ddr,
                     mode="pbind",
@@ -56,7 +57,7 @@ def plot_disynthons(ddr,
     }
 
     # 2. Load and Filter Data
-    df = pd.read_parquet(ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
+    df = pd.read_parquet(ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
 
     if "ntotal" in df.columns:
         df = df[df["ntotal"] >= min_occurrences].copy()
@@ -189,7 +190,7 @@ def plot_bb(ddr,
     
     with plt.rc_context(params):
         # 1. Load Data
-        df = pd.read_parquet(ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment"))
+        df = pd.read_parquet(ddr.cache._get_output_path(CacheNames.COMPUTE, "bb_enrichment"))
 
         # 2. Filter Data
         mask = df["type"] == "building_block"
@@ -380,7 +381,7 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
     Returns:
     --------
     PIL.Image
-        In-memory rendered grid image.
+        In-memory rendered grid image. Renders inline in Jupyter when the return value is not captured.
     """
 
     mols = []
@@ -409,16 +410,15 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
 
 
 
+    RDLogger.DisableLog('rdApp.*')
     for chem_id, chem_rows in grouped.items():
         smiles = chem_rows[0].get("smiles")
 
         if not smiles:
-
             continue
 
         mol = Chem.MolFromSmiles(smiles)
         if not mol:
-
             continue
 
         if remove_ions:
@@ -450,10 +450,9 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
 
         legends.append(legend)
 
-
+    RDLogger.EnableLog('rdApp.*')
 
     if not mols:
-
         return
 
     img = Draw.MolsToGridImage(
@@ -474,7 +473,6 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         img = Draw.MolsToGridImage(mols, molsPerRow=mols_per_row, subImgSize=(400, 400), legends=legends, useSVG=False)
         img.save(save_png_path)
         print(f"Saved PNG to: {save_png_path}")
-
 
     return img
 
@@ -506,7 +504,7 @@ def draw_disynthons(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions
     Returns:
     --------
     PIL.Image
-        In-memory rendered grid image.
+        In-memory rendered grid image. Renders inline in Jupyter when the return value is not captured.
     """
     mols = []
     legends = []
@@ -518,6 +516,7 @@ def draw_disynthons(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions
 
     rows = top_n.to_pylist() if hasattr(top_n, "to_pylist") else top_n
 
+    RDLogger.DisableLog('rdApp.*')
     for row in rows:
         metric_val = row.get(metric, 0.0)
         raw_smiles = row.get("smiles", "")
@@ -555,6 +554,8 @@ def draw_disynthons(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions
             dis_id    = row.get("positional_id", "N/A")
             bb_string = " + ".join(bb_labels)
             legends.append(f"ID: {dis_id} | {metric}: {metric_val:.2f}\n{bb_string}")
+
+    RDLogger.EnableLog('rdApp.*')
 
     if not mols:
         print("No valid molecules to draw.")
