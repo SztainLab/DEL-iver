@@ -160,9 +160,19 @@ class CacheManager:
         target = self.dirs[cache_dir] if cache_dir is not None else self.root
         shutil.rmtree(target, ignore_errors=True)
 
-    #TODO: List out all filess currently written in cache
     def list_cache(self):
-        raise NotImplementedError
+        """Print all cached files grouped by subdirectory."""
+        print(f"Cache root: {self.root}")
+        for cache_name, path in self.dirs.items():
+            if not path.exists():
+                continue
+            files = sorted(path.iterdir())
+            if not files:
+                continue
+            print(f"\n  [{cache_name.name}]")
+            for f in files:
+                size_kb = f.stat().st_size / 1024
+                print(f"    {f.name}  ({size_kb:.1f} KB)")
         
 
 
