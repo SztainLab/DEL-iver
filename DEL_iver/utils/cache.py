@@ -12,6 +12,16 @@ from tqdm import tqdm
     #TODO: check if building_blocks list is in the column od source_file if not raise error, this should be handle by cache_manager when instantiating the data reader
 
 class CacheNames(Enum):
+    """
+    Enum defining all cache subdirectories and their named artifact filename templates.
+
+    Each member holds a (dir_name, artifacts) tuple. dir_name is the subdirectory name
+    under the cache root. artifacts maps artifact keys to filename templates where {stem}
+    is replaced with the source file stem and {prefix} with a caller-supplied prefix.
+
+    Use CacheManager.get_output_path(CacheNames.MEMBER, "artifact_key") to resolve
+    a full path without constructing filenames manually.
+    """
     ROOT            = (Path(user_cache_dir("DEL_iver")), {})
     BB_DICTIONARIES = ("bb_dictionaries", {
         "main":         "{stem}",
@@ -54,7 +64,23 @@ class CacheNames(Enum):
 
 #!TODO: if loading from cache do a check for building block list provided to be usable
 class CacheManager:
+    """
+    Manages the on-disk cache layout for a single DEL source file.
+
+    All cached artifacts (parquet tables, model files, plots) are organized under a root
+    directory keyed to the source file stem, with subdirectories defined by CacheNames.
+    Pass output_dir to override the default system cache location.
+    """
+
     def __init__(self, source_file: Path, output_dir: Path = None):
+        """
+        Parameters:
+        -----------
+        source_file : Path
+            Path to the original CSV or Parquet source file. Used to derive the cache stem.
+        output_dir : Path, optional
+            Root directory for all outputs. Defaults to the system user cache under the source file stem.
+        """
         self.source_file = Path(source_file)
         self.root = Path(output_dir) if output_dir else CacheNames.ROOT.dir_name / self.source_file.stem
         self.dirs = {d: self.root / d.dir_name for d in CacheNames if d != CacheNames.ROOT}
@@ -131,12 +157,14 @@ class CacheManager:
 
     def clear(self, cache_dir: CacheNames = None):
         """Clear a specific cache subdirectory, or the entire source cache if None."""
-        if cache_dir is None:
-            shutil.rmtree(self.root, ignore_errors=True)
-        else:
-            shutil.rmtree(self.dirs[cache_dir], ignore_errors=True)
+        shutil.rmtree(self.dirs[cache_dir], ignore_errors=True)
 
-    @staticmethod
+    #TODO: List out all filess currently written in cache
+    def list_cache(self):
+        raise NotImplementedError
+        
+
+
     def clear_all():
         """Clear the entire DEL_iver cache."""
         shutil.rmtree(CacheNames.ROOT.dir_name, ignore_errors=True)

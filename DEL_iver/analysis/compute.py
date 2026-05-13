@@ -176,7 +176,27 @@ def _write_output(ddr, bb_table, disynthon_table):
 
 
 
-def compute_enrichment(ddr, method='laplace', min_occurrences=0,draw: bool = False):
+def compute_enrichment(ddr, method='laplace', min_occurrences=0, draw: bool = False):
+    """
+    Compute hit enrichment statistics for all building blocks and disynthon pairs.
+
+    For each BB position and each disynthon combination, calculates nhits, ntotal,
+    nnonhits, pbind (raw hit rate), and an enrichment score relative to the per-position
+    baseline using Laplace or epsilon smoothing. Results are written to cache (COMPUTE)
+    as two separate parquet files: bb_enrichment and disynthon_enrichment. Re-running is
+    skipped if both are already cached.
+
+    Parameters:
+    -----------
+    ddr : DataReader
+        Configured data reader. enumerate_building_blocks() must be run first.
+    method : str, default='laplace'
+        Smoothing method for enrichment. 'laplace' (add-1 smoothing) or 'epsilon'.
+    min_occurrences : int, default=0
+        Minimum number of observations required to include a BB or disynthon in results.
+    draw : bool, default=False
+        Reserved, not yet implemented.
+    """
 
 
 
@@ -414,10 +434,36 @@ def compute_chemical_descriptors(ddr,
 
 
 
-def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = None,print_output:bool=False,write_output:str=None):
-    '''
-    Will return n chemical IDS
-    '''
+def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = None, print_output: bool = False, write_output: str = None):
+    """
+    Return the top-n building blocks ranked by pbind or enrichment score.
+
+    Reads cached bb_enrichment results from compute_enrichment(). Building blocks that
+    appear in multiple BB positions are included once per unique chemical ID, with all
+    position rows included in the result table until n unique IDs are found.
+
+    Parameters:
+    -----------
+    ddr : DataReader
+        Configured data reader. compute_enrichment() must be run first.
+    n : int
+        Number of unique building blocks to return.
+    min_occurrences : int, default=0
+        Minimum number of observations required.
+    sort_by : str, default='pbind'
+        Ranking metric. One of 'pbind' or 'enrichment'.
+    exclude : list, optional
+        BB position indices (1-based) to exclude. E.g. [1] excludes all BB1 entries.
+    print_output : bool, default=False
+        Print a formatted summary table to stdout.
+    write_output : str, optional
+        If provided, write results as CSV to this path.
+
+    Returns:
+    --------
+    pyarrow.Table
+        Top-n building block rows with enrichment stats, positional info, and SMILES.
+    """
 
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
@@ -513,8 +559,38 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
 
     return top_n
 
-# TODO: if exclude is not correct format raise error 
-def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None,print_output:bool=False,write_output:str=None):
+# TODO: if exclude is not correct format raise error
+def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None, print_output: bool = False, write_output: str = None):
+    """
+    Return the top-n disynthon pairs ranked by pbind or enrichment score.
+
+    Reads cached disynthon_enrichment results from compute_enrichment(). Each row
+    represents a unique BB pair combination. The result table includes a reconstructed
+    'smiles' column joining the component building block SMILES with ' + '.
+
+    Parameters:
+    -----------
+    ddr : DataReader
+        Configured data reader. compute_enrichment() must be run first.
+    n : int
+        Number of disynthon pairs to return.
+    min_occurrences : int, default=0
+        Minimum number of observations required.
+    sort_by : str, default='pbind'
+        Ranking metric. One of 'pbind' or 'enrichment'.
+    exclude : list, optional
+        Disynthon origins to exclude, as tuples of 1-based BB indices.
+        E.g. [(1, 2)] excludes the BB1+BB2 pairing.
+    print_output : bool, default=False
+        Print a formatted summary table to stdout.
+    write_output : str, optional
+        If provided, write results as CSV to this path.
+
+    Returns:
+    --------
+    pyarrow.Table
+        Top-n disynthon rows with enrichment stats and reconstructed SMILES.
+    """
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
 
@@ -604,8 +680,20 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
 
 def data_set_statistics(ddr, print_output: bool = False, write_output: str = None):
     """
-    Prints a summary of the full enrichment table:
-      - Distribution statistics (pbind, enrichment, nhits, ntotal) for BB and disynthon rows
+    Summarize enrichment statistics across all building blocks and disynthons.
+
+    Computes per-origin distribution statistics (mean, median, p90, p99, max) for
+    pbind, enrichment, nhits, and ntotal. Reads cached enrichment output from
+    compute_enrichment().
+
+    Parameters:
+    -----------
+    ddr : DataReader
+        Configured data reader. compute_enrichment() must be run first.
+    print_output : bool, default=False
+        Print the summary table to stdout.
+    write_output : str, optional
+        If provided, write the summary as CSV to this path.
     """
     bb_path  = ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
     dis_path = ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")

@@ -1,7 +1,5 @@
 #!/bin/python
 
-import pickle
-import argparse
 import os
 import sys
 import pyarrow as pa
@@ -123,8 +121,18 @@ def _assign_disynthon_ids(table, building_blocks):
 
 def enumerate_building_blocks(ddr):
     """
-    To do: Add notes
+    Assign unique chemical IDs and positional IDs to all building blocks in the dataset,
+    then compute Cantor-pair disynthon IDs for every pair combination.
 
+    Chemical IDs are global across all BB positions (same SMILES = same ID regardless of
+    which position it appears in). Positional IDs are local per-position, so the same SMILES
+    in BB1 and BB2 gets different positional IDs. Results are written to cache (BB_DICTIONARIES)
+    and reused by compute_enrichment() and gen_fingerprints(). Re-running is skipped if cached.
+
+    Parameters:
+    -----------
+    ddr : DataReader
+        Configured data reader from DataReader.from_csv().
     """
 
     source_file=ddr.source_file
@@ -132,7 +140,8 @@ def enumerate_building_blocks(ddr):
 
     output_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "main")
 
-    if os.path.exists(output_path):
+
+    if ddr.cache.is_cached(output_path):
         warnings.warn(f"BB enumaration found in cache no further work needed",UserWarning)
 
     else:

@@ -11,11 +11,6 @@ class DataReader:
 
     DEFAULT_MEMORY_MB=256
 
-    #!google if this is needed
-    def __init__(self):
-        #self.filepath=None
-        self.building_blocks = None
-        self.molecule_smiles = None
 
     # ------------------------------------------------------------------ #
     #  Construction                                                        #
@@ -33,7 +28,29 @@ class DataReader:
                         label: str = None ,
                         **kwargs):
         """
+        Load a DEL experiment from CSV, converting to Parquet on first use.
 
+        Parameters:
+        -----------
+        filepath : str
+            Path to the input CSV file.
+        building_blocks : list
+            Column names that hold building block SMILES (e.g. ['bb1_smiles', 'bb2_smiles', 'bb3_smiles']).
+        memory_per_chunk_mb : int, default=256
+            Memory budget per chunk during CSV to Parquet conversion.
+        molecule_smiles : str, optional
+            Column containing the full compound SMILES, if present.
+        data_cols : list, optional
+            Additional columns to carry through the pipeline.
+        output_dir : str, optional
+            Root directory for all cached outputs. Defaults to the system cache under the source file stem.
+        label : str, optional
+            Binary hit/miss label column (0/1 integers).
+
+        Returns:
+        --------
+        DataReader
+            Configured reader object used by all downstream analysis functions.
         """
         #TODO:source might not exist but could still be cached under that file name need to check for that
         source = Path(filepath)
@@ -42,7 +59,6 @@ class DataReader:
 
         if not isinstance(memory_per_chunk_mb, int) or memory_per_chunk_mb <= 0:
             raise ValueError("memory_per_chunk_mb must be a positive non-zero integer.")
-
         self = cls()
         self.building_blocks = building_blocks
         self.molecule_smiles=molecule_smiles
@@ -64,7 +80,6 @@ class DataReader:
 
     @classmethod
     def from_parquet(cls, filepath: str, **kwargs): #!TO BE DONE
-
         raise NotImplementedError
 
     # ------------------------------------------------------------------ #

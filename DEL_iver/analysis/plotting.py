@@ -8,16 +8,42 @@ from rdkit.Chem import Draw
 from rdkit.Chem.MolStandardize import rdMolStandardize
 import matplotlib.ticker as ticker
 
-def plot_disynthons(ddr, 
-                    mode="pbind", 
+def plot_disynthons(ddr,
+                    mode="pbind",
                     min_occurrences=3,
-                    log_scale=False, 
-                    elev=30, 
+                    log_scale=False,
+                    elev=30,
                     azim=45,
                     font_name='Arial',
-                    output_path:str=None,
+                    output_path: str = None,
                     ):
-    
+    """
+    3D scatter plot of disynthon enrichment or pbind by building block positional ID.
+
+    Each disynthon combination (BB1+BB2, BB1+BB3, etc.) gets its own subplot.
+    The x/y axes are the positional IDs of the two component building blocks;
+    z-axis and color encode the selected metric. Reads from cached disynthon_enrichment.
+
+    Parameters:
+    -----------
+    ddr : DataReader
+        Configured data reader. compute_enrichment() must be run first.
+    mode : str, default='pbind'
+        Metric to display. One of 'pbind', 'enrichment', or 'both'.
+    min_occurrences : int, default=3
+        Filter out disynthons seen fewer than this many times.
+    log_scale : bool, default=False
+        Apply log10 scaling to the z-axis.
+    elev : float, default=30
+        Elevation angle for the 3D view.
+    azim : float, default=45
+        Azimuth angle for the 3D view.
+    font_name : str, default='Arial'
+        Font family for axis labels.
+    output_path : str, optional
+        If provided, save the figure to this path at 300 dpi.
+    """
+
     # 1. Setup Plot Parameters
     params = {
         'font.family': 'sans-serif',
@@ -126,11 +152,31 @@ def plot_disynthons(ddr,
         plt.show()
 
 
-def plot_bb(ddr, 
+def plot_bb(ddr,
             min_occurrences=3,
             exclude_bb1=False,
             output_path: str = None):
-            
+    """
+    2-panel scatter plot of building block pbind by positional ID.
+
+    Each BB position occupies its own column. The upper panel isolates the high-pbind
+    region (pbind > 0.025) and the lower panel shows the bulk distribution, making
+    enriched outliers visually distinct. Color encodes observation count (ntotal).
+    Reads from cached bb_enrichment.
+
+    Parameters:
+    -----------
+    ddr : DataReader
+        Configured data reader. compute_enrichment() must be run first.
+    min_occurrences : int, default=3
+        Filter out building blocks seen fewer than this many times.
+    exclude_bb1 : bool, default=False
+        Omit the BB1 column. When True and multiple columns remain, they share a y-axis
+        and a single colorbar.
+    output_path : str, optional
+        If provided, save the figure to this path at 300 dpi.
+    """
+
     params = {
         'font.family': 'sans-serif',
         'legend.fontsize': 24,
@@ -305,108 +351,37 @@ def plot_bb(ddr,
             
         plt.show()
 
-def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, save_svg_path=None, save_png_path=None):
-
-
-    mols = []
-    legends = []
-
-    origin_to_label = {
-        f"{bb}_positional_id": f"BB{i+1}"
-        for i, bb in enumerate(ddr.building_blocks)
-    }
-
-
-    largest_fragment_chooser = rdMolStandardize.LargestFragmentChooser() if remove_ions else None
-
-    rows = top_n.to_pylist() if hasattr(top_n, "to_pylist") else top_n
-
-
-    grouped = {}
-
-    for row in rows:
-        chem_id = row.get("chemical_id")
-        if chem_id is None:
-            continue
-
-        chem_id = int(chem_id)
-        grouped.setdefault(chem_id, []).append(row)
-
-
-
-    for chem_id, chem_rows in grouped.items():
-        smiles = chem_rows[0].get("smiles")
-
-        if not smiles:
-
-            continue
-
-        mol = Chem.MolFromSmiles(smiles)
-        if not mol:
-
-            continue
-
-        if remove_ions:
-            mol = largest_fragment_chooser.choose(mol)
-
-        mols.append(mol)
-
-        positions = []
-        scores = []
-
-
-
-        for row in chem_rows:
-            origin_val = row.get("origin")
-            bb_label = origin_to_label.get(str(origin_val), str(origin_val))
-            metric_val = row.get(metric, 0.0)
-
-            positions.append(bb_label)
-            scores.append(f"{metric_val:.2f}")
-
-
-
-
-        pos_str = ", ".join(positions)
-        score_str = ", ".join(scores)
-
-        legend = f"ID: {chem_id} | Position: {pos_str} | {metric}: {score_str}"
-
-
-        legends.append(legend)
-
-
-
-    if not mols:
-
-        return
-
-    img = Draw.MolsToGridImage(
-        mols,
-        molsPerRow=mols_per_row,
-        subImgSize=(400, 400),
-        legends=legends,
-        useSVG=False
-    )
-
-    if save_svg_path:
-        svg_string = Draw.MolsToGridImage(mols, molsPerRow=mols_per_row, subImgSize=(400, 400), legends=legends, useSVG=True)
-        with open(save_svg_path, "w") as f:
-            f.write(svg_string)
-        print(f"Saved SVG with top {len(top_n)} building blocks to: {save_svg_path}")
-
-    if save_png_path:
-        img = Draw.MolsToGridImage(mols, molsPerRow=mols_per_row, subImgSize=(400, 400), legends=legends, useSVG=False)
-        img.save(save_png_path)
-        print(f"Saved PNG to: {save_png_path}")
-
-
-    return img
-
-
 
 def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, save_svg_path=None, save_png_path=None):
+    """
+    Render a 2D molecular grid image for top-n building blocks using RDKit.
 
+    Each unique chemical ID appears once in the grid. Its legend shows all BB positions
+    it appears in and the selected metric score at each position. Takes the output of
+    find_best_bb() directly.
+
+    Parameters:
+    -----------
+    top_n : pyarrow.Table or list
+        Output from find_best_bb().
+    ddr : DataReader
+        Configured data reader.
+    metric : str, default='enrichment'
+        Metric to display in the legend. One of 'pbind' or 'enrichment'.
+    mols_per_row : int, default=3
+        Number of molecules per row in the grid.
+    remove_ions : bool, default=True
+        Strip counterions using RDKit LargestFragmentChooser before rendering.
+    save_svg_path : str, optional
+        If provided, also write the grid as an SVG file to this path.
+    save_png_path : str, optional
+        If provided, also write the grid as a PNG file to this path.
+
+    Returns:
+    --------
+    PIL.Image
+        In-memory rendered grid image.
+    """
 
     mols = []
     legends = []
@@ -504,6 +479,35 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
     return img
 
 def draw_disynthons(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, save_svg_path=None, save_png_path=None):
+    """
+    Render a 2D molecular grid image for top-n disynthon pairs using RDKit.
+
+    Each disynthon is drawn as a combined molecule with component BB SMILES joined via a dot
+    bond. The legend shows disynthon ID, BB labels with chemical IDs, and the metric score.
+    Takes the output of find_best_disynthon() directly.
+
+    Parameters:
+    -----------
+    top_n : pyarrow.Table or list
+        Output from find_best_disynthon().
+    ddr : DataReader
+        Configured data reader.
+    metric : str, default='enrichment'
+        Metric to display in the legend. One of 'pbind' or 'enrichment'.
+    mols_per_row : int, default=3
+        Number of molecules per row in the grid.
+    remove_ions : bool, default=True
+        Strip counterions from each fragment using RDKit LargestFragmentChooser.
+    save_svg_path : str, optional
+        If provided, also write the grid as an SVG file to this path.
+    save_png_path : str, optional
+        If provided, also write the grid as a PNG file to this path.
+
+    Returns:
+    --------
+    PIL.Image
+        In-memory rendered grid image.
+    """
     mols = []
     legends = []
     origin_to_label = {
