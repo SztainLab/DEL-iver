@@ -38,7 +38,7 @@ deliv.compute_enrichment(ddr, min_occurrences=0)
 
 # Print a summary table of enrichment statistics across all positions.
 # Output file can be specified instead of printing
-deliv.data_set_statistics(ddr, print_output=True)
+deliv.data_set_statistics(ddr, print_output=False, write_output="dataset_statistics.csv")
 
 # =============================================================================
 # STEP 4 — Identify top-performing building blocks and disynthons
@@ -67,9 +67,9 @@ top_disynthons = deliv.find_best_disynthon(
 # draw_bb / draw_disynthons render 2D molecular grids using RDKit.
 # Saves SVG for publication-quality figures; omit save paths to display only. (jupyter notebook)
 # =============================================================================
-deliv.draw_bb(top_bb, ddr, metric="pbind", save_svg_path="bb_structures.svg")
+deliv.draw_bb(top_bb, ddr, metric="pbind", save_png_path="bb_structures.png")
 
-deliv.draw_disynthons(top_disynthons, ddr, metric=metric, save_svg_path="disynthons_structures.svg")
+deliv.draw_disynthons(top_disynthons, ddr, metric=metric, save_png_path="disynthon_structures.png")
 
 # =============================================================================
 # STEP 6 — Visualize enrichment landscape
@@ -77,5 +77,5 @@ deliv.draw_disynthons(top_disynthons, ddr, metric=metric, save_svg_path="disynth
 # plot_bb:         2-panel scatter of BB pbind by positional ID.
 # Both save figure for publication but if you omit saving it gets displayed (jupyter)
 # =============================================================================
-deliv.plot_disynthons(ddr, elev=15, azim=35, min_occurrences=30, output_path="disynthons.jpg")
-deliv.plot_bb(ddr, output_path="bbs.jpg", exclude_bb1=True)
+deliv.plot_disynthons(ddr, elev=15, azim=35, min_occurrences=30, output_path="disynthons.png")
+deliv.plot_bb(ddr, output_path="bbs.png", exclude_bb1=True)
