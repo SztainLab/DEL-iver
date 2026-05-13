@@ -761,3 +761,4 @@ def data_set_statistics(ddr, print_output: bool = False, write_output: str = Non
 
     if write_output:
         pd.DataFrame(rows).to_csv(write_output, index=False)
+        print(f"Dataset statistics written to: {write_output}")
