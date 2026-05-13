@@ -10,7 +10,7 @@ from rdkit import Chem
 from rdkit.Chem import Descriptors, rdMolDescriptors, QED
 from rdkit.Chem.rdMolDescriptors import CalcTPSA
 from rdkit.Chem.MolStandardize import rdMolStandardize
-import os
+import warnings
 
 
 def _load_tables(ddr,split_col=None):
@@ -160,7 +160,7 @@ def _compute_bb_enrichment(source_table, bb_id_cols, building_blocks, label_col,
     
 
     counts = _aggregate_bb_counts_across_positions(source_table, bb_id_cols, building_blocks, label_col)
-    stats = _apply_enrichment(counts, total_hits, total_nonhits, method, min_occurrences) #!ALL GOOD UP TO HERE IS CORRECT
+    stats = _apply_enrichment(counts, total_hits, total_nonhits, method, min_occurrences)
     stats  = stats.append_column("type", pa.array(["building_block"] * len(stats)))
     return stats
 
@@ -180,44 +180,49 @@ def compute_enrichment(ddr, method='laplace', min_occurrences=0,draw: bool = Fal
 
 
 
+    out1=ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
+    out2=ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
 
-    source_table, bb_table = _load_tables(ddr)
-    total_hits, total_nonhits = _get_global_totals(source_table, ddr.label)
-    building_blocks=ddr.building_blocks
-    bb_positional_id_cols = [f"{bb}_positional_id" for bb in building_blocks]
-    bb_chemical_id_cols = [f"{bb}_chemical_id" for bb in building_blocks]
+    if ddr.cache.is_cached(out1) and ddr.cache.is_cached(out2):
+        warnings.warn(f"Enrichment metrics found in cache no further work needed",UserWarning)
+    else:
+        source_table, bb_table = _load_tables(ddr)
+        total_hits, total_nonhits = _get_global_totals(source_table, ddr.label)
+        building_blocks=ddr.building_blocks
+        bb_positional_id_cols = [f"{bb}_positional_id" for bb in building_blocks]
+        bb_chemical_id_cols = [f"{bb}_chemical_id" for bb in building_blocks]
 
-    bb_stats = _compute_bb_enrichment( 
-        source_table, 
-        bb_positional_id_cols, 
-        building_blocks,
-        ddr.label, 
-        total_hits, 
-        total_nonhits, 
-        method, 
-        min_occurrences,
-    )
-
-    disynthon_stats = {}
-    for dis_col in tqdm(ddr.disynthons, desc="Computing Enrichment"):
-        combo_indices               = [int(i) - 1 for i in dis_col.replace("disynthon_", "").replace("_id", "").split("_")]
-        relevant_bb_positional_cols = [bb_positional_id_cols[i] for i in combo_indices]
-        relevant_bb_chemical_cols   = [bb_chemical_id_cols[i]   for i in combo_indices]
-        disynthon_stats[dis_col]    = _compute_disynthon_enrichment(
-            source_table,
-            dis_col,
-            relevant_bb_positional_cols,
-            relevant_bb_chemical_cols,
-            ddr.label,
-            total_hits,
-            total_nonhits,
-            method,
-            min_occurrences
+        bb_stats = _compute_bb_enrichment( 
+            source_table, 
+            bb_positional_id_cols, 
+            building_blocks,
+            ddr.label, 
+            total_hits, 
+            total_nonhits, 
+            method, 
+            min_occurrences,
         )
 
-    disynthon_table = pa.concat_tables(list(disynthon_stats.values()), promote_options="default")
+        disynthon_stats = {}
+        for dis_col in tqdm(ddr.disynthons, desc="Computing Enrichment"):
+            combo_indices               = [int(i) - 1 for i in dis_col.replace("disynthon_", "").replace("_id", "").split("_")]
+            relevant_bb_positional_cols = [bb_positional_id_cols[i] for i in combo_indices]
+            relevant_bb_chemical_cols   = [bb_chemical_id_cols[i]   for i in combo_indices]
+            disynthon_stats[dis_col]    = _compute_disynthon_enrichment(
+                source_table,
+                dis_col,
+                relevant_bb_positional_cols,
+                relevant_bb_chemical_cols,
+                ddr.label,
+                total_hits,
+                total_nonhits,
+                method,
+                min_occurrences
+            )
 
-    _write_output(ddr, bb_stats, disynthon_table)
+        disynthon_table = pa.concat_tables(list(disynthon_stats.values()), promote_options="default")
+
+        _write_output(ddr, bb_stats, disynthon_table)
 
 
 
@@ -409,34 +414,30 @@ def compute_chemical_descriptors(ddr,
 
 
 
-def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = None):
+def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = None,print_output:bool=False,write_output:str=None):
+    '''
+    Will return n chemical IDS
+    '''
+
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
-
-
-
-
 
     enrichment_path = ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
     if not ddr.cache.is_cached(enrichment_path):
         raise FileNotFoundError(
             f"Required enrichment cache not found: {enrichment_path}. "
             "Run compute_enrichment() first.")
-
-    enrichment = pq.read_table(enrichment_path)
-
+    
     id_to_smile_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
+
+    bb_stats = pq.read_table(enrichment_path)
     id_to_smile_table = pq.read_table(id_to_smile_path)
     id_to_smile = {
         int(row["id"]): row["smiles"]
         for row in id_to_smile_table.to_pylist()
     }
 
-    if "type" in enrichment.schema.names:
-        bb_stats = enrichment.filter(pc.equal(enrichment["type"], "building_block"))
-    else:
-        bb_stats = enrichment
-
+    #++++++++++++++++ Exclude logic
     exclude = [exclude] if isinstance(exclude, str) else (exclude or [])
     building_blocks = ddr.building_blocks
     bb_positional_id_cols = [f"{bb}_positional_id" for bb in building_blocks]
@@ -452,10 +453,11 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
     if mapped_exclude and "origin" in bb_stats.schema.names:
         keep_mask = pc.invert(pc.is_in(bb_stats["origin"], value_set=pa.array(mapped_exclude)))
         bb_stats = bb_stats.filter(keep_mask)
-
     if sort_by not in bb_stats.schema.names:
         raise ValueError(f"Column '{sort_by}' not found. Available: {bb_stats.schema.names}")
+    #++++++++++++++++ Exclude logic
 
+    #Sort the table in descending order 
     bb_stats_sorted = bb_stats.sort_by([(sort_by, "descending")])
     all_rows = bb_stats_sorted.to_pylist()
 
@@ -470,49 +472,55 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
         else:
             seen_set.add(chem_id)
             selected_rows.append(row)  # first occurrence
-            if len(seen_set) == n:
-                break
-
+        if len(seen_set) == n:
+            break
     top_n = pa.Table.from_pylist(selected_rows, schema=bb_stats_sorted.schema)
-
     smiles_list = []
+
     for i in top_n["chemical_id"].to_pylist():
         if i is None:
-            raise ValueError("Null chemical_id found in top_n — this should not happen.")
+            raise ValueError("Null chemical_id found in top_n  this should not happen.")
         if int(i) not in id_to_smile:
-            raise KeyError(f"chemical_id {i} not found in id_to_smile — dictionary may be out of sync.")
+            raise KeyError(f"chemical_id {i} not found in id_to_smile  dictionary may be out of sync.")
         smiles_list.append(id_to_smile[int(i)])
 
-    # --- Print ---
-    print(f"\n--- Top {n} Building blocks sorted by {sort_by} (Min Occurrences: {min_occurrences}) ---")
-    header = f"{'ID':<8} | {'origin':<22}   | {'pbind':<8} | {'enrich':<8} | {'nhits':<6} | {'ntotal':<7} |"
-    print(header)
-    print("-" * len(header))
-    for row in top_n.to_pylist():
-        origin  = row.get("origin", "Pooled")
-        smile   = row.get("smiles", "")
-        score   = row.get(sort_by, 0.0)
-        pos_id  = row.get("positional_id", "N/A")
+    if print_output:
+        # --- Print ---
+        print(f"\n--- Top {n} Building blocks sorted by {sort_by} (Min Occurrences: {min_occurrences}) ---")
+        header = f"{'ID':<8} | {'origin':<22}   | {'pbind':<8} | {'enrich':<8} | {'nhits':<6} | {'ntotal':<7} |"
+        print(header)
+        print("-" * len(header))
+        for row in top_n.to_pylist():
+            row_dict = {
+                "positional_id": row.get("positional_id", "N/A"),
+                "origin":        row.get("origin", "unknown"),
+                "pbind":         row.get("pbind", 0.0),
+                "enrichment":    row.get("enrichment", 0.0),
+                "nhits":         row.get("nhits", 0),
+                "ntotal":        row.get("ntotal", 0),
+            }
+            print(
+                f"{str(row_dict['positional_id']):<8} | "
+                f"{str(row_dict['origin']):<22} | "
+                f"{row_dict['pbind']:<8.4f} | "
+                f"{row_dict['enrichment']:<8.4f} | "
+                f"{row_dict['nhits']:<6} | "
+                f"{row_dict['ntotal']:<7} | "
+            )
 
-        # disynthons usually don't have a single chemical_id, so this may be missing
-        chem_id = row.get("chemical_id", "N/A")
+    if write_output:
+            top_n.to_pandas().to_csv(write_output, index=False)
 
-        print(
-            f"{str(row.get('positional_id', 'N/A')):<8} | "
-            f"{str(row.get('origin', 'unknown')):<22} | "
-            f"{row.get('pbind', 0.0):<8.4f} | "
-            f"{row.get('enrichment', 0.0):<8.4f} | "
-            f"{row.get('nhits', 0):<6} | "
-            f"{row.get('ntotal', 0):<7} | "
-        )
     return top_n
 
-
-def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None):
+# TODO: if exclude is not correct format raise error 
+def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None,print_output:bool=False,write_output:str=None):
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
 
-    # --- Standardize exclude input ---
+
+    
+    #++++++++++++++++ Exclude logic
     if exclude is None:
         exclude = []
     elif isinstance(exclude, (str, tuple)):
@@ -525,31 +533,25 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
             mapped_exclude.append(f"disynthon_{suffix}_id")
         else:
             mapped_exclude.append(str(item))
+    #++++++++++++++++ Exclude logic
 
     # --- Load enrichment table ---
-    enrichment = pq.read_table(ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
+    dis_stats = pq.read_table(ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
+
+    # --- Apply exclude filter by origin ---
+    if mapped_exclude and dis_stats.num_rows > 0:
+        keep_mask = pc.invert(pc.is_in(dis_stats["origin"], value_set=pa.array(mapped_exclude)))
+        dis_stats = dis_stats.filter(keep_mask)
 
     # --- Load id-to-smiles dictionary ---
     id_to_smile_path = ddr.cache.get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
     id_to_smile_table = pq.read_table(id_to_smile_path)
     id_to_smile = {int(r["id"]): r["smiles"] for r in id_to_smile_table.to_pylist()}
 
-    # --- Filter to only disynthon rows (origin starts with "disynthon_") ---
-    if "origin" in enrichment.schema.names:
-        dis_stats = enrichment.filter(
-            pc.starts_with(pc.cast(enrichment["origin"], pa.string()), "disynthon_")
-        )
-    else:
-        dis_stats = enrichment
 
     # --- Apply min_occurrences filter ---
     if min_occurrences > 0:
         dis_stats = dis_stats.filter(pc.greater_equal(dis_stats["ntotal"], min_occurrences))
-
-    # --- Apply exclude filter by origin ---
-    if mapped_exclude and dis_stats.num_rows > 0:
-        keep_mask = pc.invert(pc.is_in(dis_stats["origin"], value_set=pa.array(mapped_exclude)))
-        dis_stats = dis_stats.filter(keep_mask)
 
     if dis_stats.num_rows == 0:
         print("No disynthon data found after filtering.")
@@ -566,6 +568,7 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
         if f"{bb}_chemical_id" in top_n.schema.names
     ])
 
+    #++++++++++++++++ Fetching smiles consisting of each bb in disy
     reconstructed_smiles = []
     for row in top_n.to_pylist():
         smiles_parts = []
@@ -573,30 +576,30 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
             bb_val = row.get(col)
             if bb_val is not None:
                 smi = id_to_smile.get(int(bb_val), f"BB:{bb_val}")
-                # TODO: RDKit cleanup for top N — sanitize, remove ions, standardize
-                # mol = Chem.MolFromSmiles(smi)
-                #if mol:
-                #    largest_fragment = rdMolStandardize.LargestFragmentChooser().choose(mol)
-                #    smi = Chem.MolToSmiles(largest_fragment)
                 smiles_parts.append(smi)
         reconstructed_smiles.append(" + ".join(smiles_parts))
+    #++++++++++++++++ Fetching smiles consisting of each bb in disy
 
     top_n = top_n.append_column("smiles", pa.array(reconstructed_smiles))
 
-    # --- Print ---
-    print(f"\n--- Top {n} Disynthons sorted by {sort_by} (Min Occurrences: {min_occurrences}) ---")
-    header = f"{'ID':<8} | {'origin':<22} | {'pbind':<8} | {'enrich':<8} | {'nhits':<6} | {'ntotal':<7} |"
-    print(header)
-    print("-" * len(header))
-    for row in top_n.to_pylist():
-        print(
-            f"{str(row.get('positional_id', 'N/A')):<8} | "
-            f"{str(row.get('origin', 'unknown')):<22} | "
-            f"{row.get('pbind', 0.0):<8.4f} | "
-            f"{row.get('enrichment', 0.0):<8.4f} | "
-            f"{row.get('nhits', 0):<6} | "
-            f"{row.get('ntotal', 0):<7} | "
-        )
+    if print_output:
+        # --- Print ---
+        print(f"\n--- Top {n} Disynthons sorted by {sort_by} (Min Occurrences: {min_occurrences}) ---")
+        header = f"{'ID':<8} | {'origin':<22} | {'pbind':<8} | {'enrich':<8} | {'nhits':<6} | {'ntotal':<7} |"
+        print(header)
+        print("-" * len(header))
+        for row in top_n.to_pylist():
+            print(
+                f"{str(row.get('positional_id', 'N/A')):<8} | "
+                f"{str(row.get('origin', 'unknown')):<22} | "
+                f"{row.get('pbind', 0.0):<8.4f} | "
+                f"{row.get('enrichment', 0.0):<8.4f} | "
+                f"{row.get('nhits', 0):<6} | "
+                f"{row.get('ntotal', 0):<7} | "
+            )
+
+    if write_output:
+        top_n.to_pandas().to_csv(write_output, index=False)
 
     return top_n
 
