@@ -518,7 +518,6 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
 
-
     
     #++++++++++++++++ Exclude logic
     if exclude is None:
@@ -603,74 +602,72 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
 
     return top_n
 
-
-
-def data_set_statistics(ddr):
+def data_set_statistics(ddr, print_output: bool = False, write_output: str = None):
     """
     Prints a summary of the full enrichment table:
-      - Global hit/non-hit counts and overall hit rate
-      - Per-origin hit rates (all building block positions + all disynthon combos)
-      - Distribution statistics (pbind, nhits, ntotal) for BB and disynthon rows
+      - Distribution statistics (pbind, enrichment, nhits, ntotal) for BB and disynthon rows
     """
     bb_path  = ddr.cache.get_output_path(CacheNames.COMPUTE, "bb_enrichment")
     dis_path = ddr.cache.get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
     if not bb_path.exists() or not dis_path.exists():
         raise FileNotFoundError("Enrichment tables not found. Run compute_enrichment() first.")
+    stats = pa.concat_tables(
+        [pq.read_table(bb_path), pq.read_table(dis_path)],
+        promote_options="default"
+    )
+    df = stats.to_pandas()
 
-    import pyarrow as pa
-    stats = pa.concat_tables([pq.read_table(bb_path), pq.read_table(dis_path)])
-    df    = stats.to_pandas()
-
-
-# --- Distribution stats by type (building_block vs disynthon) ---
-    print("\n" + "-" * 70)
-    print("DISTRIBUTION STATISTICS BY TYPE AND ORIGIN")
-    print("-" * 70)
+    metrics = ["pbind", "enrichment", "nhits", "ntotal"]
+    rows = []
 
     for entity_type in ["building_block", "disynthon"]:
-        # Get all unique origins for this type
         type_subset = df[df["type"] == entity_type]
         if type_subset.empty:
-            print(f"\n  [{entity_type.upper()}] No data found.")
             continue
-
-        unique_origins = sorted(type_subset["origin"].dropna().unique())
-        if len(unique_origins) == 0:
-            unique_origins = [None]  # Handle missing origin values
-
+        unique_origins = sorted(type_subset["origin"].dropna().unique()) or [None]
         for origin in unique_origins:
-            if origin is None:
-                subset = type_subset[type_subset["origin"].isna()]
-                label = f"{entity_type.upper()} | origin=<null>"
-            else:
-                subset = type_subset[type_subset["origin"] == origin]
-                label = f"{entity_type.upper()} | origin={origin}"
-
+            subset = type_subset[type_subset["origin"].isna()] if origin is None else type_subset[type_subset["origin"] == origin]
             if subset.empty:
                 continue
-
-            print(f"\n  [{label}]  n={len(subset):,}")
-            metrics = ["pbind", "enrichment", "nhits", "ntotal"]
-            col_w   = 12
-
-            print(f"  {'Metric':<12} {'Mean':>{col_w}} {'Median':>{col_w}} {'p90':>{col_w}} {'p99':>{col_w}} {'Max':>{col_w}}")
-            print("  " + "-" * (12 + 5 * (col_w + 1)))
-
             for m in metrics:
                 if m not in subset.columns:
                     continue
                 col = subset[m].dropna()
                 if col.empty:
                     continue
-                is_int = m in ("nhits", "ntotal")
-                fmt    = "{:>{w},.0f}" if is_int else "{:>{w}.4f}"
-                print(
-                    f"  {m:<12} "
-                    + fmt.format(col.mean(),   w=col_w) + " "
-                    + fmt.format(col.median(), w=col_w) + " "
-                    + fmt.format(col.quantile(0.90), w=col_w) + " "
-                    + fmt.format(col.quantile(0.99), w=col_w) + " "
-                    + fmt.format(col.max(),    w=col_w)
-                )
+                rows.append({
+                    "type":    entity_type,
+                    "origin":  origin if origin is not None else "<null>",
+                    "n":       len(subset),
+                    "metric":  m,
+                    "mean":    col.mean(),
+                    "median":  col.median(),
+                    "p90":     col.quantile(0.90),
+                    "p99":     col.quantile(0.99),
+                    "max":     col.max(),
+                })
 
+    if print_output:
+        col_w = 12
+        header = f"  {'Metric':<12} {'Mean':>{col_w}} {'Median':>{col_w}} {'p90':>{col_w}} {'p99':>{col_w}} {'Max':>{col_w}}"
+        current_group = None
+        for row in rows:
+            group = (row["type"], row["origin"], row["n"])
+            if group != current_group:
+                current_group = group
+                print(f"\n  [{row['type'].upper()} | origin={row['origin']}]  n={row['n']:,}")
+                print(header)
+                print("  " + "-" * (12 + 5 * (col_w + 1)))
+            is_int = row["metric"] in ("nhits", "ntotal")
+            fmt    = "{:>{w},.0f}" if is_int else "{:>{w}.4f}"
+            print(
+                f"  {row['metric']:<12} "
+                + fmt.format(row['mean'],   w=col_w) + " "
+                + fmt.format(row['median'], w=col_w) + " "
+                + fmt.format(row['p90'],    w=col_w) + " "
+                + fmt.format(row['p99'],    w=col_w) + " "
+                + fmt.format(row['max'],    w=col_w)
+            )
 
+    if write_output:
+        pd.DataFrame(rows).to_csv(write_output, index=False)
