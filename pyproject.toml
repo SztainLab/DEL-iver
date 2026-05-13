@@ -22,10 +22,27 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 requires-python = ">=3.8"
-# Declare any run-time dependencies that should be installed with the package.
-#dependencies = [
-#    "importlib-resources;python_version<'3.10'",
-#]
+dependencies = [
+    # Core data I/O and processing
+    "pyarrow>=23.0.1",
+    "pandas>=3.0.2",
+    "numpy>=2.4.4",
+    "tqdm>=4.67.3",
+    "platformdirs>=4.9.6",
+    # Cheminformatics
+    "rdkit>=2026.3.1",
+    "pillow>=12.2.0",
+    # Plotting
+    "matplotlib>=3.10.8",
+    # ML
+    "torch>=2.11.0",
+    "scikit-learn>=1.8.0",
+    "scipy>=1.17.1",
+    # Analog embedding
+    "umap-learn>=0.5.8",
+    "numba>=0.65.0",
+    "pynndescent>=0.6.0",
+]
 
 # Update the urls once the hosting is set up.
 [project.urls]
