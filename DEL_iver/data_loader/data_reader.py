@@ -26,6 +26,7 @@ class DataReader:
                         data_cols: list = None,
                         output_dir: str = None,
                         label: str = None ,
+                        overwrite: bool = False,
                         **kwargs):
         """
         Load a DEL experiment from CSV, converting to Parquet on first use.
@@ -46,6 +47,8 @@ class DataReader:
             Root directory for all cached outputs. Defaults to the system cache under the source file stem.
         label : str, optional
             Binary hit/miss label column (0/1 integers).
+        overwrite : bool, default=False
+            If True, wipe the entire cache root for this source file and re-run CSV to Parquet conversion.
 
         Returns:
         --------
@@ -69,6 +72,9 @@ class DataReader:
 
         combos = list(combinations(range(self.n_building_blocks), 2))
         self.disynthons = [f"disynthon_{'_'.join(str(i + 1) for i in combo)}_id" for combo in combos]
+
+        if overwrite:
+            self.cache.clear()
 
         if self.cache.needs_conversion():
             self.cache.convert_csv_to_parquet(memory_per_chunk_mb)

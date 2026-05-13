@@ -156,8 +156,9 @@ class CacheManager:
         return parquet_path
 
     def clear(self, cache_dir: CacheNames = None):
-        """Clear a specific cache subdirectory, or the entire source cache if None."""
-        shutil.rmtree(self.dirs[cache_dir], ignore_errors=True)
+        """Clear a specific cache subdirectory, or the entire source root if called with no argument."""
+        target = self.dirs[cache_dir] if cache_dir is not None else self.root
+        shutil.rmtree(target, ignore_errors=True)
 
     #TODO: List out all filess currently written in cache
     def list_cache(self):
