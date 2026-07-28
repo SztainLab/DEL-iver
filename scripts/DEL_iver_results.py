@@ -25,7 +25,7 @@ ddr = deliv.DataReader.from_csv(input, building_blocks=bb_cols, output_dir=outpu
 # then computes Cantor-pair IDs for every disynthon combination.
 # Results are written to cache and reused by all downstream steps.
 # =============================================================================
-deliv.enumerate_building_blocks(ddr)
+deliv.run_enumeration(ddr)
 
 # =============================================================================
 # STEP 3 — Compute enrichment

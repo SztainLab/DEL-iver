@@ -3,7 +3,7 @@
 #Any function listed here will be callable with no imports needed other then 
 # Import everything you want available at the top level when you run import DEL_iver
 from .data_loader.data_reader import DataReader
-from .molecules.enumerate import enumerate_building_blocks
+from .molecules.enumerate import run_enumeration
 from .molecules.ECFP4calculator import gen_fingerprints 
 from .analysis.compute import compute_enrichment
 from .analysis.compute import find_best_bb

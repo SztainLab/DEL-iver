@@ -223,6 +223,6 @@ def _enumerate_full_molecule(ddr):
             pq.write_table(table, output_path)
 
 
-def enumerate(ddr):
+def run_enumeration(ddr):
     _enumerate_building_blocks(ddr)
     _enumerate_full_molecule(ddr)
