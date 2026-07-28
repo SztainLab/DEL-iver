@@ -17,7 +17,7 @@ class DataReader:
     # ------------------------------------------------------------------ #
 
 
-
+    # daniel make sure full molecule smiles is returned in parquet if the flag for full molecule is specified
     @classmethod
     def from_csv(cls, filepath: str,
                         building_blocks: list ,
