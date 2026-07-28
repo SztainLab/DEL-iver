@@ -19,6 +19,9 @@ pylab.rcParams.update(params)
 from sklearn.metrics import roc_curve, roc_auc_score
 from sklearn.metrics import average_precision_score, precision_recall_curve
 
+# mar make sure inference is compatible with any of the models trained using train_model()
+# pass the instantiated class of model to inference function 
+
 def inference(ddr, output_prefix):
     """
     Test the model trained in train_model() on the test set also generated in train_model().
