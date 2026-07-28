@@ -20,6 +20,8 @@ params = {'font.family': 'sans-serif',
 pylab.rcParams.update(params)
 from rdkit import DataStructs
 
+# mar add functionality to embed full molecule fingerprints and compute similarity of full molecules to enamine molecules
+
 def compute_labeled_similarity(ecfp4_list1, ecfp4_list2, smiles_list1, smiles_list2, labels1=None, labels2=None):
     """
     Compute pairwise similarities with proper label tracking.
