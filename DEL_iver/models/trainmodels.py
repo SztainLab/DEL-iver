@@ -12,6 +12,9 @@ import torch.nn.functional as F
 from DEL_iver.utils.cache import CacheNames
 from sklearn.model_selection import train_test_split
 
+# mar add full molecule option for model training, including necessary datasets/dataloaders
+# mar add models for predicting continuous values for all binary models here already
+
 # defining the custom dataloader class
 class TrainBBFPDataset_v1(Dataset):
     def __init__(self, indices, bbs_1_fps, bbs_2_fps, bbs_3_fps, labels):
