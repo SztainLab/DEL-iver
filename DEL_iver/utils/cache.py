@@ -28,6 +28,10 @@ class CacheNames(Enum):
         "id_to_smiles": "{stem}_id_to_smiles",
         "descriptors":  "{stem}_descriptors",
     })
+    FULLMOL_DICTIONARY = ("fullmol_dictionaries", {
+        "main":         "{stem}",
+        "id_to_smiles": "{stem}_id_to_smiles",
+    })
     SPLITS          = ("splits", {})
     COMPUTE         = ("analysis", {
         "bb_enrichment":        "bb_enrichment.{stem}",

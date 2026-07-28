@@ -2,6 +2,7 @@
 
 import os
 import sys
+import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pandas as pd
@@ -39,6 +40,29 @@ def _make_bb_smiles_to_id_dict(source_file, building_blocks):
     # Molecules found ONLY in BB2 start after BB1's unique list ends
     smile_to_id = {smile: idx for idx, smile in enumerate(ordered_unique_smiles)}
     return smile_to_id
+
+def _make_smiles_to_id_dict(source_file, molecule_smiles):
+    # Unique full-molecule counts can reach into the billions, so this never
+    # materializes a python dict or python str objects - everything stays as
+    # arrow/numpy arrays until written out.
+    pf = pq.ParquetFile(source_file)
+    table = pf.read(columns=[molecule_smiles])
+
+    encoded = pc.dictionary_encode(table[molecule_smiles].cast(pa.large_string()).combine_chunks())
+    unique_smiles = encoded.dictionary
+
+    ids = pa.array(np.arange(len(unique_smiles), dtype=np.int64))
+    return pa.table({"id": ids, "smiles": unique_smiles})
+
+def _assign_full_molecule_id_per_row(source_file, molecule_smiles):
+    # Single column, so the dictionary codes are already the final chemical ID
+    # (no local-to-global remap needed) - dictionary_encode preserves the exact
+    # row order of source_file, same guarantee _assign_id_per_row relies on.
+    pf = pq.ParquetFile(source_file)
+    table = pf.read(columns=[molecule_smiles])
+
+    encoded = pc.dictionary_encode(table[molecule_smiles].cast(pa.large_string()).combine_chunks())
+    return pa.table({f"{molecule_smiles}_chemical_id": pc.cast(encoded.indices, pa.int32())})
 
 def _assign_id_per_row(source_file,building_blocks,smile_to_id): 
     #ASSING CHEMICAL ID PER ROW
@@ -119,7 +143,7 @@ def _assign_disynthon_ids(table, building_blocks):
 
 
 
-def enumerate_building_blocks(ddr):
+def _enumerate_building_blocks(ddr):
     """
     Assign unique chemical IDs and positional IDs to all building blocks in the dataset,
     then compute Cantor-pair disynthon IDs for every pair combination.
@@ -164,3 +188,41 @@ def enumerate_building_blocks(ddr):
 
 
 
+def _enumerate_full_molecule(ddr):
+    """
+    Assign unique chemical IDs.
+
+    Chemical IDs are for a full molecule is a simple enumeration.
+
+    Parameters:
+    -----------
+    ddr : DataReader
+        Configured data reader from DataReader.from_csv().
+    """
+
+    source_file=ddr.source_file
+    full_mol_column=ddr.molecule_smiles
+    output_path = ddr.cache._get_output_path(CacheNames.FULLMOL_DICTIONARY, "main")
+
+
+
+    if full_mol_column is None:
+        warnings.warn(f"Full Molecule column not specified can not enumerate full molecule",UserWarning)
+    else:
+        if ddr.cache._is_cached(output_path):
+            warnings.warn(f"Full Molecule enumaration found in cache no further work needed",UserWarning)
+
+        else:
+            id_to_smile_table = _make_smiles_to_id_dict(source_file, full_mol_column)
+            pq.write_table(
+                id_to_smile_table,
+                ddr.cache._get_output_path(CacheNames.FULLMOL_DICTIONARY, "id_to_smiles")
+            )
+
+            table = _assign_full_molecule_id_per_row(source_file, full_mol_column)
+            pq.write_table(table, output_path)
+
+
+def enumerate(ddr):
+    _enumerate_building_blocks(ddr)
+    _enumerate_full_molecule(ddr)
