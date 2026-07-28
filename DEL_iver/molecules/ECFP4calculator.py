@@ -46,10 +46,11 @@ def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, rem
     print(f'ECFP4 size: {ecfp4_size}')
     print(f'Remove Dy: {remove_dy}')
     
-    filename     = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
-    filename_map = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
+    filename      = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
+    filename_map  = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
 
-    # print(filename)
+    filename_full = #ddr.cache.__get_output_path(CacheNames.FullMole_DICTIONARY, "full_smiles") ## make input flag that does the below except for full molecules
+
     # Read parquet file in batches
     parquet_file = pq.ParquetFile(filename)
     all_fps = []
