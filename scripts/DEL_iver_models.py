@@ -11,8 +11,8 @@ output_prefix ='example_prefix'
 
 ddr = deliv.DataReader.from_csv(input,building_blocks=bb_cols, label='binds')
 
-# generate the bb id to SMILES dictionaries 
-table, id_to_smile = deliv.generate_bb_dictionaries(ddr)
+# generate the bb id to SMILES dictionaries
+deliv.run_enumeration(ddr)
 
 # generate ECPF4 fingerprints from SMIILES
 deliv.gen_fingerprints(ddr, output_prefix=output_prefix)
