@@ -2,10 +2,12 @@
   <img src="https://github.com/SztainLab/DEL-iver/raw/main/logo.png" width="200"/>
 </p>
 
-Package for processing DNA-encoded library data, training ML models, and picking hits from make on demand libraries
+Package for processing high throughput DNA-encoded library (DEL) data, training ML models, and picking hits from make on demand libraries
+  Though this package is useful for analyzing and training models using DEL data, it can also be used to analyze and train models with any high throughput drug screening data,
+  so long as SMILES strings and labels (binary or continuous) are provided.
+  
 
 Citation: Dolorfino, M.; Perez, D. S.; Fu, Y.; Lin, S.-H.; McCarty, S.; O’Meara, M. J.; Sztain, T. Assessing the Generalizability of Machine Learning and Physics Methods for DNA-Encoded Libraries. <i>bioRxiv</i> April 19, 2026 [link](https://doi.org/10.64898/2026.04.18.719394)
-
 
 # Quick Start for Beginners
 
@@ -13,7 +15,7 @@ The defult functions can all be carried out using a single python script after i
 
 ## 1. Copy this github repository to your local device.
 
-   * This currently requires a linux environment, which is standard for Mac. For windows users, we reccomend first installing [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install/windows-gui-install).
+   * This currently requires a linux environment, which is standard for Mac. For windows users, we recommend first installing [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install/windows-gui-install).
 
 In your terminal, type
 
@@ -42,6 +44,9 @@ Example format:
 | bb1_smiles | bb2_smiles | bb3_smiles |binds|
 | ---------- | ---------- | ---------- | ----|
 | CCCO       | c1ccccc1   | CCN        | 1   |
+
+If you wish to analyze and build models using full molecule SMILES, you must also include a column that contains the full molecule smiles.
+
 
 
 
@@ -80,18 +85,25 @@ List of building block columns in the dataset.
 
 Each column must contain valid SMILES strings.
 
+Name of full molecule SMILES column name, if you want to analyze/train with full molecules. Otherwise, the defaults to None
+e.g. `full_molecule_smiles='mySMILEScolumn`
+
 ---
 
 ```python id="cfg3"
 label = "binds"
 ```
 
-Binary label column (optional or required depending on the selected metric):
+Label column (optional or required depending on the selected metric):
 
-* Must contain only:
+* For binary predictions, must contain only:
 
   * `1` → hit / binder
   * `0` → non-hit / non-binder
+ 
+* For continuous labels (e.g. read counts, enrichment values, IC50 values, energy values, etc.)
+
+  * Float values 
 
 This column is used for enrichment and performance-based metrics.
 
@@ -136,8 +148,9 @@ It outputs:
 **Note that for the `DEL_iver_models.py` and `DEL_iver_analogs.py` scripts, the output_prefix must be set to the same string**
 ### Run the model training pipeline
 
-The variables you will need to set at the top of the `DEL_iver_models.py` are the input file (which is the same as the one you provided for the `DEL_iver_results.py` script
-and the output_prefix.
+The variables you will need to set at the top of the `DEL_iver_models.py` are the input file (which is the same as the one you provided for the `DEL_iver_results.py` script, the output_prefix,
+the bb_cols, name of label column, and optionally `continuous_label=True` (if your labels are continuous), and `full_molecule_smiles='mySMILEScolumn`. If you don't want to set the last two variables, 
+leave them as they are written in the `DEL_iver_models.py` script (i.e. `continuous_label=False` and `full_molecule_smiles=None`.
 
 Once the variables are set, execute the full model training/inference pipeline with:
 ```
@@ -145,13 +158,13 @@ python DEL_iver_models.py
 ```
 
 What this script does: 
-1. Reads DEL data and convert it to storage / memory efficient parquet format.
-2. Enumerates all building blocks and disynthon combinations possible within the data.
-3. Computes the ECFP4 fingerprints of all building blocks in the DEL dataset.
+1. Reads DEL data and converts it to storage / memory efficient parquet format.
+2. Enumerates all building blocks and disynthon combinations possible within the data, as well as full molecules if desired.
+3. Computes the ECFP4 fingerprints of all building blocks (and optionally full molecules) in the DEL dataset.
 4. Splits the DEL dataset in 80/20 train/test split.
-5. Trains the default building block ML model on the train split.
-6. Performs inference using the trained model on all of the molecules in the test dataset.
-7. If the script writes out a file or png, it will state where that file has been written. 
+5. Trains the default building block ML model on the train split. If you wish to train any of the other models, uncomment the specified lines at the bottom of the script.
+7. Performs inference using the trained model on all of the molecules in the test dataset.
+8. If the script writes out a file or png, it will state where that file has been written. 
 
 It outputs:
 1) Parquet files of the BB ECFP4 fingerprints
