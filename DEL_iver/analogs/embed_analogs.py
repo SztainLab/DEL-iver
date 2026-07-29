@@ -327,4 +327,130 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     print(f"wrote predictions to {ddr.cache._get_output_path(CacheNames.ANALOGS, 'similar', prefix=output_prefix)}")
 
     
+def analog_embed_full_molecules(ddr, enamine_input, output_prefix, fullmole_smiles, ecfp4_size=1024):
+    """
+    Calculate ECFP4 fingerprints of Enamine molecules and embed with full molecules.
+    Produce UMAP embedding parquet files and plots of the embeddings.
+    Compute tanimoto scores between full molecules and Enamine molecules, and propose the 
+    most similar analog for all molecules in the dataset. 
+    
+    Parameters:
+    -----------
+    enamine_input: 
+        Path to a csv file containing SMILES strings of analogs to be embedded with DEL bbs.
+        The file can contain any number of columns, but it MUST contain a 'SMILES' column that contains
+        the SMILES strings of analogs. 
+    output_prefix : str
+        A string specifying the prefix for output files. 
+        E.G if output_prefix='analogs', the output would be named 'analog_fingerprints.parquet'
+    fullmole_smiles : str
+        A string specifying the name of the full molecule smiles in the original dataset
+    ecfp4_size : int, default=1024
+        Size of ECFP4 fingerprints
+        
+    Returns:
+    --------
+    parquet file 
+        parquet file containing the ECFP4 fingerprints of analogs
+        parquet file containing the UMAP embedding of the analogs with the dataset full molecules
+        output a parqet file containing the original dataset and proposed analogs for each molecule
+    png
+        png of plots of each of the UMAP embeddings listed above
+    
+    Example:
+    --------
+    >>> analog_embed(
+            ddr,
+    ...     output_prefix="experiment1",
+    ...     chunk_size=1000000,
+    ...     ecfp4_size=2048
+    ... )
+    """
+    
+    print(f'Using {multiprocessing.cpu_count()} CPUs...')
+    print(f'Output prefix: {output_prefix}')
+    print(f'ECFP4 size: {ecfp4_size}')
+    
+    source_file = ddr.source_file
+    parquet_source = pq.ParquetFile(source_file)
+    df_source = parquet_source.read().to_pandas()
+    
+    # load the full molecule ecfp4 dicts
+    fullmoles = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING_FULL, "fingerprints_fullmole", prefix=output_prefix)
+    
+    parquet_fullmole = pq.ParquetFIle(fullmoles)
+    
+    df_fullmoles = parquet_fullmole.read().to_pandas()
+    fullmole_dict = dict(zip(df_fullmoles.iloc[:,0], df_fullmoles.iloc[:,1]))
+    del df_fullmoles
+    
+    df_source = df_source[df_source[fullmole_smiles].isin(list(fullmole_dict.keys()))]
+    
+    filename_full = ddr.cache._get_output_path(CacheNames.FULLMOL_DICTIONARY, "id_to_smiles")
+    
+    parquet_sm = pq.ParquetFile(filename_full)
+    df_id2smile = parquet_sm.read().to_pandas()
+    id2smile = dict(zip(df_id2smile.iloc[:, 0], df_id2smile.iloc[:, 1]))
+    del df_id2smile
+    
+    # load the enamine csv file
+    enamine_df = pd.read_csv(enamine_input)
+    enamine_smiles2ecfp4_dict = {}
+    for smi in enamine_df['SMILES']:
+        fp = retrieve_mol_fp(smi, 'ECFP4', ecfp4_size)
+        enamine_smiles2ecfp4_dict[smi] = fp
+        
+    del enamine_df
+    enamine_df = pd.DataFrame({'SMILES': enamine_smiles2ecfp4_dict.keys(), 'ECFP4s': enamine_smiles2ecfp4_dict.values()})
+    
+    # write enamine ecfp4 fingerprints to file
+    pq.write_table(pa.Table.from_pandas(enamine_df), ddr.cache._get_output_path(CacheNames.ANALOGS, "fingerprints", prefix=output_prefix))
+    print(f"Enamine fingerprints saved to: {ddr.cache._get_output_path(CacheNames.ANALOGS, 'fingerprints', prefix=output_prefix)}")
+    
+    fdict = {id2smile[k]: v for k,v in fullmole_dict.items()}
+    
+    mol_labels = (['fullmole'] * len(fdict) + ['analog'] * len(enamine_smiles2ecfp4_dict))
+    
+    smiles = (list(fdict.keys())+list(enamine_smiles2ecfp4_dict.keys()))
+    
+    fps = (list(fdict.values())+list(enamine_smiles2ecfp4_dict.values()))
+    
+    to_umap = pd.DataFrame({'SMILES': smiles, 'ECFP4s': fps, 'labels': mol_labels})
+    
+    # compute the embedding and plot        
+    data = np.array(to_umap['ECFP4s'].tolist())
+    
+    # Now run UMAP
+    reducer = umap.UMAP(n_components=2)
+    embedding = reducer.fit_transform(data)
 
+    # Add the UMAP coordinates back to your dataframe
+    to_umap['UMAP1'] = embedding[:, 0]
+    to_umap['UMAP2'] = embedding[:, 1]
+
+    pq.write_table(pa.Table.from_pandas(to_umap), ddr.cache._get_output_path(CacheNames.ANALOGS_FULL, "umap", prefix=output_prefix))
+    
+    print(f"wrote UMAP to {ddr.cache._get_output_path(CacheNames.ANALOGS_FULL, 'umap', prefix=output_prefix)}")
+
+    # plot the umap!
+    color_map = {
+        'fullmole': 'magenta',
+        'analog': 'lightgray'
+    }
+    
+    umap_out = ddr.cache._get_output_path(CacheNames.ANALOGS_FULL, "umap", prefix=output_prefix, ext=".png")
+    
+    fig, ax = plt.subplots()
+
+    for label in to_umap['labels'].unique():
+        subset = to_umap[to_umap['labels'] == label]
+        ax.scatter(subset['UMAP1'], subset['UMAP2'], 
+                c=color_map[label], label=label, alpha=0.8, s=20)
+
+    ax.set_xlabel('UMAP1')
+    ax.set_ylabel('UMAP2')
+    ax.set_title('UMAP Projection of ECFP4 Fingerprints (full molecules)')
+    ax.legend()
+    plt.savefig(umap_out)
+    
+    print(f'saved umap plot to {umap_out}')
