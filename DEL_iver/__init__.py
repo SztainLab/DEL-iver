@@ -16,6 +16,7 @@ from .analysis.compute import compute_chemical_descriptors
 from .analysis.plotting import plot_bb
 from .models.trainmodels import train_default
 from .models.trainmodels import train_invariant
+from .models.trainmodels import train_fullmole
 from .models.inference_test import inference
 from .analogs.embed_analogs import analog_embed
 from .analogs.inference_analogs import inference_analog_moles
