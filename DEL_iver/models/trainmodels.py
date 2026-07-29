@@ -40,8 +40,24 @@ class TrainBBFPDataset_v1(Dataset):
         
         return concatenated_fp, torch.tensor(self.labels[idx], dtype=torch.float32)
 
+# full molecule dataset
+class FullMole_Dataset(Dataset):
+    def __init__(self, fps, labels):
+        self.fps = fps
+        self.labels = labels
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, idx):
+        # Fetch the fingerprints for each building block type
+        fp = torch.tensor(self.fps[idx], dtype=torch.float32)
+        
+        return fp, torch.tensor(self.labels[idx], dtype=torch.float32)
+
+# compatible for binary and continous inputs
 class BBFP_NN_v1(nn.Module):
-    def __init__(self, fingerprint_length, num_bb=3):
+    def __init__(self, fingerprint_length, num_bb=3, continuous_label : bool = False):
         super(BBFP_NN_v1, self).__init__()
         self.fc1 = nn.Linear(fingerprint_length * num_bb, 1024)
         self.dropout1 = nn.Dropout(0.5)
@@ -50,12 +66,16 @@ class BBFP_NN_v1(nn.Module):
         self.fc3 = nn.Linear(512, 256)
         self.dropout3 = nn.Dropout(0.5)
         self.fc4 = nn.Linear(256, 1)
+        
+        self.continuous_label = continuous_label
 
     def forward(self, x):
         x = self.dropout1(F.relu(self.fc1(x)))
         x = self.dropout2(F.relu(self.fc2(x)))
         x = self.dropout3(F.relu(self.fc3(x)))
-        x = torch.sigmoid(self.fc4(x))
+        x = self.fc4(x)
+        if self.continuous_label == False:
+            x = torch.sigmoid(x)
         return x   
 
 class AttentionModule(nn.Module):
@@ -67,8 +87,9 @@ class AttentionModule(nn.Module):
         weights = F.softmax(self.attention_weights(inputs), dim=0)
         return (inputs * weights).sum(dim=0) 
 
+# compatible with binary and continuous labels
 class BBFP_PermInvarNN_v3(nn.Module): # Neural network for permutation invariant
-    def __init__(self, fingerprint_length):
+    def __init__(self, fingerprint_length, continuous_label : bool = False):
         super(BBFP_PermInvarNN_v3, self).__init__()
         self.fp_length = fingerprint_length
 
@@ -84,6 +105,7 @@ class BBFP_PermInvarNN_v3(nn.Module): # Neural network for permutation invariant
         self.fc3 = nn.Linear(fingerprint_length, fingerprint_length // 2)
         self.fc4 = nn.Linear(fingerprint_length // 2, fingerprint_length // 4)
         self.fc5 = nn.Linear(fingerprint_length // 4, 1)
+        self.continuous_label = continuous_label
 
     def forward(self, x):
         # Split the concatenated input tensor into three parts
@@ -111,7 +133,24 @@ class BBFP_PermInvarNN_v3(nn.Module): # Neural network for permutation invariant
         x = self.fc5(x)
         return x
 
-def train_default(ddr, output_prefix):
+# full molecule model
+class MolFP_SimpleNN(nn.Module):
+    def __init__(self, fingerprint_length, continuous_label : bool = False):
+        super(MolFP_SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(fingerprint_length, fingerprint_length // 2)
+        self.fc2 = nn.Linear(fingerprint_length // 2, fingerprint_length // 4)
+        self.fc3 = nn.Linear(fingerprint_length // 4, fingerprint_length // 8)
+        self.fc4 = nn.Linear(fingerprint_length // 8, 1)
+        self.continuous_label = continuous_label
+
+    def forward(self, x):
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+        x = self.fc4(x)
+        return x
+
+def train_default(ddr, output_prefix, continuous_label = False):
     """
     Train a model on building block ECFP4 fingerprints to predict binding probability of molecules
     Before training, the dataset is split into train and test (80/20) splits. THis is the default
@@ -123,6 +162,10 @@ def train_default(ddr, output_prefix):
         **output_prefix should be the same output_prefix used for the gen_fingerprints() function
         A string specifying the prefix for output files. 
         E.G if output_prefix='mymodel', the output model be named 'mymodel.pth'
+        
+    continuous_label : bool
+        default is False. If true, the model is trained to predict continuous values 
+        rather than binary ones (e.g read count, IC50, etc.)
     
     Returns:
     --------
@@ -136,6 +179,7 @@ def train_default(ddr, output_prefix):
     >>> train_default(
             ddr,
     ...     output_prefix="experiment1",
+            continous_label=True
     ... )
         """
     # Check if CUDA (GPU support) is available and set device
@@ -197,10 +241,10 @@ def train_default(ddr, output_prefix):
     testx = testx[testx['buildingblock2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
     testx = testx[testx['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
-    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, "trainset", prefix=output_prefix))
-    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, "testset",  prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, 'testset',  prefix=output_prefix))
 
-    print(f'wrote train and test sets to: {output_out} and {output_out2}')
+    print(f"wrote train and test sets to: {ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix)} and {ddr.cache._get_output_path(CacheNames.MODELS, 'testset', prefix=output_prefix)}")
 
     all_bb_indices = trainx[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']].to_numpy()
 
@@ -210,10 +254,13 @@ def train_default(ddr, output_prefix):
     target_dataset = TrainBBFPDataset_v1(all_bb_indices, bb1_dict, bb2_dict, bb3_dict, target_labels)
     target_dataloader = DataLoader(target_dataset, batch_size=batch_size, shuffle=True)
 
-    model = BBFP_NN_v1(1024).to(device)
+    model = BBFP_NN_v1(1024, continuous_label).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    criterion = torch.nn.BCEWithLogitsLoss()
+    if continuous_label:
+        criterion = torch.nn.MSELoss()
+    else: 
+        criterion = torch.nn.BCEWithLogitsLoss()
 
     # Training loop
     num_epochs = 10
@@ -258,7 +305,7 @@ def train_default(ddr, output_prefix):
     torch.save(model, output_out)
     print(f'wrote model to {output_out}')
 
-def train_invariant(ddr, output_prefix):
+def train_invariant(ddr, output_prefix, continuous_label=False):
     """
     Train a model on building block ECFP4 fingerprints to predict binding probability of molecules
     Before training, the dataset is split into train and test (80/20) splits. This is not the 
@@ -270,6 +317,10 @@ def train_invariant(ddr, output_prefix):
         **output_prefix should be the same output_prefix used for the gen_fingerprints() function
         A string specifying the prefix for output files. 
         E.G if output_prefix='mymodel', the output model be named 'mymodel.pth'
+        
+    continuous_label : bool
+        default is False. If true, the model is trained to predict continuous values 
+        rather than binary ones (e.g read count, IC50, etc.)
     
     Returns:
     --------
@@ -283,6 +334,7 @@ def train_invariant(ddr, output_prefix):
     >>> train_invariant(
             ddr,
     ...     output_prefix="experiment1",
+            continuous_label=True
     ... )
         """
     # Check if CUDA (GPU support) is available and set device
@@ -344,10 +396,10 @@ def train_invariant(ddr, output_prefix):
     testx = testx[testx['buildingblock2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
     testx = testx[testx['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
-    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, "trainset", prefix=output_prefix))
-    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, "testset",  prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, 'testset',  prefix=output_prefix))
 
-    print(f'wrote train and test sets to: {output_out} and {output_out2}')
+    print(f"wrote train and test sets to: {ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix)} and {ddr.cache._get_output_path(CacheNames.MODELS, 'testset', prefix=output_prefix)}")
 
     all_bb_indices = trainx[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']].to_numpy()
 
@@ -357,10 +409,13 @@ def train_invariant(ddr, output_prefix):
     target_dataset = TrainBBFPDataset_v1(all_bb_indices, bb1_dict, bb2_dict, bb3_dict, target_labels)
     target_dataloader = DataLoader(target_dataset, batch_size=batch_size, shuffle=True)
 
-    model = BBFP_PermInvarNN_v3(1024).to(device)
+    model = BBFP_PermInvarNN_v3(1024, continuous_label).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    criterion = torch.nn.BCEWithLogitsLoss()
+    if continuous_label:
+        criterion = torch.nn.MSELoss()
+    else:
+        criterion = torch.nn.BCEWithLogitsLoss()
 
     # Training loop
     num_epochs = 10
@@ -405,7 +460,142 @@ def train_invariant(ddr, output_prefix):
     torch.save(model, output_out)
     print(f'wrote model to {output_out}')
     
+def train_fullmole(ddr, output_prefix, continuous_label = False):
+    """
+    Train a model on full molecule ECFP4 fingerprints to predict binding probability of molecules
+    Before training, the dataset is split into train and test (80/20) splits. THis is the default
+    model, and does not enforce permutation invariance. 
 
+    Parameters:
+    -----------
+    output_prefix : str
+        **output_prefix should be the same output_prefix used for the gen_fingerprints() function
+        A string specifying the prefix for output files. 
+        E.G if output_prefix='mymodel', the output model be named 'mymodel.pth'
+        
+    continuous_label : bool
+        default is False. If true, the model is trained to predict continuous values 
+        rather than binary ones (e.g read count, IC50, etc.)
+    
+    Returns:
+    --------
+    model
+        a model (.pth) file trained on the training set
+    parquet file
+        parquet files specifying the train and test splits used 
+    
+    Example:
+    --------
+    >>> train_default(
+            ddr,
+    ...     output_prefix="experiment1",
+            continous_label=True
+    ... )
+        """
+        
+    # Check if CUDA (GPU support) is available and set device
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+        print(f"Using device: cuda, with {torch.cuda.device_count()} GPUs available")
+    else:
+        device = torch.device("cpu")
+        print("Using device: cpu")
+        
+    fingerprint_length = 1024
+    
+    print(f'Output prefix: {output_prefix}')
+    
+    # get the original dataframe
+    source_file = ddr.source_file
+    parquet_source = pq.ParquetFile(source_file)
+    df_source = parquet_source.read().to_pandas()
+    
+    bindlabels = list(df_source[ddr.label])
+    del df_source
+    
+    fps = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING_FULL, f"fingerprints_fullmole", prefix=output_prefix)
+    
+    parquet_full = pq.ParquetFile(fps)
+    full_moles = parquet_full.read().to_pandas()
+    fullmole_dict = dict(zip(full_moles.iloc[:,0], full_moles.iloc[:,1]))
+    cols = list(full_moles.columns)
+    # del full_moles
+    
+    all_data_df = full_moles[[cols[0]]]
+    
+    trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.2, random_state=42)
+    
+    trainx['binds'] = list(trainlabel)
+    testx['binds'] = list(testlabel)
+
+    trainx = trainx[trainx[cols[0]].isin(list(fullmole_dict.keys()))]
+
+    testx = testx[testx[cols[0]].isin(list(fullmole_dict.keys()))]
+
+    pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, 'testset',  prefix=output_prefix))
+    
+    print(f"wrote train and test sets to: {ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix)} and {ddr.cache._get_output_path(CacheNames.MODELS, 'testset', prefix=output_prefix)}")
+    
+    all_bb_indices = trainx[[cols[0]]].to_numpy()
+    
+    batch_size = 10000
+    target_labels = trainx[ddr.label].to_numpy()
+    
+    target_dataset = FullMole_Dataset(all_bb_indices[0], target_labels)
+    target_dataloader = DataLoader(target_dataset, batch_size=batch_size, shuffle=True)
+    
+    model = MolFP_SimpleNN(1024, continuous_label).to(device)
+    
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    if continuous_label:
+        criterion = torch.nn.MSELoss()
+    else:
+        criterion = torch.nn.BCEWithLogitsLoss()
+        
+    # Training loop
+    num_epochs = 10
+    for epoch in range(num_epochs):
+        '''
+        # Randomly select negative samples, you can adjust the size ratio as needed
+        sampled_negative = np.random.choice(len(negative_indices), size=len(positive_indices), replace=False)
+        batch_indices = np.concatenate((positive_indices, [negative_indices[x] for x in sampled_negative]))
+        batch_labels = np.zeros(len(batch_indices), dtype=int)
+        batch_labels[:len(positive_indices)] = 1
+
+        # Create dataset and dataloader with the selected indices
+        target_dataset = TrainBBFPDataset_v1(batch_indices, bbs_1_fp, bbs_2_fp, bbs_3_fp, batch_labels)
+        target_dataloader = DataLoader(target_dataset, batch_size=batch_size, shuffle=True)
+        '''
+
+        running_loss = 0.0
+        for i, (batch_fp, batch_labels) in enumerate(target_dataloader):
+            batch_fp = batch_fp.to(device)
+            batch_labels = batch_labels.to(device)
+
+            # Forward pass
+            outputs = model(batch_fp).squeeze()
+            loss = criterion(outputs, batch_labels)
+
+            # Backward and optimize
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item()
+
+            # Print average loss every 100 batches
+            if (i + 1) % 100 == 0:
+                print(f'Epoch [{epoch+1}/{num_epochs}], Batch [{i+1}], Loss: {running_loss / 100:.4f}')
+                running_loss = 0.0
+
+        # Print loss after each epoch
+        print(f'Epoch [{epoch+1}/{num_epochs}] completed, Loss: {running_loss / len(target_dataloader)}')
+
+    output_out = ddr.cache._get_output_path(CacheNames.MODELS, "model_fullmole", prefix=output_prefix, ext=".pth")
+    torch.save(model, output_out)
+    print(f'wrote model to {output_out}')
+    
 if __name__ == '__main__':
     print("""
     This script is designed to be imported and called as a function.

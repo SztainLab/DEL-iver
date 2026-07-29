@@ -56,7 +56,8 @@ def gen_fingerprints(ddr, output_prefix, output_prefix_full='fullmoles', chunk_s
     filename      = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
     filename_map  = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
 
-    filename_full = ddr.cache._get_output_path(CacheNames.FULLMOL_DICTIONARY, "id_to_smiles") ## make input flag that does the below except for full molecules
+    if fullmole == True:
+        filename_full = ddr.cache._get_output_path(CacheNames.FULLMOL_DICTIONARY, "id_to_smiles") ## make input flag that does the below except for full molecules
 
     # Read parquet file in batches
     parquet_file = pq.ParquetFile(filename)
