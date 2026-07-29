@@ -9,7 +9,7 @@ from tqdm import tqdm
 from DEL_iver.utils.utils import replace_Dy, retrieve_mol_fp
 from DEL_iver.utils.cache import CacheNames
 
-def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, remove_dy=False):
+def gen_fingerprints(ddr, output_prefix, output_prefix_full='fullmoles', chunk_size=500000, ecfp4_size=1024, remove_dy=False, fullmole=False):
     """
     Calculate ECFP4 fingerprints from a parquet file containing SMILES strings.
     
@@ -24,11 +24,18 @@ def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, rem
         Size of ECFP4 fingerprints
     remove_dy : bool, default=False
         Whether to remove Dy tag and replace with PEG linker
+    fullmole  : bool, default=False
+        Whether to calculate ECFP4 fingerprints for full molecules in addition to building blocks
+    output_prefix_full : str
+        A string specifying the prefix for output files of fullmole fingerprints. 
+        E.G if output_prefix='fullmoles', the output would be named 'fullmoles_fingerprints.parquet'
     
     Returns:
     --------
-    parquet file 
+    parquet files
         parquet files containing IDs and ECFP4 fingerprints, one parquet for each bb set
+        
+        if fullmole=True, also returns parquet file containing IDs and ECFP4 fingerprints of the full molecules
     
     Example:
     --------
@@ -57,7 +64,7 @@ def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, rem
     all_ids = []
     for batch in tqdm(parquet_file.iter_batches(batch_size=chunk_size), desc="Processing batches"):
         chunk = batch.to_pandas()
-        print(chunk.head())
+        # print(chunk.head())
         cs = list(chunk.columns)
         
         # Apply Dy replacement if requested
@@ -65,7 +72,7 @@ def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, rem
             chunk[cs[1]] = chunk[cs[1]].apply(replace_Dy)
         
         # Compute fingerprints for each SMILES string
-        print(cs[1][0])
+        # print(cs[1][0])
 
         fps = [retrieve_mol_fp(smi, 'ECFP4', ecfp4_size) for smi in chunk[cs[1]]]
         ids = chunk[cs[0]].tolist()
@@ -99,12 +106,51 @@ def gen_fingerprints(ddr, output_prefix, chunk_size=500000, ecfp4_size=1024, rem
     
         # Convert to PyArrow Table and save as Parquet
         table = pa.Table.from_pandas(df)
-        print(len(df))
+        # print(len(df))
         pq.write_table(table, (output_out))
         print(f"Fingerprints saved to: {output_out}")
 
     print(f"Total fingerprints generated: {len(result_df)}")
-
+    
+    if fullmole: # compute fingerprints of full molecules if specified 
+        parquet_full = pq.ParquetFile(filename_full)
+        full_fps = []
+        full_ids = []
+        for batch in tqdm(parquet_full.iter_batches(batch_size=chunk_size), desc='Processing batches'):
+            chunk = batch.to_pandas()
+            print(chunk.head())
+            cs = list(chunk.columns)
+            
+            # Apply Dy replacement if requested
+            if remove_dy:
+                chunk[cs[1]] = chunk[cs[1]].apply(replace_Dy)
+                
+            # compute fingerprints for each smiles string
+            
+            fps = [retrieve_mol_fp(smi, 'ECFP4', ecfp4_size) for smi in chunk[cs[1]]]
+            ids = chunk[cs[0]].tolist()       
+            
+            full_fps.extend(fps)
+            full_ids.extend(ids) 
+            
+        # Create DataFrame with IDs and fingerprints
+        result_df = pd.DataFrame({
+            'id': all_ids,
+            'ecfp4_fingerprint': all_fps
+        })
+        
+        # save output to parquet file
+        output_full = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING_FULL, f"fingerprints_fullmole", prefix=output_prefix_full)
+        
+        # convert to PyArrow Table and save as parquet
+        table = pa.Table.from_pandas(result_df)
+        print(len(df))
+        pq.write_table(table, {output_full})
+        print(f'Full molecules saved to: {output_full}')
+        
+        print(f'Total full molecule fingerprints generated: {len(result_df)}')
+    
+        
 if __name__ == '__main__':
     print("""
     This script is designed to be imported and called as a function.
