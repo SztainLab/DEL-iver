@@ -105,5 +105,5 @@ def inference_analog_moles(ddr, output_prefix):
 
     pq.write_table(pa.Table.from_pandas(target_test), ddr.cache._get_output_path(CacheNames.ANALOGS, "predictions", prefix=output_prefix))
 
-    print(f'wrote analog predictions to {output_out}')
+    print(f"wrote analog predictions to {ddr.cache._get_output_path(CacheNames.ANALOGS, 'predictions', prefix=output_prefix)}")
 

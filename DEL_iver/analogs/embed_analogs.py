@@ -160,10 +160,6 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     parquet_source = pq.ParquetFile(source_file)
     df_source = parquet_source.read().to_pandas()
     
-    # print(df_source.head())
-    # print(df_source.columns)
-    # print(len(df_source))
-    
     # load the bb1,bb2,bb3 DEL ecfp4 dicts
     bb1s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb1", prefix=output_prefix)
     bb2s = ddr.cache._get_output_path(CacheNames.SMILESEMBEDDING, "fingerprints_bb2", prefix=output_prefix)
@@ -212,7 +208,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     
     # write enamine ecfp4 fingerprints to file
     pq.write_table(pa.Table.from_pandas(enamine_df), ddr.cache._get_output_path(CacheNames.ANALOGS, "fingerprints", prefix=output_prefix))
-    print(f"Enamine fingerprints saved to: {output_out}")
+    print(f"Enamine fingerprints saved to: {ddr.cache._get_output_path(CacheNames.ANALOGS, 'fingerprints', prefix=output_prefix)}")
     
     bb1_dict = {id2smile[k]: v for k, v in bb1_dict.items()}
     bb2_dict = {id2smile[k]: v for k, v in bb2_dict.items()}
@@ -235,7 +231,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
         list(enamine_smiles2ecfp4_dict.values()))
 
     to_umap = pd.DataFrame({'SMILES': smiles, 'ECFP4s': fps, 'labels': mol_labels})
-     
+
     # compute the embedding and plot        
     data = np.array(to_umap['ECFP4s'].tolist())
 
@@ -249,7 +245,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
 
     pq.write_table(pa.Table.from_pandas(to_umap), ddr.cache._get_output_path(CacheNames.ANALOGS, "umap", prefix=output_prefix))
 
-    print(f'wrote UMAP to {output_out}')
+    print(f"wrote UMAP to {ddr.cache._get_output_path(CacheNames.ANALOGS, 'umap', prefix=output_prefix)}")
 
     # plot the umap!
     color_map = {
@@ -328,7 +324,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     
     pq.write_table(pa.Table.from_pandas(df_filtered), ddr.cache._get_output_path(CacheNames.ANALOGS, "similar", prefix=output_prefix))
 
-    print(f'wrote predictions to {output_out}')
+    print(f"wrote predictions to {ddr.cache._get_output_path(CacheNames.ANALOGS, 'similar', prefix=output_prefix)}")
 
     
 
