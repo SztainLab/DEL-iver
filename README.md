@@ -2,10 +2,10 @@
   <img src="https://github.com/SztainLab/DEL-iver/raw/main/logo.png" width="200"/>
 </p>
 
-DEL-iver is a package fo processing high throughput DNA-encoded library (DEL) data, training ML models, and picking hits from make on demand libraries
+# DEL-iver is a package fo processing high throughput DNA-encoded library (DEL) data, training ML models, and picking hits from make on demand libraries
   
   
-Though this package is useful for analyzing and training models using DEL data, it can also be used to analyze and train models with any high throughput drug screening data,
+## Though this package was originally developed for analyzing and training models using DEL data, we have made all of the capabilities compatible with any high throughput drug screening data,
 so long as SMILES strings and labels (binary or continuous) are provided.
   
 
