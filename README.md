@@ -7,7 +7,7 @@
 ## DEL-iver is compatible with DEL data AND any highthroughput screening data:
 DEL-iver was designed to address the unique challenges of DEL data, including full molecule assembly from building blocks and SMARTS patterns, building block- and disynthon-based enrichment analysis, and building block-based input layers, including shared layers for building blocks if permutation invariance is indicated. **However, the tool is generalizable to any HTS dataset containing molecule SMILES with labeled activity readouts. Labels can be either binary binding or non-binding classification, or continuous values including but not limited to read count, IC50, and Kd, providing a flexible framework for protein-ligand binding prediction.**
 
-Citation: Dolorfino, M.; Perez, D. S.; Fu, Y.; Lin, S.-H.; McCarty, S.; O’Meara, M. J.; Sztain, T. Assessing the Generalizability of Machine Learning and Physics Methods for DNA-Encoded Libraries. <i>bioRxiv</i> April 19, 2026 [link](https://doi.org/10.64898/2026.04.18.719394)
+**Citation:** Dolorfino, M.; Perez, D. S.; Fu, Y.; Lin, S.-H.; McCarty, S.; O’Meara, M. J.; Sztain, T. Assessing the Generalizability of Machine Learning and Physics Methods for DNA-Encoded Libraries. <i>bioRxiv</i> April 19, 2026 [link](https://doi.org/10.64898/2026.04.18.719394)
 
 # Quick Start for Beginners
 
