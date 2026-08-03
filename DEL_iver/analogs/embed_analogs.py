@@ -324,7 +324,7 @@ def analog_embed(ddr, enamine_input, output_prefix, ecfp4_size=1024):
     
     pq.write_table(pa.Table.from_pandas(df_filtered), ddr.cache._get_output_path(CacheNames.ANALOGS, "similar", prefix=output_prefix))
 
-    print(f"wrote predictions to {ddr.cache._get_output_path(CacheNames.ANALOGS, 'similar', prefix=output_prefix)}")
+    print(f"wrote BB analogs to {ddr.cache._get_output_path(CacheNames.ANALOGS, 'similar', prefix=output_prefix)}")
 
     
 def analog_embed_full_molecules(ddr, enamine_input, output_prefix, fullmole_smiles, ecfp4_size=1024):
@@ -454,3 +454,27 @@ def analog_embed_full_molecules(ddr, enamine_input, output_prefix, fullmole_smil
     plt.savefig(umap_out)
     
     print(f'saved umap plot to {umap_out}')
+    
+    # compute tanimoto similarity 
+    matrixfullmole, row_labelsfullmole, col_labelfullmolecule = compute_labeled_similarity(
+        list(fdict.values()), list(enamine_smiles2ecfp4_dict.values()),
+        list(fdict.keys()), list(enamine_smiles2ecfp4_dict.keys())
+    )
+
+    mole_best_matches = get_best_matches(matrixfullmole, row_labelsfullmole, col_labelfullmolecule)
+
+    # add the best matches smiles to the df_source dataframe, along with the tanimoto score
+    df_source = add_best_match_columns(
+        df_source, 
+        'fullmolecule_smiles', 
+        mole_best_matches, 
+        'analog', 
+        'analog_tanimoto'
+    )
+    
+    # filter by any na values
+    df_filtered = df_source.dropna()
+    
+    pq.write_table(pa.Table.from_pandas(df_filtered), ddr.cache._get_output_path(CacheNames.ANALOGSFULL, "similar", prefix=output_prefix))
+
+    print(f"wrote full molecule analogs to {ddr.cache._get_output_path(CacheNames.ANALOGSFULL, 'similar', prefix=output_prefix)}") 
