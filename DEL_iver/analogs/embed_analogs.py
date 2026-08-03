@@ -404,8 +404,8 @@ def analog_embed_full_molecules(ddr, enamine_input, output_prefix, fullmole_smil
     enamine_df = pd.DataFrame({'SMILES': enamine_smiles2ecfp4_dict.keys(), 'ECFP4s': enamine_smiles2ecfp4_dict.values()})
     
     # write enamine ecfp4 fingerprints to file
-    pq.write_table(pa.Table.from_pandas(enamine_df), ddr.cache._get_output_path(CacheNames.ANALOGS, "fingerprints", prefix=output_prefix))
-    print(f"Enamine fingerprints saved to: {ddr.cache._get_output_path(CacheNames.ANALOGS, 'fingerprints', prefix=output_prefix)}")
+    pq.write_table(pa.Table.from_pandas(enamine_df), ddr.cache._get_output_path(CacheNames.ANALOGS_FULL, "fingerprints", prefix=output_prefix))
+    print(f"Enamine fingerprints saved to: {ddr.cache._get_output_path(CacheNames.ANALOGS_FULL, 'fingerprints', prefix=output_prefix)}")
     
     fdict = {id2smile[k]: v for k,v in fullmole_dict.items()}
     
@@ -475,6 +475,6 @@ def analog_embed_full_molecules(ddr, enamine_input, output_prefix, fullmole_smil
     # filter by any na values
     df_filtered = df_source.dropna()
     
-    pq.write_table(pa.Table.from_pandas(df_filtered), ddr.cache._get_output_path(CacheNames.ANALOGSFULL, "similar", prefix=output_prefix))
+    pq.write_table(pa.Table.from_pandas(df_filtered), ddr.cache._get_output_path(CacheNames.ANALOGS_FULL, "similar", prefix=output_prefix))
 
-    print(f"wrote full molecule analogs to {ddr.cache._get_output_path(CacheNames.ANALOGSFULL, 'similar', prefix=output_prefix)}") 
+    print(f"wrote full molecule analogs to {ddr.cache._get_output_path(CacheNames.ANALOGS_FULL, 'similar', prefix=output_prefix)}") 

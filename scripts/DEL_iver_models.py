@@ -25,12 +25,12 @@ deliv.gen_fingerprints(ddr, output_prefix=output_prefix, fullmole=False)
 deliv.train_default(ddr, output_prefix=output_prefix, continuous_label=continuous_label)
 
 # inference on the test file created while training
-deliv.inference(ddr, output_prefix=output_prefix)
+deliv.inference_default(ddr, output_prefix=output_prefix)
 
 # uncomment the following if you'd like to train an invariant model on BB ECPF4 fingerprints and inference using that model
 # deliv.train_invariant(ddr, output_prefix='invariant', continous_label=continuous_label)
-# deliv.inference(ddr, output_prefix='invariant')
+# deliv.inference_invariant(ddr, output_prefix='invariant')
 
 # uncomment the following if you'd like to train a full molecule model and inference using that model
 # deliv.train_fullmole(ddr, output_prefix='fullmolecule', continuous_label=continuous_label)
-# deliv.inference(ddr, output_prefix='fullmolecule', continuous_label=continuous_label)
+# deliv.inference_fullmole(ddr, output_prefix='fullmolecule', continuous_label=continuous_label)

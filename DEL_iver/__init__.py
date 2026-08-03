@@ -17,7 +17,9 @@ from .analysis.plotting import plot_bb
 from .models.trainmodels import train_default
 from .models.trainmodels import train_invariant
 from .models.trainmodels import train_fullmole
-from .models.inference_test import inference
+from .models.inference_test import inference_default
+from .models.inference_test import inference_invariant
+from .models.inference_test import inference_fullmole
 from .analogs.embed_analogs import analog_embed
 from .analogs.embed_analogs import analog_embed_full_molecules
 from .analogs.inference_analogs import inference_analog_moles
