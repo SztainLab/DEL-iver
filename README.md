@@ -49,7 +49,7 @@ Example format:
 | ---------- | ---------- | ---------- | ----|
 | CCCO       | c1ccccc1   | CCN        | 1   |
 
-## 3. Prepare input data (full molecule)\*
+## \*3. Prepare input data (full molecule)\*
 
 The input must be a CSV file where:
 
@@ -66,10 +66,6 @@ Example format:
 | full-molecule_smiles |label/binds|
 | ---------------------- | --- |
 | CCCO                   |  1  |
-
-If you wish to analyze and build models using full molecule SMILES, you must also include a column that contains the full molecule smiles.
-
-
 
 
 ## 4. Set variables and execute
@@ -107,8 +103,8 @@ List of building block columns in the dataset.
 
 Each column must contain valid SMILES strings.
 
-Name of full molecule SMILES column name, if you want to analyze/train with full molecules. Otherwise, the defaults to None
-e.g. `full_molecule_smiles='mySMILEScolumn`
+\*Name of full molecule SMILES column name, if you want to analyze/train with full molecules. Otherwise, the defaults to None
+e.g. `full_molecule_smiles='mySMILEScolumn`\*
 
 ---
 
@@ -123,7 +119,7 @@ Label column (optional or required depending on the selected metric):
   * `1` → hit / binder
   * `0` → non-hit / non-binder
  
-* For continuous labels (e.g. read counts, enrichment values, IC50 values, energy values, etc.)
+* \*For continuous labels (e.g. read counts, enrichment values, IC50 values, energy values, etc.)\*
 
   * Float values 
 
@@ -142,9 +138,6 @@ Output directory where results, figures, and computed tables will be saved, if n
 ---
 
 
-
-
-
 ### Run the results pipeline
 
 Once the variables are set, execute the full analysis pipeline with:
@@ -153,7 +146,7 @@ python DEL_iver_results.py
 ```
 What this script does:
 
-1. Reads DEL data and convert it to storage / memory efficient parquet format.
+1. Reads data and convert it to storage / memory efficient parquet format.
 2. Enumerates all building blocks and disynthon combinations possible within the data. 
 3. Computes pbind.
 4. Filters to find the top molecules per pbind.
@@ -171,8 +164,7 @@ It outputs:
 ### Run the model training pipeline
 
 The variables you will need to set at the top of the `DEL_iver_models.py` are the input file (which is the same as the one you provided for the `DEL_iver_results.py` script, the output_prefix,
-the bb_cols, name of label column, and optionally `continuous_label=True` (if your labels are continuous), and `full_molecule_smiles='mySMILEScolumn`. If you don't want to set the last two variables, 
-leave them as they are written in the `DEL_iver_models.py` script (i.e. `continuous_label=False` and `full_molecule_smiles=None`.
+the bb_cols, name of the label column, and \*optionally `continuous_label=True` (if your labels are continuous), and `full_molecule_smiles='mySMILEScolumn`.\* If you don't want to set the last two variables, leave them as they are written in the `DEL_iver_models.py` script (i.e. `continuous_label=False` and `full_molecule_smiles=None`.
 
 Once the variables are set, execute the full model training/inference pipeline with:
 ```
@@ -180,16 +172,16 @@ python DEL_iver_models.py
 ```
 
 What this script does: 
-1. Reads DEL data and converts it to storage / memory efficient parquet format.
+1. Reads data and converts it to storage / memory efficient parquet format.
 2. Enumerates all building blocks and disynthon combinations possible within the data, as well as full molecules if desired.
-3. Computes the ECFP4 fingerprints of all building blocks (and optionally full molecules) in the DEL dataset.
-4. Splits the DEL dataset in 80/20 train/test split.
-5. Trains the default building block ML model on the train split. If you wish to train any of the other models, uncomment the specified lines at the bottom of the script.
+3. Computes the ECFP4 fingerprints of all building blocks (and optionally full molecules if specified) in the dataset.
+4. Splits the dataset into 80/20 train/test splits.
+5. Trains the default building block ML model on the train split. \*If you wish to train any of the other models, uncomment the specified lines at the bottom of the script. This is especially important if you are not using building blocks.\*
 7. Performs inference using the trained model on all of the molecules in the test dataset.
 8. If the script writes out a file or png, it will state where that file has been written. 
 
 It outputs:
-1) Parquet files of the BB ECFP4 fingerprints
+1) Parquet files of the ECFP4 fingerprints
 2) Parquet files of the train and test datasets that result from the 80/20 train/test split
 3) The trained model as a `.pth` file
 4) A parquet file with the predicted binding probabilities of the model on the test set
