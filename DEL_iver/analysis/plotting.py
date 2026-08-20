@@ -1,3 +1,4 @@
+import warnings
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
@@ -53,6 +54,10 @@ def plot_disynthons(ddr,
     output_path : str, optional
         If provided, save the figure to this path at 300 dpi.
     """
+
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: plot_disynthons is not available.",UserWarning)
+        return
 
     # 2. Load and Filter Data
     df = pd.read_parquet(ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment"))
@@ -175,6 +180,10 @@ def plot_bb(ddr,
     output_path : str, optional
         If provided, save the figure to this path at 300 dpi.
     """
+
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: plot_bb is not available.",UserWarning)
+        return
 
     with plt.rc_context(_PLOT_PARAMS):
         # 1. Load Data
@@ -372,6 +381,10 @@ def draw_bb(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions=True, s
         In-memory rendered grid image. Renders inline in Jupyter when the return value is not captured.
     """
 
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: draw_bb is not available.",UserWarning)
+        return
+
     mols = []
     legends = []
 
@@ -494,6 +507,10 @@ def draw_disynthons(top_n, ddr, metric="enrichment", mols_per_row=3, remove_ions
     PIL.Image
         In-memory rendered grid image. Renders inline in Jupyter when the return value is not captured.
     """
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: draw_disynthons is not available.",UserWarning)
+        return
+
     mols = []
     legends = []
     origin_to_label = {

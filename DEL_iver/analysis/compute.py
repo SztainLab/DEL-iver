@@ -200,6 +200,10 @@ def compute_enrichment(ddr, method='laplace', min_occurrences=0, draw: bool = Fa
 
 
 
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: compute_enrichment is not available.",UserWarning)
+        return
+
     out1=ddr.cache._get_output_path(CacheNames.COMPUTE, "bb_enrichment")
     out2=ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
 
@@ -372,6 +376,10 @@ def compute_chemical_descriptors(ddr,
                        Default False — single threaded is fast enough for typical
                        BB dictionaries and avoids shared memory issues on clusters.
     """
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: compute_chemical_descriptors is not available.",UserWarning)
+        return
+
     bb_dict_path      = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
     id_to_smiles_path = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "id_to_smiles")
 
@@ -464,6 +472,10 @@ def find_best_bb(ddr, n, min_occurrences=0, sort_by="pbind", exclude: list = Non
     pyarrow.Table
         Top-n building block rows with enrichment stats, positional info, and SMILES.
     """
+
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: find_best_bb is not available.",UserWarning)
+        return
 
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
@@ -593,10 +605,14 @@ def find_best_disynthon(ddr, n, min_occurrences=0, sort_by="pbind", exclude=None
     pyarrow.Table
         Top-n disynthon rows with enrichment stats and reconstructed SMILES.
     """
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: find_best_disynthon is not available.",UserWarning)
+        return
+
     if sort_by not in ("pbind", "enrichment"):
         raise ValueError(f"sort_by must be 'pbind' or 'enrichment', got '{sort_by}'")
 
-    
+
     #++++++++++++++++ Exclude logic
     if exclude is None:
         exclude = []
@@ -697,6 +713,10 @@ def data_set_statistics(ddr, print_output: bool = False, write_output: str = Non
     write_output : str, optional
         If provided, write the summary as CSV to this path.
     """
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: data_set_statistics is not available.",UserWarning)
+        return
+
     bb_path  = ddr.cache._get_output_path(CacheNames.COMPUTE, "bb_enrichment")
     dis_path = ddr.cache._get_output_path(CacheNames.COMPUTE, "disynthon_enrichment")
     if not bb_path.exists() or not dis_path.exists():

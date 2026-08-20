@@ -162,6 +162,10 @@ def _enumerate_building_blocks(ddr):
     source_file=ddr.source_file
     building_blocks=ddr.building_blocks
 
+    if building_blocks is None:
+        warnings.warn(f"No building blocks specified: building block enumeration is not available.",UserWarning)
+        return
+
     output_path = ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main")
 
 

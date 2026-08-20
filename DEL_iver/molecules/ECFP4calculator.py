@@ -1,5 +1,6 @@
 #!/bin/python
 
+import warnings
 import pandas as pd
 import numpy as np
 import multiprocessing
@@ -47,6 +48,10 @@ def gen_fingerprints(ddr, output_prefix, output_prefix_full='fullmoles', chunk_s
     ... )
     """
     
+    if ddr.building_blocks is None:
+        warnings.warn(f"No building blocks specified: gen_fingerprints is not available.",UserWarning)
+        return
+
     print(f'Using {multiprocessing.cpu_count()} CPUs...')
     print(f'Output prefix: {output_prefix}')
     print(f'Chunk size: {chunk_size}')

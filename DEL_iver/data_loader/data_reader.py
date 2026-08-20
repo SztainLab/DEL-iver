@@ -70,8 +70,11 @@ class DataReader:
         self.cache = CacheManager(source, output_dir=output_dir)
         self.label=label
 
-        combos = list(combinations(range(self.n_building_blocks), 2))
-        self.disynthons = [f"disynthon_{'_'.join(str(i + 1) for i in combo)}_id" for combo in combos]
+        if building_blocks is None:
+            self.disynthons = []
+        else:
+            combos = list(combinations(range(self.n_building_blocks), 2))
+            self.disynthons = [f"disynthon_{'_'.join(str(i + 1) for i in combo)}_id" for combo in combos]
 
         if overwrite:
             self.cache.clear()
