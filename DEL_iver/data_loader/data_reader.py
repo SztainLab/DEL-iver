@@ -20,7 +20,7 @@ class DataReader:
     # daniel make sure full molecule smiles is returned in parquet if the flag for full molecule is specified
     @classmethod
     def from_csv(cls, filepath: str,
-                        building_blocks: list ,
+                        building_blocks:list= None ,
                         memory_per_chunk_mb: int = DEFAULT_MEMORY_MB ,
                         molecule_smiles: str = None ,
                         data_cols: list = None,
@@ -66,7 +66,7 @@ class DataReader:
         self.building_blocks = building_blocks
         self.molecule_smiles=molecule_smiles
         self.data_cols = data_cols
-        self.n_building_blocks = len(building_blocks)
+        self.n_building_blocks = None if building_blocks is None else len(building_blocks)
         self.cache = CacheManager(source, output_dir=output_dir)
         self.label=label
 
