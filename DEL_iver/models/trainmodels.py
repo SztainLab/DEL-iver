@@ -228,7 +228,7 @@ def train_default(ddr, output_prefix, continuous_label = False):
     all_data_df = all_data_df[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']]
 
     # generate train and test splits, then write to parquet files
-    trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.2, random_state=42)
+    trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.8, random_state=42)
 
     trainx['binds'] = list(trainlabel)
     testx['binds'] = list(testlabel)
@@ -383,7 +383,7 @@ def train_invariant(ddr, output_prefix, continuous_label=False):
     all_data_df = all_data_df[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']]
 
     # generate train and test splits, then write to parquet files
-    trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.2, random_state=42)
+    trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.8, random_state=42)
 
     trainx['binds'] = list(trainlabel)
     testx['binds'] = list(testlabel)
@@ -523,7 +523,7 @@ def train_fullmole(ddr, output_prefix, continuous_label = False):
     
     all_data_df = full_moles[[cols[0]]]
     
-    trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.2, random_state=42)
+    trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.8, random_state=42)
     
     trainx['binds'] = list(trainlabel)
     testx['binds'] = list(testlabel)
