@@ -29,6 +29,12 @@ In your terminal, type
 
 ## 2. Install your local copy 
 ```
+conda create --name DELiverEnv python=3.14.4
+```
+```
+conda activate DELiverEnv
+```
+```
 pip install -e . 
 ```
 ## 3. Prepare input data
