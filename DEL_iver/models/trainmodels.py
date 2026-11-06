@@ -225,7 +225,7 @@ def train_default(ddr, output_prefix, continuous_label = False):
     parquet_alldata = pq.ParquetFile(ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main"))
     all_data_df = parquet_alldata.read().to_pandas()
 
-    all_data_df = all_data_df[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']]
+    all_data_df = all_data_df[['bb1_smiles_positional_id', 'bb2_smiles_positional_id', 'bb3_smiles_positional_id']]
 
     # generate train and test splits, then write to parquet files
     trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.8, random_state=42)
@@ -233,20 +233,20 @@ def train_default(ddr, output_prefix, continuous_label = False):
     trainx['binds'] = list(trainlabel)
     testx['binds'] = list(testlabel)
 
-    trainx = trainx[trainx['buildingblock1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
-    trainx = trainx[trainx['buildingblock2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
-    trainx = trainx[trainx['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
+    trainx = trainx[trainx['bb1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
+    trainx = trainx[trainx['bb2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
+    trainx = trainx[trainx['bb3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
-    testx = testx[testx['buildingblock1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
-    testx = testx[testx['buildingblock2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
-    testx = testx[testx['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
+    testx = testx[testx['bb1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
+    testx = testx[testx['bb2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
+    testx = testx[testx['bb3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
     pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix))
     pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, 'testset',  prefix=output_prefix))
 
     print(f"wrote train and test sets to: {ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix)} and {ddr.cache._get_output_path(CacheNames.MODELS, 'testset', prefix=output_prefix)}")
 
-    all_bb_indices = trainx[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']].to_numpy()
+    all_bb_indices = trainx[['bb1_smiles_positional_id', 'bb2_smiles_positional_id', 'bb3_smiles_positional_id']].to_numpy()
 
     batch_size = 10000
     target_labels = trainx[ddr.label].to_numpy()
@@ -380,7 +380,7 @@ def train_invariant(ddr, output_prefix, continuous_label=False):
     parquet_alldata = pq.ParquetFile(ddr.cache._get_output_path(CacheNames.BB_DICTIONARIES, "main"))
     all_data_df = parquet_alldata.read().to_pandas()
 
-    all_data_df = all_data_df[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']]
+    all_data_df = all_data_df[['bb1_smiles_positional_id', 'bb2_smiles_positional_id', 'bb3_smiles_positional_id']]
 
     # generate train and test splits, then write to parquet files
     trainx, testx, trainlabel, testlabel = train_test_split(all_data_df, bindlabels, train_size=0.8, random_state=42)
@@ -388,20 +388,20 @@ def train_invariant(ddr, output_prefix, continuous_label=False):
     trainx['binds'] = list(trainlabel)
     testx['binds'] = list(testlabel)
 
-    trainx = trainx[trainx['buildingblock1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
-    trainx = trainx[trainx['buildingblock2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
-    trainx = trainx[trainx['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
+    trainx = trainx[trainx['bb1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
+    trainx = trainx[trainx['bb2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
+    trainx = trainx[trainx['bb3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
-    testx = testx[testx['buildingblock1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
-    testx = testx[testx['buildingblock2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
-    testx = testx[testx['buildingblock3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
+    testx = testx[testx['bb1_smiles_positional_id'].isin(list(bb1_dict.keys()))]
+    testx = testx[testx['bb2_smiles_positional_id'].isin(list(bb2_dict.keys()))]
+    testx = testx[testx['bb3_smiles_positional_id'].isin(list(bb3_dict.keys()))]
 
     pq.write_table(pa.Table.from_pandas(trainx), ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix))
     pq.write_table(pa.Table.from_pandas(testx),  ddr.cache._get_output_path(CacheNames.MODELS, 'testset',  prefix=output_prefix))
 
     print(f"wrote train and test sets to: {ddr.cache._get_output_path(CacheNames.MODELS, 'trainset', prefix=output_prefix)} and {ddr.cache._get_output_path(CacheNames.MODELS, 'testset', prefix=output_prefix)}")
 
-    all_bb_indices = trainx[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']].to_numpy()
+    all_bb_indices = trainx[['bb1_smiles_positional_id', 'bb2_smiles_positional_id', 'bb3_smiles_positional_id']].to_numpy()
 
     batch_size = 10000
     target_labels = trainx[ddr.label].to_numpy()

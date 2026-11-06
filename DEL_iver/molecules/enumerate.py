@@ -15,7 +15,7 @@ from DEL_iver.utils.cache import CacheNames
 
 
 def _make_bb_smiles_to_id_dict(source_file, building_blocks):
-    #Makes chemical ID dictioanry
+    #Makes chemical ID dictionary
     pf = pq.ParquetFile(source_file)
     # We read all columns to see where each SMILES lives
     table = pf.read(columns=building_blocks)
