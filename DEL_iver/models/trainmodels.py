@@ -595,22 +595,4 @@ def train_fullmole(ddr, output_prefix, continuous_label = False):
     output_out = ddr.cache._get_output_path(CacheNames.MODELS, "model_fullmole", prefix=output_prefix, ext=".pth")
     torch.save(model, output_out)
     print(f'wrote model to {output_out}')
-    
-if __name__ == '__main__':
-    print("""
-    This script is designed to be imported and called as a function.
-    
-    Example usage:
-    
-    from this_script_name import gen_fingerprints
-    
-    df = gen_fingerprints(
-        filename="path/to/your/data.parquet",
-        output_prefix="my_experiment",
-        chunk_size=500000,
-        ecfp4_size=1024,
-        remove_dy=False
-    )
-    """)
-
 

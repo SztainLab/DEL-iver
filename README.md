@@ -27,13 +27,22 @@ In your terminal, type
    git clone https://github.com/SztainLab/DEL-iver.git
    ```
 
-## 2. Install your local copy 
+Then navigate into the DEL-iver directory
+
+  ```
+  cd DEL-iver
+  ```
+
+## 2. PIP install your local copy of the package 
+
+First, create a conda environment and activate the environment
 ```
 conda create --name DELiverEnv python=3.14.4
 ```
 ```
 conda activate DELiverEnv
 ```
+Then install the package within the conda environment
 ```
 pip install -e . 
 ```
