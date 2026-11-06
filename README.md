@@ -37,7 +37,7 @@ Then navigate into the DEL-iver directory
 
 First, create a conda environment and activate the environment
 ```
-conda create --name DELiverEnv python=3.14.4
+conda create --name DELiverEnv python>=3.13.18
 ```
 ```
 conda activate DELiverEnv
