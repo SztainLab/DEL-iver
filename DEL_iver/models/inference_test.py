@@ -87,7 +87,7 @@ def inference_default(ddr, output_prefix):
 
     target_test = testdf
 
-    target_test_indices = target_test[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']].to_numpy()
+    target_test_indices = target_test[['bb1_smiles_positional_id', 'bb2_smiles_positional_id', 'bb3_smiles_positional_id']].to_numpy()
 
     model_path = ddr.cache._get_output_path(CacheNames.MODELS, "model_default", prefix=output_prefix, ext=".pth")
 
@@ -95,15 +95,18 @@ def inference_default(ddr, output_prefix):
     target_model.to(device)
     target_model.eval()
 
-    batch_size = 10000
+    batch_size = 100000 # mar change hardcoding
     total_samples = len(target_test_indices)
-    print(f'total samples for testing: {(total_samples)}')
+    print(f'total samples for testing: {total_samples}')
     all_predictions = []
 
     for start_idx in range(0, total_samples, batch_size):
         end_idx = min(start_idx + batch_size, total_samples)
         batch_indices = target_test_indices[start_idx:end_idx]
-        
+
+        # mar debugging purposes
+        print(batch_indices)
+
         batch_fps = []
         for index in batch_indices:
             fp1 = bb1_dict[int(index[0])]
@@ -115,14 +118,14 @@ def inference_default(ddr, output_prefix):
         input_tensor = input_tensor.to(device)
         
         with torch.no_grad():
-            outputs = target_model(input_tensor)
-            predictions = torch.sigmoid(outputs)
+            predictions = target_model(input_tensor)
+            predictions = torch.sigmoid(predictions) # mar change. this should only be the case if continuous_labels=FALSE
         
         predictions_cpu = predictions.cpu().numpy()
         all_predictions.extend(predictions_cpu)
 
     target_test = target_test.copy()
-    target_test['pred'] = np.round(all_predictions, 3)
+    target_test['pred'] = np.round(all_predictions)
 
     predictions_df = pd.concat([predictions_df, target_test], ignore_index=True)
 
@@ -152,7 +155,7 @@ def inference_default(ddr, output_prefix):
 
     plt.figure()
     plt.plot([0, 1], [0, 1], color='gray', lw=5, linestyle='--', label=f'random AUROC 0.5')
-    plt.plot(fpr, tpr, color='magenta', lw=5, label=f'AUROC {roc_auc:.5f})')
+    plt.plot(fpr, tpr, color='magenta', lw=5, label=f'AUROC {roc_auc:.3f})')
     plt.xlim([0.0, 1.05])
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
@@ -165,8 +168,8 @@ def inference_default(ddr, output_prefix):
     plt.cla()
 
     plt.figure()
-    plt.axhline(y=ap_baseline, color='gray', lw=5, linestyle='--', label=f'baseline AP {ap_baseline}')
-    plt.plot(recall, precision, color='lightskyblue', lw=5, label=f'AP {ap:.5f})')
+    plt.axhline(y=ap_baseline, color='gray', lw=5, linestyle='--', label=f'baseline AP {ap_baseline:.3}')
+    plt.plot(recall, precision, color='lightskyblue', lw=5, label=f'AP {ap:.3f})')
     plt.xlim([0.0, 1.05])
     plt.ylim([0.0, 1.05])
     plt.xlabel('Recall')
@@ -245,7 +248,7 @@ def inference_invariant(ddr, output_prefix):
 
     target_test = testdf
 
-    target_test_indices = target_test[['buildingblock1_smiles_positional_id', 'buildingblock2_smiles_positional_id', 'buildingblock3_smiles_positional_id']].to_numpy()
+    target_test_indices = target_test[['bb1_smiles_positional_id', 'bb2_smiles_positional_id', 'bb3_smiles_positional_id']].to_numpy()
 
     model_path = ddr.cache._get_output_path(CacheNames.MODELS, "model_invariant", prefix=output_prefix, ext=".pth")
 

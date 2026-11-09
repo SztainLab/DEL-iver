@@ -41,11 +41,14 @@ class CacheNames(Enum):
         "trainset":        "{prefix}_trainset",
         "testset":         "{prefix}_testset",
         "predictions":     "{prefix}_testset_predictions",
+        "predictions_default": "{prefix}_testset_predictions_default",
         "model_default":   "{prefix}_trained_defaulttmodel",
         "model_invariant": "{prefix}_trained_invariantmodel",
         "model":           "{prefix}_trained_model",
         "auroc_plot":      "{prefix}_AUROC_plot",
+        "auroc_plot_default": "{prefix}_AUROC_plot_default",
         "pr_plot":         "{prefix}_PR_plot",
+        "pr_plot_default": "{prefix}_PR_plot_default"
     })
     SMILESEMBEDDING = ("smiles_embedding", {
         "fingerprints_bb1": "{prefix}_bb1_fingerprints",

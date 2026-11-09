@@ -57,7 +57,7 @@ class FullMole_Dataset(Dataset):
 
 # compatible for binary and continous inputs
 class BBFP_NN_v1(nn.Module):
-    def __init__(self, fingerprint_length, num_bb=3, continuous_label : bool = False):
+    def __init__(self, fingerprint_length: int = 1024, num_bb=3, continuous_label : bool = False):
         super(BBFP_NN_v1, self).__init__()
         self.fc1 = nn.Linear(fingerprint_length * num_bb, 1024)
         self.dropout1 = nn.Dropout(0.5)
@@ -74,7 +74,7 @@ class BBFP_NN_v1(nn.Module):
         x = self.dropout2(F.relu(self.fc2(x)))
         x = self.dropout3(F.relu(self.fc3(x)))
         x = self.fc4(x)
-        if self.continuous_label == False:
+        if not self.continuous_label:
             x = torch.sigmoid(x)
         return x   
 
@@ -153,7 +153,7 @@ class MolFP_SimpleNN(nn.Module):
 def train_default(ddr, output_prefix, continuous_label = False):
     """
     Train a model on building block ECFP4 fingerprints to predict binding probability of molecules
-    Before training, the dataset is split into train and test (80/20) splits. THis is the default
+    Before training, the dataset is split into train and test (80/20) splits. This is the default
     model, and does not enforce permutation invariance. 
 
     Parameters:
@@ -165,7 +165,7 @@ def train_default(ddr, output_prefix, continuous_label = False):
         
     continuous_label : bool
         default is False. If true, the model is trained to predict continuous values 
-        rather than binary ones (e.g read count, IC50, etc.)
+        rather than binary ones (e.g. read count, IC50, etc.)
     
     Returns:
     --------
@@ -183,14 +183,14 @@ def train_default(ddr, output_prefix, continuous_label = False):
     ... )
         """
     # Check if CUDA (GPU support) is available and set device
-    if torch.cuda.is_available():
+    if torch.cuda.is_available(): # Mar replace this with a function definition above since it is used in every model
         device = torch.device("cuda")
         print(f"Using device: cuda, with {torch.cuda.device_count()} GPUs available")
     else:
         device = torch.device("cpu")
         print("Using device: cpu")
 
-    fingerprint_length = 1024
+    fingerprint_length = 1024 ## Mar get rid of hardcode
 
     print(f'Output prefix: {output_prefix}')
 
@@ -248,13 +248,13 @@ def train_default(ddr, output_prefix, continuous_label = False):
 
     all_bb_indices = trainx[['bb1_smiles_positional_id', 'bb2_smiles_positional_id', 'bb3_smiles_positional_id']].to_numpy()
 
-    batch_size = 10000
+    batch_size = 10000 # Mar change this from hard coded to user specified
     target_labels = trainx[ddr.label].to_numpy()
 
     target_dataset = TrainBBFPDataset_v1(all_bb_indices, bb1_dict, bb2_dict, bb3_dict, target_labels)
     target_dataloader = DataLoader(target_dataset, batch_size=batch_size, shuffle=True)
 
-    model = BBFP_NN_v1(1024, continuous_label).to(device)
+    model = BBFP_NN_v1(fingerprint_length=1024, num_bb=3, continuous_label=continuous_label).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     if continuous_label:
@@ -263,7 +263,7 @@ def train_default(ddr, output_prefix, continuous_label = False):
         criterion = torch.nn.BCEWithLogitsLoss()
 
     # Training loop
-    num_epochs = 10
+    num_epochs = 10000 # Mar change hardcoding
     for epoch in range(num_epochs):
         '''
         # Randomly select negative samples, you can adjust the size ratio as needed
@@ -281,6 +281,9 @@ def train_default(ddr, output_prefix, continuous_label = False):
         for i, (batch_fp, batch_labels) in enumerate(target_dataloader):
             batch_fp = batch_fp.to(device)
             batch_labels = batch_labels.to(device)
+
+            # mar for debugging
+            print(batch_fp, batch_labels)
 
             # Forward pass
             outputs = model(batch_fp).squeeze()
